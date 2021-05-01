@@ -13,7 +13,7 @@ public class EndScreenController : MonoBehaviour
     [SerializeField] private Button exitButton;
     [SerializeField] private bool isGameOver;
 
-    private string currentLevel;
+    private string currentLevel = "Level";
     private string nextLevel;
 
     void Start()
@@ -28,8 +28,8 @@ public class EndScreenController : MonoBehaviour
 
     private void OnPlayAgainHandler()
     {
-        Debug.Log("Reload Level");
-        //SceneManager.LoadScene(currentLevel);
+        //Debug.Log("Reload Level");
+        SceneManager.LoadScene(currentLevel);
     }
 
     private void OnMenuHandler()
