@@ -43,9 +43,7 @@ public class QueueDymamic : MonoBehaviour, IQueueDynamic<Ball> // Esta es la imp
                 Node<Ball> newNode = new Node<Ball>(); // creamos un newNode
                 newNode.InitializeNode(newBall, auxNode, auxNode.nextNode); // lo inicializamos con la sphere como su elemento, el auxNode como su previo y el siguiente del auxNode como su siguiente
 
-                if (auxNode.nextNode != null) auxNode.nextNode.previousNode = newNode; // ahora el nodo previo del nodo siguiente de auxNode es el newNode
-                else EnqueueBottom(newBall); // si no existe el siguiente
-
+                auxNode.nextNode.previousNode = newNode; // ahora el nodo previo del nodo siguiente de auxNode es el newNode
                 auxNode.nextNode = newNode; // y el nodo siguiente del auxNode es el newNode
             }
             else // si no lo encontramos
@@ -66,14 +64,12 @@ public class QueueDymamic : MonoBehaviour, IQueueDynamic<Ball> // Esta es la imp
                 auxNode = auxNode.nextNode; // si no es, almacenamos en auxNode el nodo siguiente de auxNode y vuelve al bucle
             }
 
-            if (auxNode.nextNode != null) // si lo encontramos
+            if (auxNode.previousNode != null) // si lo encontramos
             {
                 Node<Ball> newNode = new Node<Ball>(); // creamos un newNode
                 newNode.InitializeNode(newBall, auxNode.previousNode, auxNode);// lo inicializamos con la sphere como su elemento, el nodo previo del auxNode como su previo y el auxNode como su siguiente
 
-                if (auxNode.previousNode != null) auxNode.previousNode.nextNode = newNode; // ahora el nodo siguiente del nodo previo de auxNode es el newNode
-                else EnqueueTop(newBall); // si no existe el previo
-
+                auxNode.previousNode.nextNode = newNode; // ahora el nodo siguiente del nodo previo de auxNode es el newNode
                 auxNode.previousNode = newNode; // y el nodo previo del auxNode es el newNode
             }
             else // si no lo encontramos

@@ -378,4 +378,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ball: {fileID: 7535913483028634844, guid: 2601f13924c22624a892517a8c6a1de2, type: 3}
-  ballSpawnCooldown: 10
+  ballSpawnCooldown: 60
