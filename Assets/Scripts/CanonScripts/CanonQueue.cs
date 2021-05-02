@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class CanonQueue : MonoBehaviour
 {
-    [SerializeField] private Ball ball;
-    [SerializeField] private GameObject ballPrefab;
+    [SerializeField] private Ball ballPrefab;
     private QueueDymamic queueDymamic;
     private int counter;
     private Camera mainCamera;
     private Ball selectedSphere;
     [SerializeField]private float shootSpeed;
     [SerializeField] private Transform shootPoint;
+    [SerializeField] private QueueShootingTest queueShootingTest;
 
     private void Start()
     {
@@ -26,10 +26,11 @@ public class CanonQueue : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            var proyectile = Instantiate(ballPrefab, shootPoint.position,shootPoint.rotation);
-            var proyectileScript =  proyectile.GetComponent<Ball>();
-            proyectileScript.imProyectile = true;
-            proyectileScript.speed = shootSpeed ;
+            var proyectile = queueShootingTest.CreateClone();
+            proyectile.transform.position = shootPoint.position;
+            proyectile.transform.rotation = shootPoint.rotation;
+            proyectile.imProyectile = true;
+            proyectile.speed = shootSpeed;
         }
     }
 }

@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class QueueShootingTest : MonoBehaviour
 {
-    [SerializeField] private Ball sphere;
+    [SerializeField] private Ball ball;
 
-    private BallQueue queueDymamic;
+    private QueueDymamic queueDymamic;
     private int counter;
     private Camera mainCamera;
-    private Ball selectedSphere;
+    //private Ball selectedSphere;
     private float ballSpawnTimer;
     [SerializeField] private float ballSpawnCooldown;
     private int maxBalls;
@@ -18,7 +18,7 @@ public class QueueShootingTest : MonoBehaviour
     {
         mainCamera = Camera.main;
 
-        queueDymamic = gameObject.AddComponent<BallQueue>();
+        queueDymamic = gameObject.AddComponent<QueueDymamic>();
 
         queueDymamic.Initialize(CreateClone());
         ShowQueue();
@@ -30,14 +30,14 @@ public class QueueShootingTest : MonoBehaviour
         if(ballSpawnTimer >= ballSpawnCooldown)
         {
             EnqueueBottom();
-            Debug.Log("Cree Clon");
+            //Debug.Log("Cree Clon");
             ballSpawnTimer = 0;
         }
     }
 
     public Ball CreateClone() // Creamos una nueva instancia y nodo
     {
-        var clone = Instantiate(sphere); // instanciamos una nueva Sphere
+        var clone = Instantiate(ball); // instanciamos una nueva Sphere
         clone.name += $" ({counter})"; // le cambiamos el nombre para diferenciarlas
         clone.GetComponent<SpriteRenderer>().color = Random.ColorHSV(); // les ponemos un color random
         counter++; // aumentamos el contador
@@ -46,7 +46,7 @@ public class QueueShootingTest : MonoBehaviour
 
     public void ShowQueue()
     {
-        print("----- Start -----");
+        //print("----- Start -----");
 
         Node<Ball> auxNode = queueDymamic.rootNode; // creamos un nodo auxiliar y le asignamos la referencia del rootNode
         int index = 0; // iniciamos el index
@@ -54,7 +54,7 @@ public class QueueShootingTest : MonoBehaviour
         // Para mostrar el Nodo Raíz
         if (auxNode != null) // si el auxNode es distinto de null
         {
-            print(auxNode.element); // imprimimos en consola el elemento del auxNode
+            //print(auxNode.element); // imprimimos en consola el elemento del auxNode
             auxNode.element.transform.position = new Vector3(index, 2f, 0f); // lo movemos en x según el valor del index
             index++; // aumentamos el index
         }
@@ -63,7 +63,7 @@ public class QueueShootingTest : MonoBehaviour
         while (auxNode.nextNode != null) // nos fijamos si es el ultimo
         {
             auxNode = auxNode.nextNode; // sino guardamos el siguiente en auxNode y repetimos
-            print(auxNode.element); // imprimimos en consola el elemento del auxNode
+            //print(auxNode.element); // imprimimos en consola el elemento del auxNode
             auxNode.element.transform.position = new Vector3(index, 2f, 0f); // lo movemos en x según el valor del index
             index++; // aumentamos el index
         }
@@ -75,18 +75,16 @@ public class QueueShootingTest : MonoBehaviour
         ShowQueue();
     }
 
-    public void EnqueueMiddleAfter()
+    public void EnqueueMiddleAfter(Ball newBall, Ball afterBall)
     {
-        if (selectedSphere != null) queueDymamic.EnqueueMiddleAfter(CreateClone(), selectedSphere);
+        queueDymamic.EnqueueMiddleAfter(newBall, afterBall);
         ShowQueue();
-        selectedSphere = null;
     }
 
-    public void EnqueueMiddleBefore()
+    public void EnqueueMiddleBefore(Ball newBall, Ball beforeBall)
     {
-        if (selectedSphere != null) queueDymamic.EnqueueMiddleBefore(CreateClone(), selectedSphere);
+        queueDymamic.EnqueueMiddleBefore(newBall, beforeBall);
         ShowQueue();
-        selectedSphere = null;
     }
 
     public void EnqueueBottom()
@@ -107,10 +105,10 @@ public class QueueShootingTest : MonoBehaviour
         ShowQueue();
     }
 
-    public void DesqueueMiddle()
+    public void DesqueueMiddle(Ball targetBall)
     {
-        if (selectedSphere != null) queueDymamic.DesqueueMiddle(selectedSphere);
+        if (targetBall != null) queueDymamic.DesqueueMiddle(targetBall);
         ShowQueue();
-        selectedSphere = null;
+        targetBall = null;
     }
 }

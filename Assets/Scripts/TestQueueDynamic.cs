@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class TestQueueDynamic : MonoBehaviour
 {
-    [SerializeField] private Sphere sphere;
+    [SerializeField] private Ball sphere;
     [SerializeField] private LayerMask layerMask;
 
     private QueueDymamic queueDymamic;
     private int counter;
     private Camera mainCamera;
-    private Sphere selectedSphere;
+    private Ball selectedSphere;
 
     private void Start()
     {
@@ -31,7 +31,7 @@ public class TestQueueDynamic : MonoBehaviour
             {
                 if (hit.transform.CompareTag("Sphere")) // si lo que chocamos tiene el tag de "Sphere"
                 {
-                    selectedSphere = hit.transform.gameObject.GetComponent<Sphere>(); // guardamos la referencia
+                    selectedSphere = hit.transform.gameObject.GetComponent<Ball>(); // guardamos la referencia
                 }
             }
         }
@@ -46,7 +46,7 @@ public class TestQueueDynamic : MonoBehaviour
         }
     }
 
-    public Sphere CreateClone() // Creamos una nueva instancia y nodo
+    public Ball CreateClone() // Creamos una nueva instancia y nodo
     {
         var clone = Instantiate(sphere); // instanciamos una nueva Sphere
         clone.name += $" ({counter})"; // le cambiamos el nombre para diferenciarlas
@@ -59,7 +59,7 @@ public class TestQueueDynamic : MonoBehaviour
     {
         if (!queueDymamic.IsEmpty())
         {
-            Node<Sphere> auxNode = queueDymamic.rootNode; // creamos un nodo auxiliar y le asignamos la referencia del rootNode
+            Node<Ball> auxNode = queueDymamic.rootNode; // creamos un nodo auxiliar y le asignamos la referencia del rootNode
             int index = 0; // iniciamos el index
 
             // Para mostrar el Nodo Raíz

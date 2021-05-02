@@ -51,23 +51,31 @@ public class Ball : MonoBehaviour
         if (imProyectile)
         {
             Vector2 contactOnCollision = collision.GetContact(0).point;//Encuentra el punto de colision (devuelve un vector)
-
+            contactOnCollision.x -= collision.transform.position.x;
             Debug.Log(contactOnCollision);
-            if (imProyectile && contactOnCollision.x > 0)
+            if (contactOnCollision.x > 0)
             {
-                queueManager.EnqueueTop();
-                Debug.Log("Estoy del lado Der");
-                imProyectile = false;
-                transform.position = new Vector3(collision.transform.position.x + 1 , collision.transform.position.y,0);
-                speed = 0;
+                var afterBall = collision.gameObject.GetComponent<Ball>();
+                queueManager.EnqueueMiddleAfter(this, afterBall); 
+                Debug.Log($"{this.name} estoy del lado Der de {afterBall.name}");
+                //transform.position = new Vector3(collision.transform.position.x + 1 , collision.transform.position.y,0);
+                ResetOnCollision();
             }
-            else if (imProyectile && contactOnCollision.x <= 0)
+            else if (contactOnCollision.x <= 0)
             {
-                queueManager.EnqueueBottom();
-                transform.position = new Vector3(collision.transform.position.x - 1, collision.transform.position.y, 0);
-                imProyectile = false;
-                speed = 0;
+                var beforeBall = collision.gameObject.GetComponent<Ball>();
+                queueManager.EnqueueMiddleBefore(this, beforeBall);
+                Debug.Log($"{this.name} estoy del lado Izq {beforeBall.name}");
+                //transform.position = new Vector3(collision.transform.position.x - 1, collision.transform.position.y, 0);
+                ResetOnCollision();
             }
         }
+    }
+
+    private void ResetOnCollision()
+    {
+        imProyectile = false;
+        speed = 0;
+        transform.rotation = Quaternion.identity;
     }
 }
