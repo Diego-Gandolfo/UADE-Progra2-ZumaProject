@@ -136,3 +136,6 @@ MonoBehaviour:
   imProyectile: 0
   player: {fileID: 0}
   speed: 1
+  colorBucket:
+  - {r: 1, g: 0, b: 0, a: 1}
+  lifeTime: 5

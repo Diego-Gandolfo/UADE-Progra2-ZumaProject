@@ -9,13 +9,16 @@ public class CanonQueue : MonoBehaviour
     private int counter;
     private Camera mainCamera;
     private Ball selectedSphere;
-    [SerializeField]private float shootSpeed;
+    [SerializeField] private float shootSpeed;
     [SerializeField] private Transform shootPoint;
     [SerializeField] private QueueShootingTest queueShootingTest;
-
+    [SerializeField] private Ball proyectile;
+    private bool isAlredyShooted;
     private void Start()
     {
         mainCamera = Camera.main;
+        InstanceProyectile();
+
     }
 
     private void Update()
@@ -23,14 +26,24 @@ public class CanonQueue : MonoBehaviour
         Vector3 worldScreenPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         Vector2 diff = worldScreenPosition - transform.position;
         transform.up = diff.normalized;
-
+        
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            var proyectile = queueShootingTest.CreateClone();
-            proyectile.transform.position = shootPoint.position;
-            proyectile.transform.rotation = shootPoint.rotation;
+
             proyectile.imProyectile = true;
             proyectile.speed = shootSpeed;
+            proyectile = null;        
         }
+        else if (proyectile != null)
+        {
+            proyectile.transform.position = shootPoint.position;
+            proyectile.transform.rotation = shootPoint.rotation;
+        }
+
+      
+    }
+    public void InstanceProyectile()
+    {
+            proyectile = queueShootingTest.CreateClone();
     }
 }

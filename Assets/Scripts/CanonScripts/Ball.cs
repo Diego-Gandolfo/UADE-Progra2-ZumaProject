@@ -14,59 +14,63 @@ public class Ball : MonoBehaviour
     public float speed = 0f;
     private Rigidbody2D rb2d;
     private QueueShootingTest queueManager;
+    private CanonQueue canon;
+    [SerializeField] private Color[] colorBucket = new Color[3];
+    [SerializeField]private float lifeTime;
+    private float lifeTimeTimer;
+    private GameManager gameManager;
 
     private void Start()
     {
-        queueManager = FindObjectOfType<QueueShootingTest>();
-        player = FindObjectOfType<CanonQueue>().transform;
+        gameObject.GetComponent<SpriteRenderer>().color = colorBucket[Random.Range(0, colorBucket.Length)];
         rb2d = GetComponent<Rigidbody2D>();
-        //ballColliderRadius = GetComponent<CircleCollider2D>().radius;
+        queueManager = FindObjectOfType<QueueShootingTest>();
+        canon = FindObjectOfType<CanonQueue>();
+        gameManager = FindObjectOfType<GameManager>();
+        player = canon.transform;
         if (!imProyectile)
         {
             playerPos = player.transform.position;
         }
+        lifeTimeTimer = lifeTime;
     }
 
     private void Update()
     {
         if (imProyectile)
         {
-            transform.position += transform.up * speed * Time.deltaTime; 
+            transform.position += transform.up * speed * Time.deltaTime;
+            lifeTimeTimer -= Time.deltaTime;           
         }
-       
-        // transform.LookAt(player);
-        //transform.rotation.x = Quaternion.identity;
-     //if(player != null && !imProyectile)
-     //  {
-     //   playerPos = player.position;       
-     //   playerPos.x = playerPos.x - transform.position.x;
-     //   playerPos.y = playerPos.y - transform.position.y;
-     //   angle = Mathf.Atan2(playerPos.y, playerPos.x) * Mathf.Rad2Deg;
-     //   transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-     //   }
+        if (lifeTimeTimer <= 0)
+        {
+            canon.InstanceProyectile();
+            Destroy(gameObject);            
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        //Debug.Log($"Entre en el collision con {collision}");
         if (imProyectile)
         {
             Vector2 contactOnCollision = collision.GetContact(0).point;//Encuentra el punto de colision (devuelve un vector)
             contactOnCollision.x -= collision.transform.position.x;
-            Debug.Log(contactOnCollision);
+            //Debug.Log(contactOnCollision);
             if (contactOnCollision.x > 0)
             {
                 var afterBall = collision.gameObject.GetComponent<Ball>();
-                queueManager.EnqueueMiddleAfter(this, afterBall); 
-                Debug.Log($"{this.name} estoy del lado Der de {afterBall.name}");
-                //transform.position = new Vector3(collision.transform.position.x + 1 , collision.transform.position.y,0);
+                queueManager.EnqueueMiddleAfter(this, afterBall);
+                gameManager.CheckColors(this);
+                //Debug.Log($"{this.name} estoy del lado Der de {afterBall.name}");
                 ResetOnCollision();
             }
             else if (contactOnCollision.x <= 0)
             {
                 var beforeBall = collision.gameObject.GetComponent<Ball>();
                 queueManager.EnqueueMiddleBefore(this, beforeBall);
-                Debug.Log($"{this.name} estoy del lado Izq {beforeBall.name}");
-                //transform.position = new Vector3(collision.transform.position.x - 1, collision.transform.position.y, 0);
+                gameManager.CheckColors(this);
+                //Debug.Log($"{this.name} estoy del lado Izq {beforeBall.name}");
                 ResetOnCollision();
             }
         }
@@ -77,5 +81,16 @@ public class Ball : MonoBehaviour
         imProyectile = false;
         speed = 0;
         transform.rotation = Quaternion.identity;
+        canon.InstanceProyectile();
     }
+    private void OnColorMatch(GameObject objectToDestroy)
+    {
+       if(gameObject.GetComponent<SpriteRenderer>().color == objectToDestroy.GetComponent<SpriteRenderer>().color)
+        {
+            Destroy(objectToDestroy);
+            Destroy(gameObject);
+        }
+    }
+
+    
 }

@@ -13,14 +13,17 @@ public class QueueShootingTest : MonoBehaviour
     private float ballSpawnTimer;
     [SerializeField] private float ballSpawnCooldown;
     private int maxBalls;
-
+    private GameManager gameManager;
     private void Start()
     {
+        gameManager = FindObjectOfType<GameManager>();
         mainCamera = Camera.main;
+        
 
         queueDymamic = gameObject.AddComponent<QueueDymamic>();
-
+        gameManager.queueDynamic = queueDymamic;
         queueDymamic.Initialize(CreateClone());
+       
         ShowQueue();
     }
 
@@ -39,7 +42,7 @@ public class QueueShootingTest : MonoBehaviour
     {
         var clone = Instantiate(ball); // instanciamos una nueva Sphere
         clone.name += $" ({counter})"; // le cambiamos el nombre para diferenciarlas
-        clone.GetComponent<SpriteRenderer>().color = Random.ColorHSV(); // les ponemos un color random
+        //clone.GetComponent<SpriteRenderer>().color = Random.ColorHSV(); // les ponemos un color random
         counter++; // aumentamos el contador
         return clone; // devolvemos el clone creado
     }
