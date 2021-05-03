@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class QueueShootingTest : MonoBehaviour
 {
-    [SerializeField] private Ball ball;
+    [SerializeField] private Ball ball = null;
 
-    private QueueDymamic queueDymamic;
-    private int counter;
-    private Camera mainCamera;
-    //private Ball selectedSphere;
-    private float ballSpawnTimer;
-    [SerializeField] private float ballSpawnCooldown;
-    private int maxBalls;
-    private GameManager gameManager;
+    private QueueDymamic queueDymamic = null;
+    private int counter = 0;
+    private Camera mainCamera = null;
+    private float ballSpawnTimer = 0f;
+    [SerializeField] private float ballSpawnCooldown = 0f;
+    private int maxBalls = 0;
+    private GameManager gameManager = null;
+
     private void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
@@ -30,10 +30,10 @@ public class QueueShootingTest : MonoBehaviour
     private void Update()
     {
         ballSpawnTimer += Time.deltaTime;
+
         if(ballSpawnTimer >= ballSpawnCooldown)
         {
-            EnqueueBottom();
-            //Debug.Log("Cree Clon");
+            EnqueueTop();
             ballSpawnTimer = 0;
         }
     }
@@ -42,22 +42,18 @@ public class QueueShootingTest : MonoBehaviour
     {
         var clone = Instantiate(ball); // instanciamos una nueva Sphere
         clone.name += $" ({counter})"; // le cambiamos el nombre para diferenciarlas
-        //clone.GetComponent<SpriteRenderer>().color = Random.ColorHSV(); // les ponemos un color random
         counter++; // aumentamos el contador
         return clone; // devolvemos el clone creado
     }
 
     public void ShowQueue()
     {
-        //print("----- Start -----");
-
         Node<Ball> auxNode = queueDymamic.rootNode; // creamos un nodo auxiliar y le asignamos la referencia del rootNode
         int index = 0; // iniciamos el index
 
         // Para mostrar el Nodo Raíz
         if (auxNode != null) // si el auxNode es distinto de null
         {
-            //print(auxNode.element); // imprimimos en consola el elemento del auxNode
             auxNode.element.transform.position = new Vector3(index, 2f, 0f); // lo movemos en x según el valor del index
             index++; // aumentamos el index
         }
@@ -66,7 +62,6 @@ public class QueueShootingTest : MonoBehaviour
         while (auxNode.nextNode != null) // nos fijamos si es el ultimo
         {
             auxNode = auxNode.nextNode; // sino guardamos el siguiente en auxNode y repetimos
-            //print(auxNode.element); // imprimimos en consola el elemento del auxNode
             auxNode.element.transform.position = new Vector3(index, 2f, 0f); // lo movemos en x según el valor del index
             index++; // aumentamos el index
         }

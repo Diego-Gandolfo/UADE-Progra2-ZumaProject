@@ -124,7 +124,7 @@ public class QueueDymamic : MonoBehaviour, IQueueDynamic<Ball> // Esta es la imp
         if (!IsEmpty())
         {
             Node<Ball> auxNode = rootNode; // creamos un nodo auxiliar y le asignamos la referencia del rootNode
-            print("Entre al Dequeue");
+            
             while (auxNode.element != ball && (auxNode.nextNode != null || auxNode == rootNode)) // bucle donde nos fijamos si el elemento del auxNode es el sphere o si llegamos al final
             {
                 auxNode = auxNode.nextNode; // si no es, almacenamos en auxNode el nodo siguiente de auxNode y vuelve al bucle
@@ -133,37 +133,29 @@ public class QueueDymamic : MonoBehaviour, IQueueDynamic<Ball> // Esta es la imp
             if (auxNode.nextNode != null && auxNode.previousNode !=null) // si lo encontramos
             {
                 auxNode.element.gameObject.SetActive(false);
-                
                 auxNode.previousNode.nextNode = auxNode.nextNode; // decimos que el siguiente del previo del auxNode ahora es el siguiente del auxNode
                 auxNode.nextNode.previousNode = auxNode.previousNode; // decimos que el previo del siguiente del auxNode es ahora el previo del auxNode
+                Destroy(auxNode.element.gameObject);
             }
             else if (auxNode.nextNode == null && auxNode.previousNode != null) //es el ultimo
             {
-            
                 auxNode.element.gameObject.SetActive(false);
-                auxNode.previousNode.nextNode = auxNode.nextNode; // decimos que el siguiente del previo del auxNode ahora es el siguiente del auxNode
-                //auxNode.nextNode.previousNode = null; // decimos que el previo del siguiente del auxNode es ahora el previo del auxNode
-            }            
-            else if (auxNode.nextNode != null && auxNode.previousNode == null) //es el ultimo
-            {
-                auxNode.element.gameObject.SetActive(false);
-                //auxNode.previousNode.nextNode = null; // decimos que el siguiente del previo del auxNode ahora es el siguiente del auxNode
-                auxNode.nextNode.previousNode = auxNode.previousNode; // decimos que el previo del siguiente del auxNode es ahora el previo del auxNode
+                auxNode.previousNode.nextNode = null; // decimos que el siguiente del previo del auxNode ahora es el siguiente del auxNode
+                Destroy(auxNode.element.gameObject);
             }
             else if (auxNode == rootNode)
             {
-                rootNode.element.gameObject.SetActive(false);
+                auxNode.element.gameObject.SetActive(false);
                 if (rootNode.nextNode != null)
                 {
-                    rootNode.nextNode.previousNode = null;    // decimos que el previo del siguiente del auxNode es ahora el previo del auxNode
-                    rootNode = rootNode.nextNode;
+                    auxNode.nextNode.previousNode = null;    // decimos que el previo del siguiente del auxNode es ahora el previo del auxNode
+                    rootNode = auxNode.nextNode;
+                    Destroy(auxNode.element.gameObject);
                 }
-            
             }
-            
             else // si no lo encontramos
             {
-                Debug.LogError($"No se ha encontrado {ball} en ningún nodo!"); // tiramos error en consola
+                Debug.LogError($"No se ha encontrado {ball.name} en ningún nodo!"); // tiramos error en consola
             }
         }
     }

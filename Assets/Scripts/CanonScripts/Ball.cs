@@ -28,10 +28,12 @@ public class Ball : MonoBehaviour
         canon = FindObjectOfType<CanonQueue>();
         gameManager = FindObjectOfType<GameManager>();
         player = canon.transform;
+
         if (!imProyectile)
         {
             playerPos = player.transform.position;
         }
+
         lifeTimeTimer = lifeTime;
     }
 
@@ -42,27 +44,25 @@ public class Ball : MonoBehaviour
             transform.position += transform.up * speed * Time.deltaTime;
             lifeTimeTimer -= Time.deltaTime;           
         }
+
         if (lifeTimeTimer <= 0)
         {
             canon.InstanceProyectile();
-            Destroy(gameObject);            
+            Destroy(gameObject);
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //Debug.Log($"Entre en el collision con {collision}");
         if (imProyectile)
         {
             Vector2 contactOnCollision = collision.GetContact(0).point;//Encuentra el punto de colision (devuelve un vector)
             contactOnCollision.x -= collision.transform.position.x;
-            //Debug.Log(contactOnCollision);
             if (contactOnCollision.x > 0)
             {
                 var afterBall = collision.gameObject.GetComponent<Ball>();
                 queueManager.EnqueueMiddleAfter(this, afterBall);
                 gameManager.CheckColors(this);
-                //Debug.Log($"{this.name} estoy del lado Der de {afterBall.name}");
                 ResetOnCollision();
             }
             else if (contactOnCollision.x <= 0)
@@ -70,7 +70,6 @@ public class Ball : MonoBehaviour
                 var beforeBall = collision.gameObject.GetComponent<Ball>();
                 queueManager.EnqueueMiddleBefore(this, beforeBall);
                 gameManager.CheckColors(this);
-                //Debug.Log($"{this.name} estoy del lado Izq {beforeBall.name}");
                 ResetOnCollision();
             }
         }
@@ -83,14 +82,4 @@ public class Ball : MonoBehaviour
         transform.rotation = Quaternion.identity;
         canon.InstanceProyectile();
     }
-    private void OnColorMatch(GameObject objectToDestroy)
-    {
-       if(gameObject.GetComponent<SpriteRenderer>().color == objectToDestroy.GetComponent<SpriteRenderer>().color)
-        {
-            Destroy(objectToDestroy);
-            Destroy(gameObject);
-        }
-    }
-
-    
 }

@@ -14,11 +14,11 @@ public class CanonQueue : MonoBehaviour
     [SerializeField] private QueueShootingTest queueShootingTest;
     [SerializeField] private Ball proyectile;
     private bool isAlredyShooted;
+
     private void Start()
     {
         mainCamera = Camera.main;
         InstanceProyectile();
-
     }
 
     private void Update()
@@ -29,7 +29,6 @@ public class CanonQueue : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-
             proyectile.imProyectile = true;
             proyectile.speed = shootSpeed;
             proyectile = null;        
@@ -39,9 +38,8 @@ public class CanonQueue : MonoBehaviour
             proyectile.transform.position = shootPoint.position;
             proyectile.transform.rotation = shootPoint.rotation;
         }
-
-      
     }
+
     public void InstanceProyectile()
     {
             proyectile = queueShootingTest.CreateClone();
