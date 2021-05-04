@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TDA_COLA
 {
-    interface I_ColaPrioridad<Type> // Le agregué el <Type> para que pueda aceptar cualquier tipo de dato
+    interface IQueuePriority<Type> // Le agregué el <Type> para que pueda aceptar cualquier tipo de dato
     {
         // inicializa la estructura
         void InicializarCola(int valor);

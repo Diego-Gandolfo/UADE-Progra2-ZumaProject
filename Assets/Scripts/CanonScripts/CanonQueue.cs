@@ -6,28 +6,30 @@ public class CanonQueue : MonoBehaviour
 {
     [SerializeField] private Ball ballPrefab;
     private QueueDymamic queueDymamic;
-    private int counter;
-    private Camera mainCamera;
-    private Ball selectedSphere;
     [SerializeField] private float shootSpeed;
     [SerializeField] private Transform shootPoint;
     [SerializeField] private QueueShootingTest queueShootingTest;
     [SerializeField] private Ball proyectile;
-    private bool isAlredyShooted;
+
+    private Queue canonQueue;
+    private int maxQuantity = 2;
+
 
     private void Start()
     {
-        mainCamera = Camera.main;
-        InstanceProyectile();
+        canonQueue.Initialize(maxQuantity);
+
+        //InstanceProyectile();
     }
 
     private void Update()
     {
-        Vector3 worldScreenPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        /*
+        Vector3 worldScreenPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 diff = worldScreenPosition - transform.position;
         transform.up = diff.normalized;
         
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             proyectile.imProyectile = true;
             proyectile.speed = shootSpeed;
@@ -38,10 +40,27 @@ public class CanonQueue : MonoBehaviour
             proyectile.transform.position = shootPoint.position;
             proyectile.transform.rotation = shootPoint.rotation;
         }
+        */
     }
 
-    public void InstanceProyectile()
+    public void InstanceProyectile() //Acá se instancian y agregan a la cola las nuevas pelotas
     {
-            proyectile = queueShootingTest.CreateClone();
+        //proyectile = queueShootingTest.CreateClone();
+        var newProyectile = Instantiate(ballPrefab);
+        canonQueue.Enqueue(newProyectile);
+    }
+
+    public Ball LastBall() //Devuelve y desacola una pelota
+    {
+        var ball = canonQueue.Peek();
+        canonQueue.Dequeue();
+        return ball;
+    }
+
+    public Ball PeekColor() //Esto es solo para mostrar la proxima bola, no se desacola
+    {
+        //TODO: DEBERIA SOLO DEVOLVER EL COLOR DE LA BOLA.
+        var ball = canonQueue.Peek();
+        return ball;
     }
 }

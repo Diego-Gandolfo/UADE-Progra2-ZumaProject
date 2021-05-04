@@ -7,8 +7,7 @@ public class CanonStack : MonoBehaviour
     [SerializeField] private QueueShootingTest ballQueue;
     private static readonly Stack canonStack = new Stack(); //es singleton porque no deberia haber más de un stack de absorcion. A lo sumo en cada nivel se vacia?
     private int maxStack = 5;
-    [SerializeField] private Ball currentBall;
-
+    private Ball currentBall;
 
     void Start()
     {
@@ -36,5 +35,24 @@ public class CanonStack : MonoBehaviour
         {
             print("Stack Full");
         }
+    }
+
+    public bool IsEmpty()
+    {
+        return canonStack.IsEmpty();
+    }
+
+    public Ball LastBall()
+    {
+        var ball = canonStack.Peek();
+        canonStack.Pop();
+        return ball;
+    }
+
+    public Ball PeekColor() //Esto es solo para mostrar la proxima bola, no se desapila. 
+    {
+        //TODO: DEBERIA SOLO DEVOLVER EL COLOR DE LA BOLA.
+        var ball = canonStack.Peek();
+        return ball;
     }
 }

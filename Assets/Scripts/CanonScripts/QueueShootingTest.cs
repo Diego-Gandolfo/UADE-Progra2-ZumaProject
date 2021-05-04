@@ -5,19 +5,20 @@ using UnityEngine;
 public class QueueShootingTest : MonoBehaviour
 {
     [SerializeField] private Ball ball = null;
+    [SerializeField] private float ballSpawnCooldown = 0f;
+    private float ballSpawnTimer = 0f;
 
     private QueueDymamic queueDymamic = null;
+    
     private int counter = 0;
-    private Camera mainCamera = null;
-    private float ballSpawnTimer = 0f;
-    [SerializeField] private float ballSpawnCooldown = 0f;
     private int maxBalls = 0;
+    //private Camera mainCamera = null;
     private GameManager gameManager = null;
 
     private void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
-        mainCamera = Camera.main;
+        //mainCamera = Camera.main;
         
 
         queueDymamic = gameObject.AddComponent<QueueDymamic>();
