@@ -8,7 +8,7 @@ public class CanonQueue : MonoBehaviour
     private QueueDymamic queueDymamic;
     [SerializeField] private float shootSpeed;
     [SerializeField] private Transform shootPoint;
-    [SerializeField] private QueueShootingTest queueShootingTest;
+    [SerializeField] private QueueController queueShootingTest;
     [SerializeField] private Ball proyectile;
 
     private Queue canonQueue;
@@ -17,14 +17,14 @@ public class CanonQueue : MonoBehaviour
 
     private void Start()
     {
-        canonQueue.Initialize(maxQuantity);
+        //canonQueue.Initialize(maxQuantity);
 
-        //InstanceProyectile();
+        InstanceProyectile();
     }
 
     private void Update()
     {
-        /*
+        
         Vector3 worldScreenPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 diff = worldScreenPosition - transform.position;
         transform.up = diff.normalized;
@@ -40,14 +40,14 @@ public class CanonQueue : MonoBehaviour
             proyectile.transform.position = shootPoint.position;
             proyectile.transform.rotation = shootPoint.rotation;
         }
-        */
+        
     }
 
     public void InstanceProyectile() //Acá se instancian y agregan a la cola las nuevas pelotas
     {
-        //proyectile = queueShootingTest.CreateClone();
-        var newProyectile = Instantiate(ballPrefab);
-        canonQueue.Enqueue(newProyectile);
+        proyectile = queueShootingTest.CreateClone();
+        //var newProyectile = Instantiate(ballPrefab);
+        //canonQueue.Enqueue(newProyectile);
     }
 
     public Ball LastBall() //Devuelve y desacola una pelota

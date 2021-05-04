@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallQueue : MonoBehaviour,IQueueDynamic<Ball>
+public class BallQueue_Old : MonoBehaviour,IQueueDynamic<Ball>
 {
     public Node<Ball> rootNode; // Acá creo el Nodo Raíz, que va a trabajar con el tipo de dato Balls
 
