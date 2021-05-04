@@ -8,7 +8,7 @@ public class Ball : MonoBehaviour
     [SerializeField] private float lifeTime;
     private float lifeTimeTimer;
 
-    private QueueController queueController;
+    private QueueDynamicController queueController;
     private CanonQueue canon; //TODO: controlarlo en el CanonController con un cooldown
 
     public Color Color { get; private set; }
@@ -69,7 +69,7 @@ public class Ball : MonoBehaviour
         canon.InstanceProyectile();
     }
 
-    public void SetQueueController(QueueController queueController)
+    public void SetQueueController(QueueDynamicController queueController)
     {
         this.queueController = queueController;
     }

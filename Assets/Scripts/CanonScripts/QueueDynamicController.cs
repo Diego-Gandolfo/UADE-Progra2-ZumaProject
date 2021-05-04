@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QueueController : MonoBehaviour
+public class QueueDynamicController : MonoBehaviour
 {
     [SerializeField] private Ball ballPrefab = null;
     [SerializeField] private float ballSpawnCooldown = 0f;
@@ -33,7 +33,7 @@ public class QueueController : MonoBehaviour
     public Ball CreateBall() // Creamos una nueva instancia y nodo
     {
         var ball = Instantiate(this.ballPrefab); // instanciamos una nueva Sphere
-        ball.name = $"QueueBall ({counter})"; // le cambiamos el nombre para diferenciarlas
+        ball.name = $"QueueController Ball ({counter})"; // le cambiamos el nombre para diferenciarlas
         ball.SetQueueController(this);
         counter++; // aumentamos el contador
         return ball; // devolvemos el clone creado

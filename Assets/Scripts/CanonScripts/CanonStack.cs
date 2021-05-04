@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CanonStack : MonoBehaviour
 {
-    [SerializeField] private QueueController queueController;
+    [SerializeField] private QueueDynamicController queueController;
     private static readonly Stack canonStack = new Stack(); //es singleton porque no deberia haber más de un stack de absorcion. A lo sumo en cada nivel se vacia?
     private int maxStack = 5;
     private Ball currentBall;

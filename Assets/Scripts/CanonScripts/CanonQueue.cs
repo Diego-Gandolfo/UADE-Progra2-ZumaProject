@@ -7,7 +7,7 @@ public class CanonQueue : MonoBehaviour
     [SerializeField] private Ball ballPrefab;
     [SerializeField] private float shootSpeed;
     [SerializeField] private Transform shootPoint;
-    [SerializeField] private QueueController queueController;
+    [SerializeField] private QueueDynamicController queueController;
     [SerializeField] private Ball proyectile;
     private int counter;
 
@@ -44,7 +44,7 @@ public class CanonQueue : MonoBehaviour
     public Ball CreateBall() // Creamos una nueva instancia y nodo
     {
         var ball = Instantiate(this.ballPrefab); // instanciamos una nueva Sphere
-        ball.name = $"CannonBall ({counter})"; // le cambiamos el nombre para diferenciarlas
+        ball.name = $"CannonController Ball ({counter})"; // le cambiamos el nombre para diferenciarlas
         ball.SetQueueController(queueController);
         counter++; // aumentamos el contador
         return ball; // devolvemos el clone creado
