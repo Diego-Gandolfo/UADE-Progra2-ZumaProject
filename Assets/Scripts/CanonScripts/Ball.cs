@@ -15,7 +15,6 @@ public class Ball : MonoBehaviour
     public float Speed { get; set; }
     public bool IsProjectile { get; set; }
 
-
     private void Start()
     {
         Color = colorBucket[Random.Range(0, colorBucket.Length)];

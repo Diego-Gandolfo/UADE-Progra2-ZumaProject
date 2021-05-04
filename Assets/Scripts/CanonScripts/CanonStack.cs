@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CanonStack : MonoBehaviour
 {
-    [SerializeField] private QueueController ballQueue;
+    [SerializeField] private QueueController queueController;
     private static readonly Stack canonStack = new Stack(); //es singleton porque no deberia haber más de un stack de absorcion. A lo sumo en cada nivel se vacia?
     private int maxStack = 5;
     private Ball currentBall;
@@ -21,12 +21,12 @@ public class CanonStack : MonoBehaviour
 
     public void Absorb(Ball selected)
     {
-        if (!IsStackFull())
+        if (!IsStackFull())//TODO: && selected != queueController.GetRootNode()
         {
             currentBall = selected;
             currentBall.IsProjectile = true;
             canonStack.Push(selected);
-            ballQueue.DesqueueMiddle(selected);
+            queueController.DesqueueMiddle(selected);
             print($"Absorbi una pelota {canonStack.Peek()} y el current index es: {canonStack.Index()}");
 
             //TODO: ANIMACION DE QUE LA PELOTA SE SALE DE LA PILA.

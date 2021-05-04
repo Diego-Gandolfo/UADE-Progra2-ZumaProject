@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CanonScript : MonoBehaviour
+public class CanonController : MonoBehaviour
 {
 	[Header("Shoot Settings")]
 	[SerializeField] private Transform shootPoint;
@@ -84,6 +84,11 @@ public class CanonScript : MonoBehaviour
 
 	public void CheckStack() //Esto se haria una vez que se dispara, para chequear si sigue habiendo cosas en stack
 	{
+		/*
+		 * Tiene que poner cual es el Current Projectile
+		 * y una vez que dispara tiene que hacer el Dequeue o Pop, segun corresponda
+		*/
+
 		if (canonStack.IsEmpty())
 		{
 			print("Cambio el proyectil a uno de cola");
