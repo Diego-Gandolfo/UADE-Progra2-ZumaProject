@@ -4,24 +4,18 @@ using UnityEngine;
 
 public class QueueController : MonoBehaviour
 {
-    [SerializeField] private Ball ball = null;
+    [SerializeField] private Ball ballPrefab = null;
     [SerializeField] private float ballSpawnCooldown = 0f;
     private float ballSpawnTimer = 0f;
 
     private QueueDymamic queueDynamic = null;
     
     private int counter = 0;
-    private GameManager gameManager = null;
 
     private void Start()
     {
-        gameManager = FindObjectOfType<GameManager>();
-        
-
-        queueDynamic = gameObject.AddComponent<QueueDymamic>();
-        gameManager.queueDynamic = queueDynamic;
-        queueDynamic.Initialize(CreateClone());
-       
+        queueDynamic = gameObject.GetComponent<QueueDymamic>();
+        queueDynamic.Initialize(CreateBall());
         ShowQueue();
     }
 
@@ -36,12 +30,13 @@ public class QueueController : MonoBehaviour
         }
     }
 
-    public Ball CreateClone() // Creamos una nueva instancia y nodo
+    public Ball CreateBall() // Creamos una nueva instancia y nodo
     {
-        var clone = Instantiate(ball); // instanciamos una nueva Sphere
-        clone.name += $" ({counter})"; // le cambiamos el nombre para diferenciarlas
+        var ball = Instantiate(this.ballPrefab); // instanciamos una nueva Sphere
+        ball.name = $"QueueBall ({counter})"; // le cambiamos el nombre para diferenciarlas
+        ball.SetQueueController(this);
         counter++; // aumentamos el contador
-        return clone; // devolvemos el clone creado
+        return ball; // devolvemos el clone creado
     }
 
     public void ShowQueue()
@@ -67,7 +62,7 @@ public class QueueController : MonoBehaviour
 
     public void EnqueueTop()
     {
-        queueDynamic.EnqueueTop(CreateClone());
+        queueDynamic.EnqueueTop(CreateBall());
         ShowQueue();
     }
 
@@ -87,7 +82,7 @@ public class QueueController : MonoBehaviour
 
     public void EnqueueBottom()
     {
-        queueDynamic.EnqueueBottom(CreateClone());
+        queueDynamic.EnqueueBottom(CreateBall());
         ShowQueue();
     }
 
@@ -156,7 +151,7 @@ public class QueueController : MonoBehaviour
         {
             for (int i = 0; i < ballList.Count; i++)
             {
-                gameManager.queueDynamic.DesqueueMiddle(ballList[i]);
+                queueDynamic.DesqueueMiddle(ballList[i]);
             }
         }
     }

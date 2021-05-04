@@ -5,11 +5,11 @@ using UnityEngine;
 public class CanonQueue : MonoBehaviour
 {
     [SerializeField] private Ball ballPrefab;
-    private QueueDymamic queueDymamic;
     [SerializeField] private float shootSpeed;
     [SerializeField] private Transform shootPoint;
-    [SerializeField] private QueueController queueShootingTest;
+    [SerializeField] private QueueController queueController;
     [SerializeField] private Ball proyectile;
+    private int counter;
 
     private Queue canonQueue;
     private int maxQuantity = 2;
@@ -31,8 +31,8 @@ public class CanonQueue : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            proyectile.imProyectile = true;
-            proyectile.speed = shootSpeed;
+            proyectile.IsProjectile = true;
+            proyectile.Speed = shootSpeed;
             proyectile = null;        
         }
         else if (proyectile != null)
@@ -43,10 +43,19 @@ public class CanonQueue : MonoBehaviour
         
     }
 
+    public Ball CreateBall() // Creamos una nueva instancia y nodo
+    {
+        var ball = Instantiate(this.ballPrefab); // instanciamos una nueva Sphere
+        ball.name = $"CannonBall ({counter})"; // le cambiamos el nombre para diferenciarlas
+        ball.SetQueueController(queueController);
+        counter++; // aumentamos el contador
+        return ball; // devolvemos el clone creado
+    }
+
     public void InstanceProyectile() //Acá se instancian y agregan a la cola las nuevas pelotas
     {
-        proyectile = queueShootingTest.CreateClone();
-        //var newProyectile = Instantiate(ballPrefab);
+        proyectile = CreateBall();
+        //var newProyectile = CreateBall();
         //canonQueue.Enqueue(newProyectile);
     }
 

@@ -24,7 +24,7 @@ public class CanonStack : MonoBehaviour
         if (!IsStackFull())
         {
             currentBall = selected;
-            currentBall.imProyectile = true;
+            currentBall.IsProjectile = true;
             canonStack.Push(selected);
             ballQueue.DesqueueMiddle(selected);
             print($"Absorbi una pelota {canonStack.Peek()} y el current index es: {canonStack.Index()}");

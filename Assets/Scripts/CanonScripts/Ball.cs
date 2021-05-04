@@ -4,22 +4,23 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    [SerializeField] public bool imProyectile;
-    public float speed = 0f;
-    private QueueController queueController;
-    private CanonQueue canon; //TODO: controlarlo en el CanonController con un cooldown
     [SerializeField] private Color[] colorBucket = new Color[3];
-    [SerializeField]private float lifeTime;
+    [SerializeField] private float lifeTime;
     private float lifeTimeTimer;
 
+    private QueueController queueController;
+    private CanonQueue canon; //TODO: controlarlo en el CanonController con un cooldown
+
     public Color Color { get; private set; }
+    public float Speed { get; set; }
+    public bool IsProjectile { get; set; }
+
 
     private void Start()
     {
         Color = colorBucket[Random.Range(0, colorBucket.Length)];
         gameObject.GetComponent<SpriteRenderer>().color = Color;
 
-        queueController = FindObjectOfType<QueueController>();
         canon = FindObjectOfType<CanonQueue>();
 
         lifeTimeTimer = lifeTime;
@@ -27,9 +28,9 @@ public class Ball : MonoBehaviour
 
     private void Update()
     {
-        if (imProyectile)
+        if (IsProjectile)
         {
-            transform.position += transform.up * speed * Time.deltaTime;
+            transform.position += transform.up * Speed * Time.deltaTime;
             lifeTimeTimer -= Time.deltaTime;           
         }
 
@@ -42,7 +43,7 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (imProyectile)
+        if (IsProjectile)
         {
             Vector2 contactOnCollision = collision.GetContact(0).point;//Encuentra el punto de colision (devuelve un vector)
             contactOnCollision.x -= collision.transform.position.x;
@@ -63,9 +64,14 @@ public class Ball : MonoBehaviour
 
     private void ResetOnCollision()
     {
-        imProyectile = false;
-        speed = 0;
+        IsProjectile = false;
+        Speed = 0;
         transform.rotation = Quaternion.identity;
         canon.InstanceProyectile();
+    }
+
+    public void SetQueueController(QueueController queueController)
+    {
+        this.queueController = queueController;
     }
 }

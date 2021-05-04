@@ -367,8 +367,9 @@ MonoBehaviour:
     type: 3}
   shootSpeed: 10
   shootPoint: {fileID: 101702986}
-  queueShootingTest: {fileID: 1755319411}
-  proyectile: {fileID: 0}
+  queueController: {fileID: 1755319411}
+  proyectile: {fileID: 7535913483028634844, guid: 2601f13924c22624a892517a8c6a1de2,
+    type: 3}
 --- !u!114 &1473440941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,6 +382,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a74dd0976a8d34042aff8e423c477ac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shootPoint: {fileID: 0}
+  shootSpeed: 0
   rayLenght: 5
   raycastPoint: {fileID: 1253534638}
 --- !u!120 &1473440942
@@ -492,8 +495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49da1952839bf1f47aa6a3d04863c33f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballQueue: {fileID: 1755319411}
-  currentBall: {fileID: 0}
+  ballQueue: {fileID: 0}
 --- !u!1 &1755319409
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,6 +506,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1755319410}
   - component: {fileID: 1755319411}
+  - component: {fileID: 1755319412}
   m_Layer: 0
   m_Name: QueueManager
   m_TagString: Untagged
@@ -534,11 +537,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1755319409}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6311031d7501b4b42b763897a43ed15a, type: 3}
+  m_Script: {fileID: 11500000, guid: 329f652fa4ede6545913e9e3c1e199e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ball: {fileID: 7535913483028634844, guid: 2601f13924c22624a892517a8c6a1de2, type: 3}
-  ballSpawnCooldown: 5
+  ballPrefab: {fileID: 7535913483028634844, guid: 2601f13924c22624a892517a8c6a1de2,
+    type: 3}
+  ballSpawnCooldown: 1
+--- !u!114 &1755319412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755319409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dcf807cacdc76443aade8607175a1a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2092876971
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,9 +584,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed055b17e5b4a54085a5f6efd13c5f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballList: []
-  queueShooting: {fileID: 1755319411}
-  queueDynamic: {fileID: 0}
 --- !u!4 &2092876973
 Transform:
   m_ObjectHideFlags: 0
