@@ -498,11 +498,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballPrefab: {fileID: 7535913483028634844, guid: 2601f13924c22624a892517a8c6a1de2,
     type: 3}
-  shootSpeed: 10
-  shootPoint: {fileID: 101702986}
   queueController: {fileID: 1755319411}
-  proyectile: {fileID: 7535913483028634844, guid: 2601f13924c22624a892517a8c6a1de2,
-    type: 3}
 --- !u!114 &1473440941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -517,8 +513,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootPoint: {fileID: 101702986}
   shootSpeed: 0
+  currentBall: {fileID: 101702987}
+  nextBall: {fileID: 0}
   rayLenght: 5
-  raycastPoint: {fileID: 1253534638}
+  raycastPoint: {fileID: 56198011}
 --- !u!120 &1473440942
 LineRenderer:
   m_ObjectHideFlags: 0

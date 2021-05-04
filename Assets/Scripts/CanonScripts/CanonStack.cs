@@ -7,7 +7,6 @@ public class CanonStack : MonoBehaviour
     [SerializeField] private QueueDynamicController queueController;
     private static readonly Stack canonStack = new Stack(); //es singleton porque no deberia haber más de un stack de absorcion. A lo sumo en cada nivel se vacia?
     private int maxStack = 5;
-    private Ball currentBall;
 
     void Start()
     {
@@ -23,8 +22,6 @@ public class CanonStack : MonoBehaviour
     {
         if (!IsStackFull())//TODO: && selected != queueController.GetRootNode()
         {
-            currentBall = selected;
-            currentBall.IsProjectile = true;
             canonStack.Push(selected);
             queueController.DesqueueMiddle(selected);
             print($"Absorbi una pelota {canonStack.Peek()} y el current index es: {canonStack.Index()}");
@@ -42,10 +39,15 @@ public class CanonStack : MonoBehaviour
         return canonStack.IsEmpty();
     }
 
-    public Ball LastBall()
+    public Ball Peek()
     {
         var ball = canonStack.Peek();
-        canonStack.Pop();
+        return ball;
+    }
+
+    public Ball Pop()
+    {
+        var ball = canonStack.Pop();
         return ball;
     }
 

@@ -6,7 +6,7 @@ public interface IStack<Type> // Le agregué el <Type> para que pueda aceptar cu
 {
     void Initialize(int value);
     void Push(Type type);
-    void Pop();
+    Type Pop();
     bool IsEmpty();
     Type Peek();
 }

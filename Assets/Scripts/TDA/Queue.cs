@@ -20,7 +20,7 @@ public class Queue : IQueue<Ball> // Como la I_Cola ahora tiene un <Type> hay qu
 
     public void Enqueue(Ball x)
     {
-        for (int i = (index - 1); i >= 0; i++)
+        for (int i = (index - 1); i >= 0; i--)
         {
             a[i + 1] = a[i];
         }
@@ -28,9 +28,11 @@ public class Queue : IQueue<Ball> // Como la I_Cola ahora tiene un <Type> hay qu
         index++;
     }
 
-    public void Dequeue()
+    public Ball Dequeue()
     {
+        var ball = a[index - 1];
         index--;
+        return ball;
     }
 
     public bool IsEmpty()

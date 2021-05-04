@@ -7,6 +7,8 @@ public class CanonController : MonoBehaviour
 	[Header("Shoot Settings")]
 	[SerializeField] private Transform shootPoint;
 	[SerializeField] private float shootSpeed;
+	[SerializeField] SpriteRenderer currentBall;
+	[SerializeField] SpriteRenderer nextBall;
 
 	[Header("Raycast Settings")]
 	[SerializeField] private float rayLenght = 5f;
@@ -18,16 +20,15 @@ public class CanonController : MonoBehaviour
 	private Vector2 direction;
 
 	//Scripts
-	private TestQueueDynamic queueDymamic;
 	private CanonQueue canonQueue;
 	private CanonStack canonStack;
-	private Ball proyectile;
+	private Ball projectile;
 
 	void Start()
     {
 		canonStack = gameObject.GetComponent<CanonStack>();
 		canonQueue = gameObject.GetComponent<CanonQueue>();
-
+		CheckColor();
 		//LASER
         laser = GetComponent<LineRenderer>();
         laser.useWorldSpace = true;
@@ -39,18 +40,14 @@ public class CanonController : MonoBehaviour
 		actualPositionMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		direction = actualPositionMouse - (Vector2)raycastPoint.position;
 		direction.Normalize();
+		transform.up = direction;
 
 		CastLaser(); 
-		MoverProyectil(); 
 
         if (Input.GetKeyDown(KeyCode.Mouse0)) //SHOOT
         {
-			hit2D = Physics2D.Raycast(raycastPoint.position, direction);
-			if (hit2D)
-            {
-				//TODO: ACA DEBERIA HACER EL SHOOT BALL. 
-				CheckStack(); 
-			}
+			Shoot();
+			CheckColor();
 		}
 
 		if (Input.GetKeyDown(KeyCode.Mouse1)) //ABSORB
@@ -59,7 +56,7 @@ public class CanonController : MonoBehaviour
 			if (hit2D)
 			{
 				canonStack.Absorb(hit2D.collider.GetComponent<Ball>());
-				CheckStack();
+				CheckColor();
 			}
 		}
 	}
@@ -70,39 +67,33 @@ public class CanonController : MonoBehaviour
 		laser.SetPosition(1, actualPositionMouse);
 	}
 
-	public void MoverProyectil()
+	public void CheckColor() //Esto se haria una vez que se dispara, para chequear si sigue habiendo cosas en stack
 	{
-		//ESTO DEBERIA MOVER EL CURRENT PROYECTIL QUE HAY, INDEPENTIENTEMENTE DE QUE TDA SEA
-		/*
-		if (proyectile != null)
-        {
-			proyectile.transform.position = shootPoint.position;
-			proyectile.transform.rotation = shootPoint.rotation;
-		}
-		*/
-	}
-
-	public void CheckStack() //Esto se haria una vez que se dispara, para chequear si sigue habiendo cosas en stack
-	{
-		/*
-		 * Tiene que poner cual es el Current Projectile
-		 * y una vez que dispara tiene que hacer el Dequeue o Pop, segun corresponda
-		*/
-
 		if (canonStack.IsEmpty())
 		{
-			print("Cambio el proyectil a uno de cola");
-			//canonQueue.LastBall();
+			currentBall.color = canonQueue.Peek().Color;
 		}
 		else
 		{
-			print("Cambio el proyectil a uno de pila");
-			//canonStack.LastBall();
+			currentBall.color = canonStack.Peek().Color;
 		}
 	}
 
 	public void Shoot()
 	{
-		//Acá deberia disparar el current proyectil que hay
+		if (canonStack.IsEmpty())
+        {
+			projectile = canonQueue.Dequeue();
+			canonQueue.InstanceProyectile();
+        } else
+        {
+			projectile = canonStack.Pop();
+			print(projectile);
+        }
+
+		projectile.transform.position = currentBall.transform.position;
+		projectile.transform.rotation = currentBall.transform.rotation;
+		projectile.IsProjectile = true;
+		projectile = null;
 	}
 }

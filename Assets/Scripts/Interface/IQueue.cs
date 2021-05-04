@@ -7,7 +7,7 @@ interface IQueue<Type> // Le agregué el <Type> para que pueda aceptar cualquier
 
     void Enqueue(Type type);
 
-    void Dequeue();
+    Type Dequeue();
 
     bool IsEmpty();
 

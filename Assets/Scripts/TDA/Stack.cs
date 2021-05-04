@@ -24,12 +24,15 @@ public class Stack : MonoBehaviour, IStack<Ball>
         }
     }
 
-    public void Pop()
+    public Ball Pop()
     {
         if (!IsEmpty())
         {
+            var ball = a[index - 1];
             index--;
+            return ball;
         }
+        return null;
     }
     public bool IsEmpty()
     {
@@ -38,11 +41,11 @@ public class Stack : MonoBehaviour, IStack<Ball>
 
     public Ball Peek()
     {
-        if (IsEmpty())
+        if (!IsEmpty())
         {
-            return a[index];
+            return a[index - 1];
         }
-        return a[index - 1];
+        return null;
     }
 
     public int Index()
