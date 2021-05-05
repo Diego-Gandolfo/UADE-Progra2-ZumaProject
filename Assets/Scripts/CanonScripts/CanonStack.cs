@@ -23,7 +23,8 @@ public class CanonStack : MonoBehaviour
         if (!IsStackFull())//TODO: && selected != queueController.GetRootNode()
         {
             canonStack.Push(selected);
-            queueController.DesqueueMiddle(selected);
+            var aux = queueController.DesqueueMiddle(selected);
+            aux.transform.position = new Vector3(0f, -10f, 0f);
             print($"Absorbi una pelota {canonStack.Peek()} y el current index es: {canonStack.Index()}");
 
             //TODO: ANIMACION DE QUE LA PELOTA SE SALE DE LA PILA.

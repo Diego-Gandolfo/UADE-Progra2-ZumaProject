@@ -20,6 +20,7 @@ public class BallQueue_Old : MonoBehaviour,IQueueDynamic<Ball>
         rootNode.InitializeNode(rootNode.element, newNode, rootNode.nextNode); // cambiamos los valores al Nodo que está referenciado en rootNode para que su elemento siga siendo el mismo, pero que ahora su previo sea el nuevo Nodo
         rootNode = newNode; // decimos que el Nodo Raíz es el nuevo Nodo creado
     }
+
     public void EnqueueBottom(Ball ball) // este sirve para meter un Ball al final de la cola
     {
         Node<Ball> auxNode = rootNode; // creamos un nodo Auxiliar y nos guardamos la referencia al rootNode
@@ -33,6 +34,7 @@ public class BallQueue_Old : MonoBehaviour,IQueueDynamic<Ball>
         newNode.InitializeNode(ball, auxNode, null); // inicializamos el newNode con ball como su elemento, auxNode como el previo y null como siguiente
         auxNode.nextNode = newNode; // indicamos que el siguente del auxNode es el newNode
     }
+
     public void EnqueueMiddleAfter(Ball ball, Ball afterSphere) // esta sirve para meter una Ball despues del nodo que tiene la afterSphere
     {
         Node<Ball> auxNode = rootNode; // creamos un auxNode y guaramos la referencia al rootNode
@@ -79,7 +81,6 @@ public class BallQueue_Old : MonoBehaviour,IQueueDynamic<Ball>
         }
     }
 
-
     public Ball DesqueueTop() // para sacar y devolver el primer elemento
     {
         Ball auxSphere = rootNode.element; // nos guardamos la referencia a la Ball guarada en el rootNode
@@ -89,7 +90,7 @@ public class BallQueue_Old : MonoBehaviour,IQueueDynamic<Ball>
         return auxSphere; // devolvemos la Ball
     }
 
-    public void DesqueueMiddle(Ball ball) // para quitar un elemento de la mitad de la cola
+    public Ball DesqueueMiddle(Ball ball) // para quitar un elemento de la mitad de la cola
     {
         Node<Ball> auxNode = rootNode; // creamos un nodo auxiliar y le asignamos la referencia del rootNode
 
@@ -108,6 +109,8 @@ public class BallQueue_Old : MonoBehaviour,IQueueDynamic<Ball>
         {
             Debug.LogError($"No se ha encontrado {ball} en ningún nodo!"); // tiramos error en consola
         }
+
+        return null; // NO HACE NADAAAAAAAA !!!!
     }
 
     public Ball DesqueueBottom() // para quitar y que nos devuleva el utlimo elemento

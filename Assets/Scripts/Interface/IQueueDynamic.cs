@@ -10,7 +10,7 @@ public interface IQueueDynamic<Type> // Esta armado para que la Interfaz pueda a
     void EnqueueMiddleBefore(Type type, Type beforeType); // Recibe dos elementos, el que tiene que ingresar y antes de cual lo tiene que agregar
     void EnqueueBottom(Type type); // // Agrega un elemento al final de la cola
     Type DesqueueTop(); // Devuelve y saca el primer elemento (raiz)
-    void DesqueueMiddle(Type type); // Saca el elemento que se le pasa
+    Type DesqueueMiddle(Type type); // Saca el elemento que se le pasa
     Type DesqueueBottom(); // Devuelve y saca el último elemento
     bool IsEmpty(); // Para preguntar si es que está vacía
 }

@@ -25,7 +25,15 @@ public class QueueDynamicController : MonoBehaviour
 
         if(ballSpawnTimer >= ballSpawnCooldown)
         {
-            EnqueueTop();
+            if (queueDynamic.IsEmpty())
+            {
+                queueDynamic.Initialize(CreateBall());
+                ShowQueue();
+            }
+            else
+            {
+                EnqueueTop();
+            }
             ballSpawnTimer = 0;
         }
     }
@@ -41,22 +49,25 @@ public class QueueDynamicController : MonoBehaviour
 
     public void ShowQueue()
     {
-        Node<Ball> auxNode = queueDynamic.rootNode; // creamos un nodo auxiliar y le asignamos la referencia del rootNode
-        int index = 0; // iniciamos el index
-
-        // Para mostrar el Nodo Raíz
-        if (auxNode != null) // si el auxNode es distinto de null
+        if (!queueDynamic.IsEmpty())
         {
-            auxNode.element.transform.position = new Vector3(index, 2f, 0f); // lo movemos en x según el valor del index
-            index++; // aumentamos el index
-        }
+            Node<Ball> auxNode = queueDynamic.rootNode; // creamos un nodo auxiliar y le asignamos la referencia del rootNode
+            int index = 0; // iniciamos el index
 
-        // Para mostrar el resto de los Nodos
-        while (auxNode.nextNode != null) // nos fijamos si es el ultimo
-        {
-            auxNode = auxNode.nextNode; // sino guardamos el siguiente en auxNode y repetimos
-            auxNode.element.transform.position = new Vector3(index, 2f, 0f); // lo movemos en x según el valor del index
-            index++; // aumentamos el index
+            // Para mostrar el Nodo Raíz
+            if (auxNode != null) // si el auxNode es distinto de null
+            {
+                auxNode.element.transform.position = new Vector3(index, 2f, 0f); // lo movemos en x según el valor del index
+                index++; // aumentamos el index
+            }
+
+            // Para mostrar el resto de los Nodos
+            while (auxNode.nextNode != null) // nos fijamos si es el ultimo
+            {
+                auxNode = auxNode.nextNode; // sino guardamos el siguiente en auxNode y repetimos
+                auxNode.element.transform.position = new Vector3(index, 2f, 0f); // lo movemos en x según el valor del index
+                index++; // aumentamos el index
+            }
         }
     }
 
@@ -98,11 +109,13 @@ public class QueueDynamicController : MonoBehaviour
         ShowQueue();
     }
 
-    public void DesqueueMiddle(Ball targetBall)
+    public Ball DesqueueMiddle(Ball targetBall)
     {
-        if (targetBall != null) queueDynamic.DesqueueMiddle(targetBall);
+
+        var aux = queueDynamic.DesqueueMiddle(targetBall);
         ShowQueue();
         targetBall = null;
+        return aux;
     }
 
     public void CheckColors(Ball ball)
@@ -151,7 +164,8 @@ public class QueueDynamicController : MonoBehaviour
         {
             for (int i = 0; i < ballList.Count; i++)
             {
-                queueDynamic.DesqueueMiddle(ballList[i]);
+                var aux = DesqueueMiddle(ballList[i]);
+                Destroy(aux.gameObject);
             }
         }
     }
