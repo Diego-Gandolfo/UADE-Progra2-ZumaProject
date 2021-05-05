@@ -5,15 +5,13 @@ using UnityEngine;
 public class CanonController : MonoBehaviour
 {
 	[Header("Shoot Settings")]
-	[SerializeField] private Transform shootPoint;
-	[SerializeField] private float shootSpeed;
 	[SerializeField] SpriteRenderer currentBall;
 	[SerializeField] SpriteRenderer nextBall;
 
 	[Header("Raycast Settings")]
 	[SerializeField] private float rayLenght = 5f;
-	[SerializeField] private Transform raycastPoint;
 	//[SerializeField] private LayerMask layersToHit;
+	private Transform raycastPoint;
 	private Vector2 actualPositionMouse;
 	private RaycastHit2D hit2D;
 	private LineRenderer laser;
@@ -28,12 +26,12 @@ public class CanonController : MonoBehaviour
     {
 		canonStack = gameObject.GetComponent<CanonStack>();
 		canonQueue = gameObject.GetComponent<CanonQueue>();
-		CheckColor();
-		//LASER
-        laser = GetComponent<LineRenderer>();
+		raycastPoint = currentBall.gameObject.transform;
+		laser = GetComponent<LineRenderer>();
         laser.useWorldSpace = true;
 		laser.enabled = true;
-    }
+		CheckColor();
+	}
 
     void Update()
     {
@@ -72,10 +70,15 @@ public class CanonController : MonoBehaviour
 		if (canonStack.IsEmpty())
 		{
 			currentBall.color = canonQueue.Peek().Color;
+			nextBall.color = canonQueue.PeekPreviousColor();
 		}
 		else
 		{
 			currentBall.color = canonStack.Peek().Color;
+            if (canonStack.CheckNumber() > 1)
+                nextBall.color = canonStack.PeekPreviousColor();
+            else
+                nextBall.color = canonQueue.PeekPreviousColor();
 		}
 	}
 
@@ -88,7 +91,6 @@ public class CanonController : MonoBehaviour
         } else
         {
 			projectile = canonStack.Pop();
-			print(projectile);
         }
 
 		projectile.transform.position = currentBall.transform.position;

@@ -10,7 +10,6 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Text textTimeCounter = null;
     [SerializeField] private float gameDuration = 0f;
     private float timeCounter = 0f;
-
     private GameManager gameManager;
 
     private void Start()

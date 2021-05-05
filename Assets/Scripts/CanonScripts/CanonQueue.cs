@@ -8,7 +8,7 @@ public class CanonQueue : MonoBehaviour
     [SerializeField] private QueueDynamicController queueController;
     private int counter;
     private Queue canonQueue;
-    private int maxQuantity = 2;
+    private int maxQuantity = 3;
 
 
     private void Awake()
@@ -46,10 +46,9 @@ public class CanonQueue : MonoBehaviour
         return canonQueue.Peek();
     }
 
-    public Ball PeekColor() //Esto es solo para mostrar la proxima bola, no se desacola
+    public Color PeekPreviousColor()
     {
-        //TODO: DEBERIA SOLO DEVOLVER EL COLOR DE LA BOLA.
-        var ball = canonQueue.Peek();
-        return ball;
+        var ball = canonQueue.PeekPrevious();
+        return ball.Color;
     }
 }

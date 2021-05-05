@@ -44,4 +44,13 @@ public class Queue : IQueue<Ball> // Como la I_Cola ahora tiene un <Type> hay qu
     {
         return a[index - 1];
     }
+
+    public Ball PeekPrevious()
+    {
+        if (!IsEmpty())
+        {
+            return a[index - 2];
+        }
+        return null;
+    }
 }

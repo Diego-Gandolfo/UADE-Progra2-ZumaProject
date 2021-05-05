@@ -52,4 +52,13 @@ public class Stack : MonoBehaviour, IStack<Ball>
     {
         return index;
     }
+
+    public Ball PeekPrevious()
+    {
+        if (!IsEmpty() && index > 1)
+        {
+            return a[index - 2];
+        }
+        return null;
+    }
 }

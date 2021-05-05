@@ -170,5 +170,9 @@ public class QueueDynamicController : MonoBehaviour
         }
     }
 
-    //TODO: Metodo que devuelva el RootNode del QueueDynamic
+    public Ball GetRootNode()
+    {
+        var auxNode = queueDynamic.rootNode;
+        return auxNode.element;
+    }
 }

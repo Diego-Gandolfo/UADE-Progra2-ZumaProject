@@ -9,9 +9,7 @@ public class Ball : MonoBehaviour
     [SerializeField] private float speed = 10;
 
     private float lifeTimeTimer;
-
     private QueueDynamicController queueController;
-    private CanonQueue canon; //TODO: controlarlo en el CanonController con un cooldown
 
     public Color Color { get; private set; }
 
@@ -21,9 +19,6 @@ public class Ball : MonoBehaviour
     {
         Color = colorBucket[Random.Range(0, colorBucket.Length)];
         gameObject.GetComponent<SpriteRenderer>().color = Color;
-
-        //canon = FindObjectOfType<CanonQueue>();
-
         lifeTimeTimer = lifeTime;
     }
 
@@ -37,7 +32,6 @@ public class Ball : MonoBehaviour
 
         if (lifeTimeTimer <= 0)
         {
-            //canon.InstanceProyectile();
             Destroy(gameObject);
         }
     }
@@ -67,7 +61,6 @@ public class Ball : MonoBehaviour
     {
         IsProjectile = false;
         transform.rotation = Quaternion.identity;
-        //canon.InstanceProyectile();
     }
 
     public void SetQueueController(QueueDynamicController queueController)

@@ -8,7 +8,7 @@ public class CanonStack : MonoBehaviour
     private static readonly Stack canonStack = new Stack(); //es singleton porque no deberia haber más de un stack de absorcion. A lo sumo en cada nivel se vacia?
     private int maxStack = 5;
 
-    void Start()
+    private void Awake()
     {
         canonStack.Initialize(maxStack);
     }
@@ -20,18 +20,15 @@ public class CanonStack : MonoBehaviour
 
     public void Absorb(Ball selected)
     {
-        if (!IsStackFull())//TODO: && selected != queueController.GetRootNode()
+        if (!IsStackFull() && selected != queueController.GetRootNode())
         {
             canonStack.Push(selected);
             var aux = queueController.DesqueueMiddle(selected);
             aux.transform.position = new Vector3(0f, -10f, 0f);
-            print($"Absorbi una pelota {canonStack.Peek()} y el current index es: {canonStack.Index()}");
-
             //TODO: ANIMACION DE QUE LA PELOTA SE SALE DE LA PILA.
-            //TODO: REPRESENTACION DEL COLOR DE LA PELOTA EN LA PILA
         } else
         {
-            print("Stack Full");
+            print("Stack Full or is the RootNode");
         }
     }
 
@@ -52,10 +49,14 @@ public class CanonStack : MonoBehaviour
         return ball;
     }
 
-    public Ball PeekColor() //Esto es solo para mostrar la proxima bola, no se desapila. 
+    public Color PeekPreviousColor()
     {
-        //TODO: DEBERIA SOLO DEVOLVER EL COLOR DE LA BOLA.
-        var ball = canonStack.Peek();
-        return ball;
+        var ball = canonStack.PeekPrevious();
+        return ball.Color;
+    }
+
+    public int CheckNumber()
+    {
+        return canonStack.Index();
     }
 }
