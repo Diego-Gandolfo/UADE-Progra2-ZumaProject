@@ -673,7 +673,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballPrefab: {fileID: 7535913483028634844, guid: 2601f13924c22624a892517a8c6a1de2,
     type: 3}
-  ballSpawnCooldown: 10
+  ballSpawnCooldown: 1.5
 --- !u!114 &1755319412
 MonoBehaviour:
   m_ObjectHideFlags: 0
