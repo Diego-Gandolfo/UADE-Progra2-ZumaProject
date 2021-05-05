@@ -16,7 +16,7 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private Button creditsButton;
     [SerializeField] private Button exitButton;
     private bool mainMenuCheck;
-    private string level = "Level";
+    private string level01 = "Level01";
 
     [Header("Credits Settings")]
     [SerializeField] private Button goBackCreditsButton;
@@ -44,7 +44,7 @@ public class MainMenuController : MonoBehaviour
 
     private void OnPlayHandler()
     {
-        SceneManager.LoadScene(level);
+        SceneManager.LoadScene(level01);
     }
 
     private void OnCreditsHandler()

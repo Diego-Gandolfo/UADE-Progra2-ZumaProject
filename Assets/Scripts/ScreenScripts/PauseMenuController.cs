@@ -33,7 +33,7 @@ public class PauseMenuController : MonoBehaviour
         quitButton.onClick.AddListener(OnQuitHandler);
         ExitMenu();
 
-        print("ESC para PauseMenu, F1 para Victoria, F2 para GameOver");
+        //print("ESC para PauseMenu, F2 para GameOver");
     }
 
     void Update()
@@ -50,8 +50,8 @@ public class PauseMenuController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.F1))
-            SceneManager.LoadScene("Victory");
+        //if (Input.GetKeyDown(KeyCode.F1))
+        //    SceneManager.LoadScene("Victory");
 
         if (Input.GetKeyDown(KeyCode.F2))
             SceneManager.LoadScene("GameOver");

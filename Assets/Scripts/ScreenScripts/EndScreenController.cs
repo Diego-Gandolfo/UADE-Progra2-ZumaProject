@@ -7,14 +7,18 @@ using UnityEngine.UI;
 
 public class EndScreenController : MonoBehaviour
 {
+    [Header("Buttons")]
     [SerializeField] private Button nextLevelButton;
     [SerializeField] private Button playAgainButton;
     [SerializeField] private Button menuButton;
     [SerializeField] private Button exitButton;
+
+    [Header("Others")]
     [SerializeField] private bool isGameOver;
 
-    private string currentLevel = "Level";
-    private string nextLevel;
+    [Header("Scenes")]
+    [SerializeField] private string currentLevel = "Level01";
+    [SerializeField] private string nextLevel = "Level02";
 
     void Start()
     {
@@ -22,14 +26,15 @@ public class EndScreenController : MonoBehaviour
         menuButton.onClick.AddListener(OnMenuHandler);
         exitButton.onClick.AddListener(OnQuitHandler);
 
-        if (!isGameOver)
+        //if (!isGameOver)
+        if (GameManager.instance.NextLevel != string.Empty)
             nextLevelButton.onClick.AddListener(OnNextLevelHandler);
     }
 
     private void OnPlayAgainHandler()
     {
-        //Debug.Log("Reload Level");
-        SceneManager.LoadScene(currentLevel);
+        //SceneManager.LoadScene(currentLevel);
+        SceneManager.LoadScene(GameManager.instance.CurrentLevel);
     }
 
     private void OnMenuHandler()
@@ -39,8 +44,8 @@ public class EndScreenController : MonoBehaviour
 
     private void OnNextLevelHandler()
     {
-        Debug.Log("Load Next Level");
         //SceneManager.LoadScene(nextLevel);
+        SceneManager.LoadScene(GameManager.instance.NextLevel);
     }
 
     private void OnQuitHandler()
@@ -48,5 +53,4 @@ public class EndScreenController : MonoBehaviour
         Application.Quit();
         Debug.Log("Se cierra el juego");
     }
-
 }

@@ -295,7 +295,7 @@ MonoBehaviour:
   shootPoint: {fileID: 8063896038529965801}
   shootSpeed: 0
   currentBall: {fileID: 8063896038529965800}
-  nextBall: {fileID: 0}
+  nextBall: {fileID: 8063896038610845919}
   rayLenght: 5
   raycastPoint: {fileID: 8063896038610845912}
 --- !u!114 &8063896039895019279
