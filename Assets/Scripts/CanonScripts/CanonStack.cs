@@ -55,7 +55,7 @@ public class CanonStack : MonoBehaviour
         return ball.Color;
     }
 
-    public int CheckNumber()
+    public int CheckNumber() //TODO: cambiar nombre a CheckIndex
     {
         return canonStack.Index();
     }

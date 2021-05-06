@@ -65,20 +65,20 @@ public class CanonController : MonoBehaviour
 		laser.SetPosition(1, actualPositionMouse);
 	}
 
-	public void CheckColor() //Esto se haria una vez que se dispara, para chequear si sigue habiendo cosas en stack
-	{
+	public void CheckColor() //TODO: cambiar nombre a SetColor
+	{ // Esto se haria una vez que se dispara, para chequear si sigue habiendo cosas en stack
 		if (canonStack.IsEmpty())
 		{
 			currentBall.color = canonQueue.Peek().Color;
-			nextBall.color = canonQueue.PeekPreviousColor();
+			nextBall.color = canonQueue.PeekPreviousColor(); // esto se podría hacer como en la linea 72 y nos ahorramos un metodo
 		}
 		else
 		{
 			currentBall.color = canonStack.Peek().Color;
             if (canonStack.CheckNumber() > 1)
-                nextBall.color = canonStack.PeekPreviousColor();
+                nextBall.color = canonStack.PeekPreviousColor(); // esto se podría hacer como en la linea 77 y nos ahorramos un metodo
             else
-                nextBall.color = canonQueue.PeekPreviousColor();
+                nextBall.color = canonQueue.PeekPreviousColor(); // esto se podría hacer como en la linea 72 y nos ahorramos un metodo
 		}
 	}
 
