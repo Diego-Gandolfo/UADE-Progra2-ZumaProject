@@ -8,7 +8,7 @@ public class CanonQueue : MonoBehaviour
     [SerializeField] private QueueDynamicController queueController;
     private int counter;
     private Queue canonQueue;
-    private int maxQuantity = 3;
+    private int maxQuantity = 2;
 
 
     private void Awake()

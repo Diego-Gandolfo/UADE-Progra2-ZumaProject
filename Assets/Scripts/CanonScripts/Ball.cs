@@ -15,7 +15,7 @@ public class Ball : MonoBehaviour
 
     public bool IsProjectile { get; set; }
 
-    private void Start()
+    private void Awake()
     {
         Color = colorBucket[Random.Range(0, colorBucket.Length)];
         gameObject.GetComponent<SpriteRenderer>().color = Color;
