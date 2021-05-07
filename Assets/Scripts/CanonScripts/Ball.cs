@@ -5,11 +5,11 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     [SerializeField] private Color[] colorBucket = new Color[3];
-    [SerializeField] private float lifeTime;
     [SerializeField] private float speed = 10;
-
+    [SerializeField] private float lifeTime;
     private float lifeTimeTimer;
-    private QueueDynamicController queueController;
+
+    public QueueDynamicController QueueController { get; private set; }
 
     public Color Color { get; private set; }
 
@@ -40,18 +40,20 @@ public class Ball : MonoBehaviour
     {
         if (IsProjectile)
         {
+            QueueController = collision.gameObject.GetComponent<Ball>().QueueController;
+
             Vector2 contactOnCollision = collision.GetContact(0).point;//Encuentra el punto de colision (devuelve un vector)
             contactOnCollision.x -= collision.transform.position.x;
             if (contactOnCollision.x > 0)
             {
                 var afterBall = collision.gameObject.GetComponent<Ball>();
-                queueController.EnqueueMiddleAfter(this, afterBall);
+                QueueController.EnqueueMiddleAfter(this, afterBall);
                 ResetOnCollision();
             }
             else if (contactOnCollision.x <= 0)
             {
                 var beforeBall = collision.gameObject.GetComponent<Ball>();
-                queueController.EnqueueMiddleBefore(this, beforeBall);
+                QueueController.EnqueueMiddleBefore(this, beforeBall);
                 ResetOnCollision();
             }
         }
@@ -65,6 +67,6 @@ public class Ball : MonoBehaviour
 
     public void SetQueueController(QueueDynamicController queueController)
     {
-        this.queueController = queueController;
+        this.QueueController = queueController;
     }
 }

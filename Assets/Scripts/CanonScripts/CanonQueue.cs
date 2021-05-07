@@ -5,7 +5,7 @@ using UnityEngine;
 public class CanonQueue : MonoBehaviour
 {
     [SerializeField] private Ball ballPrefab;
-    [SerializeField] private QueueDynamicController queueController;
+    //[SerializeField] private QueueDynamicController queueController;
     private int counter;
     private Queue canonQueue;
     private int maxQuantity = 2;
@@ -24,7 +24,7 @@ public class CanonQueue : MonoBehaviour
     {
         var ball = Instantiate(this.ballPrefab); // instanciamos una nueva Sphere
         ball.name = $"CannonController Ball ({counter})"; // le cambiamos el nombre para diferenciarlas
-        ball.SetQueueController(queueController);
+        //ball.SetQueueController(queueController);
         counter++; // aumentamos el contador
         return ball; // devolvemos el clone creado
     }

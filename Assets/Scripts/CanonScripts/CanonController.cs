@@ -30,7 +30,7 @@ public class CanonController : MonoBehaviour
 		laser = GetComponent<LineRenderer>();
         laser.useWorldSpace = true;
 		laser.enabled = true;
-		CheckColor();
+		SetColors();
 	}
 
     void Update()
@@ -45,7 +45,7 @@ public class CanonController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0)) //SHOOT
         {
 			Shoot();
-			CheckColor();
+			SetColors();
 		}
 
 		if (Input.GetKeyDown(KeyCode.Mouse1)) //ABSORB
@@ -54,7 +54,7 @@ public class CanonController : MonoBehaviour
 			if (hit2D)
 			{
 				canonStack.Absorb(hit2D.collider.GetComponent<Ball>());
-				CheckColor();
+				SetColors();
 			}
 		}
 	}
@@ -65,20 +65,20 @@ public class CanonController : MonoBehaviour
 		laser.SetPosition(1, actualPositionMouse);
 	}
 
-	public void CheckColor() //TODO: cambiar nombre a SetColor
-	{ // Esto se haria una vez que se dispara, para chequear si sigue habiendo cosas en stack
+	public void SetColors() // Esto se haria una vez que se dispara, para chequear si sigue habiendo cosas en stack
+	{
 		if (canonStack.IsEmpty())
 		{
 			currentBall.color = canonQueue.Peek().Color;
-			nextBall.color = canonQueue.PeekPreviousColor(); // esto se podría hacer como en la linea 72 y nos ahorramos un metodo
+			nextBall.color = canonQueue.PeekPreviousColor();
 		}
 		else
 		{
 			currentBall.color = canonStack.Peek().Color;
             if (canonStack.CheckNumber() > 1)
-                nextBall.color = canonStack.PeekPreviousColor(); // esto se podría hacer como en la linea 77 y nos ahorramos un metodo
+                nextBall.color = canonStack.PeekPreviousColor();
             else
-                nextBall.color = canonQueue.PeekPreviousColor(); // esto se podría hacer como en la linea 72 y nos ahorramos un metodo
+                nextBall.color = canonQueue.Peek().Color; // cambie esta, porque sacaba el PreviousColor de la Cola, pero tiene que sacar el primero
 		}
 	}
 
