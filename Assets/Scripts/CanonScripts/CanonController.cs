@@ -75,7 +75,7 @@ public class CanonController : MonoBehaviour
 		else
 		{
 			currentBall.color = canonStack.Peek().Color;
-            if (canonStack.CheckNumber() > 1)
+            if (canonStack.GetIndex() > 1)
                 nextBall.color = canonStack.PeekPreviousColor();
             else
                 nextBall.color = canonQueue.Peek().Color; // cambie esta, porque sacaba el PreviousColor de la Cola, pero tiene que sacar el primero
