@@ -19,14 +19,23 @@ public class CanonStack : MonoBehaviour
 
     public void Absorb(Ball selected)
     {
-        if (!IsStackFull() && selected != selected.QueueController.GetRootNode())
+        if (!IsStackFull()) //TODO: que no pueda absorber las ultimas pelotas (tamaño de la pila)
         {
             canonStack.Push(selected);
-            var aux = selected.QueueController.DesqueueMiddle(selected);
-            aux.transform.position = new Vector3(0f, 0f, 0f);
-            aux.gameObject.SetActive(false);
+            var node = selected.QueueController.FindNode(selected);
+            var nextNode = node.nextNode;
+            var previousNode = node.previousNode;
+
+            selected.QueueController.DesqueueMiddle(selected);
+            selected.transform.position = new Vector3(0f, 0f, 0f);
+            selected.gameObject.SetActive(false);
             //TODO: ANIMACION DE QUE LA PELOTA SE SALE DE LA PILA.
-        } else
+
+            if (nextNode != null && previousNode != null)
+                if (previousNode.element.Color == nextNode.element.Color)
+                    selected.QueueController.CheckColors(nextNode);
+        }
+        else
         {
             print("Stack Full or is the RootNode");
         }

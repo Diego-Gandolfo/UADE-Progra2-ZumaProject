@@ -52,7 +52,7 @@ public class QueueDynamicController : MonoBehaviour
     {
         if (!queueDynamic.IsEmpty())
         {
-            Node<Ball> auxNode = queueDynamic.rootNode; // creamos un nodo auxiliar y le asignamos la referencia del rootNode
+            NodeBall auxNode = queueDynamic.rootNode; // creamos un nodo auxiliar y le asignamos la referencia del rootNode
             int index = 0; // iniciamos el index
 
             // Para mostrar el Nodo Raíz
@@ -114,21 +114,16 @@ public class QueueDynamicController : MonoBehaviour
 
     public Ball DesqueueMiddle(Ball targetBall)
     {
-        var node = FindNode(targetBall);
-        var nextNode = node.nextNode;
-        var previousNode = node.previousNode;
+        NodeBall node = FindNode(targetBall);
+        
         var aux = queueDynamic.DesqueueMiddle(targetBall);
-
-        if (nextNode != null && previousNode != null)
-            if (previousNode.element.Color == nextNode.element.Color)
-                CheckColors(nextNode);
-
+        
         ShowQueue();
         targetBall = null;
         return aux;
     }
 
-    public Node<Ball> FindNode(Ball ball) //RECIBE PELOTA Y BUSCA EL NODO
+    public NodeBall FindNode(Ball ball) //RECIBE PELOTA Y BUSCA EL NODO
     {
         var auxNode = queueDynamic.rootNode;
 
@@ -136,17 +131,17 @@ public class QueueDynamicController : MonoBehaviour
         {
             auxNode = auxNode.nextNode;
         }
-
+        print(auxNode.element.name);
         if (auxNode.element == ball) //SI LO ENCUENTRA, COMPRUEBA COLOR
             return auxNode;
         else
             return null;
     }
 
-    public void CheckColors(Node<Ball> auxNode)
+    public void CheckColors(NodeBall auxNode)
     {
-        Node<Ball> nextNode = null; //Se guarda la pelota siguiente de la ultima de la lista que coincide color
-        Node<Ball> previousNode = null;
+        NodeBall nextNode = null; //Se guarda la pelota siguiente de la ultima de la lista que coincide color
+        NodeBall previousNode = null;
         var ballList = new List<Ball>(); //Lista de pelotas que coinciden color
         ballList.Add(auxNode.element); //Agregamos la original
 

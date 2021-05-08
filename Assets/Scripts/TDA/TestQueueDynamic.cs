@@ -59,7 +59,7 @@ public class TestQueueDynamic : MonoBehaviour
     {
         if (!queueDymamic.IsEmpty())
         {
-            Node<Ball> auxNode = queueDymamic.rootNode; // creamos un nodo auxiliar y le asignamos la referencia del rootNode
+            NodeBall auxNode = queueDymamic.rootNode; // creamos un nodo auxiliar y le asignamos la referencia del rootNode
             int index = 0; // iniciamos el index
 
             // Para mostrar el Nodo Raíz

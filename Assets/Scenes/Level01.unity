@@ -1384,6 +1384,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: QueueManager
       objectReference: {fileID: 0}
+    - target: {fileID: 189333621410587846, guid: c526e0c9d83891c47a783c48728814ce,
+        type: 3}
+      propertyPath: ballSpawnCooldown
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 189333621410587847, guid: c526e0c9d83891c47a783c48728814ce,
         type: 3}
       propertyPath: m_LocalPosition.x
