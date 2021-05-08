@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -80,14 +81,16 @@ public class QueueDynamicController : MonoBehaviour
     public void EnqueueMiddleAfter(Ball newBall, Ball afterBall)
     {
         queueDynamic.EnqueueMiddleAfter(newBall, afterBall);
-        FindNode(newBall);
+        var node = FindNode(newBall);
+        CheckColors(node);
         ShowQueue();
     }
 
     public void EnqueueMiddleBefore(Ball newBall, Ball beforeBall)
     {
         queueDynamic.EnqueueMiddleBefore(newBall, beforeBall);
-        FindNode(newBall);
+        var node = FindNode(newBall);
+        CheckColors(node);
         ShowQueue();
     }
 
@@ -111,14 +114,21 @@ public class QueueDynamicController : MonoBehaviour
 
     public Ball DesqueueMiddle(Ball targetBall)
     {
-
+        var node = FindNode(targetBall);
+        var nextNode = node.nextNode;
+        var previousNode = node.previousNode;
         var aux = queueDynamic.DesqueueMiddle(targetBall);
+
+        if (nextNode != null && previousNode != null)
+            if (previousNode.element.Color == nextNode.element.Color)
+                CheckColors(nextNode);
+
         ShowQueue();
         targetBall = null;
         return aux;
     }
 
-    public void FindNode(Ball ball) //RECIBE PELOTA Y BUSCA EL NODO
+    public Node<Ball> FindNode(Ball ball) //RECIBE PELOTA Y BUSCA EL NODO
     {
         var auxNode = queueDynamic.rootNode;
 
@@ -128,9 +138,9 @@ public class QueueDynamicController : MonoBehaviour
         }
 
         if (auxNode.element == ball) //SI LO ENCUENTRA, COMPRUEBA COLOR
-        {
-            CheckColors(auxNode);
-        }
+            return auxNode;
+        else
+            return null;
     }
 
     public void CheckColors(Node<Ball> auxNode)
