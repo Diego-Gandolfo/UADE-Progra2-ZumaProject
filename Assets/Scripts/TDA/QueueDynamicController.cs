@@ -80,14 +80,14 @@ public class QueueDynamicController : MonoBehaviour
     public void EnqueueMiddleAfter(Ball newBall, Ball afterBall)
     {
         queueDynamic.EnqueueMiddleAfter(newBall, afterBall);
-        CheckColors(newBall);
+        FindNode(newBall);
         ShowQueue();
     }
 
     public void EnqueueMiddleBefore(Ball newBall, Ball beforeBall)
     {
         queueDynamic.EnqueueMiddleBefore(newBall, beforeBall);
-        CheckColors(newBall);
+        FindNode(newBall);
         ShowQueue();
     }
 
@@ -118,46 +118,57 @@ public class QueueDynamicController : MonoBehaviour
         return aux;
     }
 
-    public void CheckColors(Ball ball)
+    public void FindNode(Ball ball) //RECIBE PELOTA Y BUSCA EL NODO
     {
         var auxNode = queueDynamic.rootNode;
-
-        var ballList = new List<Ball>();
-        ballList.Add(ball);
 
         while (auxNode.element != ball && auxNode.nextNode != null)
         {
             auxNode = auxNode.nextNode;
         }
 
-        if (auxNode.element == ball)
+        if (auxNode.element == ball) //SI LO ENCUENTRA, COMPRUEBA COLOR
         {
-            if (auxNode.nextNode != null)
+            CheckColors(auxNode);
+        }
+    }
+
+    public void CheckColors(Node<Ball> auxNode)
+    {
+        Node<Ball> nextNode = null; //Se guarda la pelota siguiente de la ultima de la lista que coincide color
+        Node<Ball> previousNode = null;
+        var ballList = new List<Ball>(); //Lista de pelotas que coinciden color
+        ballList.Add(auxNode.element); //Agregamos la original
+
+        if (auxNode.nextNode != null)
+        {
+            var auxNodeSupp = auxNode.nextNode;
+
+            while (auxNode.element.Color == auxNodeSupp.element.Color && auxNodeSupp.nextNode != null)
             {
-                var auxNodeSupp = auxNode.nextNode;
-
-                while (auxNode.element.Color == auxNodeSupp.element.Color && auxNodeSupp.nextNode != null)
-                {
-                    ballList.Add(auxNodeSupp.element);
-                    auxNodeSupp = auxNodeSupp.nextNode;
-                }
-
-                if (auxNode.element.Color == auxNodeSupp.element.Color)
-                    ballList.Add(auxNodeSupp.element);
+                ballList.Add(auxNodeSupp.element);
+                auxNodeSupp = auxNodeSupp.nextNode;
             }
 
-            if (auxNode.previousNode != null)
-            {
-                var auxNodeSupp = auxNode.previousNode;
-                while (auxNode.element.Color == auxNodeSupp.element.Color && auxNodeSupp.previousNode != null)
-                {
-                    ballList.Add(auxNodeSupp.element);
-                    auxNodeSupp = auxNodeSupp.previousNode;
-                }
+            if (auxNode.element.Color == auxNodeSupp.element.Color)
+                ballList.Add(auxNodeSupp.element);
+            else
+                nextNode = auxNodeSupp;
+        }
 
-                if (auxNode.element.Color == auxNodeSupp.element.Color)
-                    ballList.Add(auxNodeSupp.element);
+        if (auxNode.previousNode != null)
+        {
+            var auxNodeSupp = auxNode.previousNode;
+            while (auxNode.element.Color == auxNodeSupp.element.Color && auxNodeSupp.previousNode != null)
+            {
+                ballList.Add(auxNodeSupp.element);
+                auxNodeSupp = auxNodeSupp.previousNode;
             }
+
+            if (auxNode.element.Color == auxNodeSupp.element.Color)
+                ballList.Add(auxNodeSupp.element);
+            else
+                previousNode = auxNodeSupp;
         }
 
         if (ballList.Count >= 3)
@@ -168,6 +179,11 @@ public class QueueDynamicController : MonoBehaviour
                 Destroy(aux.gameObject);
             }
         }
+
+        // SI EL NODO PREVIO Y NODO SIGUIENTE COINDICEN COLOR, le paso el CHECKCOLOR de uno para que haga de nuevo toda la lista 
+        if (previousNode != null && nextNode != null)
+            if(previousNode.element.Color == nextNode.element.Color)
+                CheckColors(previousNode); //RECURSIVIDAD!!!
     }
 
     public Ball GetRootNode()
@@ -175,4 +191,5 @@ public class QueueDynamicController : MonoBehaviour
         var auxNode = queueDynamic.rootNode;
         return auxNode.element;
     }
+
 }
