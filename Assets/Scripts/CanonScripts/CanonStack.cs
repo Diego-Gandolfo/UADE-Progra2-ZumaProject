@@ -23,7 +23,8 @@ public class CanonStack : MonoBehaviour
         {
             canonStack.Push(selected);
             var aux = selected.QueueController.DesqueueMiddle(selected);
-            aux.transform.position = new Vector3(0f, -10f, 0f);
+            aux.transform.position = new Vector3(0f, 0f, 0f);
+            aux.gameObject.SetActive(false);
             //TODO: ANIMACION DE QUE LA PELOTA SE SALE DE LA PILA.
         } else
         {

@@ -93,6 +93,7 @@ public class CanonController : MonoBehaviour
 			projectile = canonStack.Pop();
         }
 
+		projectile.gameObject.SetActive(true);
 		projectile.transform.position = currentBall.transform.position;
 		projectile.transform.rotation = currentBall.transform.rotation;
 		projectile.IsProjectile = true;

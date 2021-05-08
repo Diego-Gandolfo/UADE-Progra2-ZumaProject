@@ -23,6 +23,7 @@ public class CanonQueue : MonoBehaviour
     {
         var ball = Instantiate(this.ballPrefab); // instanciamos una nueva Sphere
         ball.name = $"CannonController Ball ({counter})"; // le cambiamos el nombre para diferenciarlas
+        ball.gameObject.SetActive(false);
         counter++; // aumentamos el contador
         return ball; // devolvemos el clone creado
     }
