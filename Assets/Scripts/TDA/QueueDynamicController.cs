@@ -78,9 +78,9 @@ public class QueueDynamicController : MonoBehaviour
         ShowQueue();
     }
 
-    public void EnqueueMiddleAfter(Ball newBall, Ball afterBall)
+    public void EnqueueMiddleAfter(Ball newBall, Ball afterBall) 
     {
-        queueDynamic.EnqueueMiddleAfter(newBall, afterBall);
+        queueDynamic.EnqueueMiddleAfter(newBall, afterBall); //TODO: delay entre el encolado y el "CheckColors"
         var node = FindNode(newBall);
         CheckColors(node);
         ShowQueue();
@@ -88,7 +88,7 @@ public class QueueDynamicController : MonoBehaviour
 
     public void EnqueueMiddleBefore(Ball newBall, Ball beforeBall)
     {
-        queueDynamic.EnqueueMiddleBefore(newBall, beforeBall);
+        queueDynamic.EnqueueMiddleBefore(newBall, beforeBall); //TODO: delay entre el encolado y el "CheckColors"
         var node = FindNode(newBall);
         CheckColors(node);
         ShowQueue();

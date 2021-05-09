@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 6808222489710163919}
   - component: {fileID: 6808222489710163905}
   - component: {fileID: 7535913483028634844}
+  - component: {fileID: 6626682919043527612}
+  - component: {fileID: 2056451925}
   m_Layer: 8
   m_Name: Bala
   m_TagString: Sphere
@@ -139,3 +141,37 @@ MonoBehaviour:
   - {r: 0, g: 0, b: 1, a: 1}
   speed: 10
   lifeTime: 3
+--- !u!95 &6626682919043527612
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6808222489710163904}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ceb1fa74089b2ea4aa9d16bd7763a20d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!111 &2056451925
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6808222489710163904}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
