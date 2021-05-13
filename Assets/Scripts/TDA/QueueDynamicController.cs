@@ -123,6 +123,7 @@ public class QueueDynamicController : MonoBehaviour
         return aux;
     }
 
+    // TODO: llevar a QueueDynamic
     public NodeBall FindNode(Ball ball) //RECIBE PELOTA Y BUSCA EL NODO
     {
         var auxNode = queueDynamic.rootNode;
