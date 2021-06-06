@@ -93,6 +93,7 @@ public class MainMenuController : MonoBehaviour
             player2.Name = player.Name;
             database.InsertPlayer(player2); //lo insertamos en la base
             player.SetId(database.GetLastPlayerId()); //Obtenemos el id del ultimo player insertado 
+
         }
         CheckPlayerName(); //Nos fijamos si tenemos que desaparecer la caja de nombres
     }

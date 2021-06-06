@@ -17,8 +17,8 @@ public class DBController : MonoBehaviour
 
         path = $"URI=file:{Application.dataPath}/dbZuma.s3db";
 
-        CreateTablePlayer();
-        CreateTableRanking();
+        CreateTablePlayer(); //Si o si tiene que ir Player primero
+        CreateTableRanking(); //Porque Ranking tiene una llave foranea de Player
     }
 
     #region DATABASE_COMUNICATION
@@ -96,6 +96,36 @@ public class DBController : MonoBehaviour
         return list;
     }
 
+    private IDataReader GetQueries2(string query)
+    {
+        IDataReader reader;
+
+        try
+        {
+            StablishConnection();
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = query;
+            reader = command.ExecuteReader();
+
+            command.Dispose();
+            command = null;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError(e.Message);
+            throw;
+        }
+        finally
+        {
+            connection.Close();
+            connection = null;
+        }
+
+        return reader;
+    }
+
     #endregion
 
     #region SET_TYPE_QUERIES
@@ -144,51 +174,51 @@ public class DBController : MonoBehaviour
 
     #region GET_TYPE_QUERIES
 
-    public List<Player> GetAllRankings()
+    public List<Player> GetAllRankingsFromLevel(int level)
     {
         var playerList = new List<Player>();
-        var query = "SELECT Id, Name, Level, Score FROM Ranking ";
+        var query = "SELECT Player.Name, Ranking.Level, Ranking.Score, Ranking.Time" +
+                    "FROM Ranking INNER JOIN Player ON Player.ID = Ranking.ID_Player" +
+                    $"WHERE Ranking.Level = {level}";
         var list = GetQueries(query, 4);
 
         foreach (var tupla in list)
         {
             var values = tupla.Split('/');
 
-            var player = new Player(values[1], int.Parse(values[2]), int.Parse(values[3]));
-
-            player.Id = int.Parse(values[0]);
+            var player = new Player(values[0], int.Parse(values[1]), int.Parse(values[2]));
+            player.Time = values[3];
             playerList.Add(player);
         }
 
         return playerList;
     }
 
-    public Player GetRankingById(int id)
+    //public Player GetRankingById(int id)
+    //{
+    //    var playerList = new List<Player>();
+    //    Player player = null;
+
+    //    var query = $"SELECT Id, Name, Level, Score FROM Ranking WHERE Id = {id}";
+    //    var list = GetQueries(query, 4);
+
+    //    foreach (var tupla in list)
+    //    {
+    //        var values = tupla.Split('/');
+
+    //        player = new Player(values[1], int.Parse(values[2]), int.Parse(values[3]));
+    //        player.Id = int.Parse(values[0]);
+    //    }
+
+    //    return player;
+    //}
+
+    public int GetLastPlayerId() 
     {
-        var playerList = new List<Player>();
-        Player player = null;
-
-        var query = $"SELECT Id, Name, Level, Score FROM Ranking WHERE Id = {id}";
-        var list = GetQueries(query, 4);
-
-        foreach (var tupla in list)
-        {
-            var values = tupla.Split('/');
-
-            player = new Player(values[1], int.Parse(values[2]), int.Parse(values[3]));
-            player.Id = int.Parse(values[0]);
-        }
-
-        return player;
-    }
-
-    public int GetLastPlayerId() //Devuelve el ID del ultimo argegado a la lista como int
-    {
-        var query = $"SELECT ID FROM Player ORDER BY ID DESC LIMIT 1;";
-        var list = GetQueries(query, 1);
-
-        var values = list[0].Split('/');
-        return int.Parse(values[0]);
+        var query = $"SELECT ID FROM Player ORDER BY ID DESC LIMIT 1;"; //Devuelve el ID del ultimo argegado a la lista como int
+        var list = GetQueries(query, 1); //Es solo el id, por eso un solo atributo
+        var values = list[0].Split('/'); //pero igual le tenemos que sacar la barra que viene de base
+        return int.Parse(values[0]); //y lo convertimos a int.
     }
 
     public Player GetLatestRanking()
@@ -204,8 +234,8 @@ public class DBController : MonoBehaviour
         {
             var values = tupla.Split('/');
 
-            player = new Player(values[1], int.Parse(values[2]), int.Parse(values[3]));
-            player.Time = values[4].ToString();
+            player = new Player(values[0], int.Parse(values[1]), int.Parse(values[2]));
+            player.Time = values[3].ToString();
         }
 
         return player;
