@@ -8,7 +8,7 @@ public class ScoreManager : MonoBehaviour
 
     void Start()
     {
-        database = DBController.instance;
+        database = DBController.Instance;
     }
 
     private void Update()

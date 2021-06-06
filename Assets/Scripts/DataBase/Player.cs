@@ -8,10 +8,7 @@ public class Player : MonoBehaviour
     public string Name { get; set; }
     public int Level { get; set; }
     public int Score { get; set; }
-
     public string Time { get; set; }
-
-    
 
     public Player(string name, int level, int score)
     {
@@ -28,5 +25,4 @@ public class Player : MonoBehaviour
         this.Score = Random.Range(0, 1000000);
         this.Time = Random.Range(10, 100).ToString();
     }
-
 }

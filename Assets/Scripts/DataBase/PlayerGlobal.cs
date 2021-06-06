@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerGlobal : MonoBehaviour
 {
-    static public PlayerGlobal instance;
+    private static PlayerGlobal instance = null;
+    static public PlayerGlobal Instance => instance;
 
     public string Name { get; set; }
     public int Id { get; set; }
@@ -14,9 +15,15 @@ public class PlayerGlobal : MonoBehaviour
 
     public void Awake()
     {
-        if (instance != null) Destroy(this.gameObject);
-        instance = this;
-
-        DontDestroyOnLoad(this.gameObject);
+        // if the singleton hasn't been initialized yet
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
     }
 }

@@ -6,14 +6,22 @@ using UnityEngine;
 
 public class DBController : MonoBehaviour
 {
-    static public DBController instance;
+    static public DBController instance = null;
+    static public DBController Instance => instance;
     private string path;
     private IDbConnection connection;
 
     public void Awake()
     {
-        if (instance != null) Destroy(this.gameObject);
-        instance = this;
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
 
         path = $"URI=file:{Application.dataPath}/dbZuma.s3db";
 
