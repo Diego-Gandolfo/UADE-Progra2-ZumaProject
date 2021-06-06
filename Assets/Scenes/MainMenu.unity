@@ -1665,6 +1665,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1406191900}
   - component: {fileID: 1406191901}
+  - component: {fileID: 1406191902}
   m_Layer: 0
   m_Name: MainMenuController
   m_TagString: Untagged
@@ -1704,10 +1705,24 @@ MonoBehaviour:
   creditsButton: {fileID: 758837254}
   exitButton: {fileID: 338633647}
   inputBox: {fileID: 687405839}
+  scoreManager: {fileID: 1406191902}
   confirmButton: {fileID: 1654323298}
   inputField: {fileID: 1979333086}
   nameBox: {fileID: 1042365480}
   goBackCreditsButton: {fileID: 424413734}
+--- !u!114 &1406191902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1406191899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 414fad63bc21a2c4e88493425d7c35dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  level: 1
 --- !u!1 &1551386136
 GameObject:
   m_ObjectHideFlags: 0

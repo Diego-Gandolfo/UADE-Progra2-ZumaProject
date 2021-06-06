@@ -8,17 +8,20 @@ using UnityEngine.UI;
 public class MainMenuController : MonoBehaviour
 {
     [Header("AllMenus Settings")]
-    [SerializeField] private GameObject mainMenu;
-    [SerializeField] private GameObject creditsMenu;
+    [SerializeField] private GameObject mainMenu = null;
+    [SerializeField] private GameObject creditsMenu = null;
 
     [Header("MainMenu Settings")]
-    [SerializeField] private Button playButton;
-    [SerializeField] private Button creditsButton;
-    [SerializeField] private Button exitButton;
-    [SerializeField] private GameObject inputBox;
-    [SerializeField] private Button confirmButton;
-    [SerializeField] private InputField inputField;
-    [SerializeField] private GameObject nameBox;
+    [SerializeField] private Button playButton = null;
+    [SerializeField] private Button creditsButton = null;
+    [SerializeField] private Button exitButton = null;
+    [SerializeField] private GameObject inputBox = null;
+
+    [Header("Name Settings")]
+    [SerializeField] private ScoreManager scoreManager = null;
+    [SerializeField] private Button confirmButton = null;
+    [SerializeField] private InputField inputField = null;
+    [SerializeField] private GameObject nameBox = null;
 
     private bool mainMenuCheck;
     private string level01 = "Level01";
@@ -26,7 +29,6 @@ public class MainMenuController : MonoBehaviour
 
     [Header("Credits Settings")]
     [SerializeField] private Button goBackCreditsButton;
-
 
     void Start()
     {
@@ -46,41 +48,11 @@ public class MainMenuController : MonoBehaviour
         {
             OnGoBackHandler();
         }
+    }
 
-        #region DATABASE_TESTING 
-        //TODO: ESTO ES TEMPORAL, NO TIENE QUE IR ACÁ
-        if (Input.GetKeyDown(KeyCode.F3))
-        {
-            var trial = new Player(PlayerGlobal.Instance.Name, UnityEngine.Random.Range(1, 5), UnityEngine.Random.Range(1, 10000));
-            trial.Time = UnityEngine.Random.Range(1, 1000).ToString();
-            trial.Id = PlayerGlobal.Instance.Id;
-
-            database.InsertRanking(trial);
-
-            var ranking = database.GetLatestRanking();
-            print($"Ranking {ranking.Name}, Nivel: {ranking.Level} Score: {ranking.Score} Time: {ranking.Time}");
-        }
-
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            print("Generando");
-            var trial2 = new Player();
-            database.InsertPlayer(trial2); //lo insertamos en la base
-            trial2.Id = database.GetLastPlayerId(); //Obtenemos el id del ultimo player insertado 
-            print($"{trial2.Id} {trial2.Name} {trial2.Level} {trial2.Score} {trial2.Time}");
-            database.InsertRanking(trial2);
-        }
-
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            print("AllRanking");
-            var rankings = database.GetAllRankings();
-            foreach (var ranking in rankings)
-            {
-                print($"Ranking {ranking.Name}, Nivel: {ranking.Level} Score: {ranking.Score} Time: {ranking.Time}");
-            }
-        }
-        #endregion
+    private void OnEnable()
+    {
+        CheckPlayerName();
     }
 
     private void OnPlayHandler()
@@ -114,16 +86,7 @@ public class MainMenuController : MonoBehaviour
     {
         if(inputField.text != null)
         {
-            PlayerGlobal.Instance.Name = inputField.text;
-
-            //TODO: INSERT PLAYER NO ME ACEPTA UN GLOBAL PLAYER... Y POR AHORA NO QUIERO CAMBIARLO
-            Player player2 = new Player();
-            player2.Name = PlayerGlobal.Instance.Name;
-
-            //TODO: CUANDO SE SOLUCIONE EL TEMA DEL SCORE EN GENERAL, SE DESCOMENTA ESTO ASI NO CREAMOS JUGADORES VACIOS
-            //database.InsertPlayer(player2); //lo insertamos en la base
-            //player.Id = database.GetLastPlayerId(); //Obtenemos el id del ultimo player insertado 
-            print(PlayerGlobal.Instance.Name + " " + PlayerGlobal.Instance.Id);
+            scoreManager.InsertPlayer(inputField.text);
             CheckPlayerName(); //Nos fijamos si tenemos que desaparecer la caja de nombres
         }
     }
@@ -141,12 +104,5 @@ public class MainMenuController : MonoBehaviour
             nameBox.SetActive(true);
             inputBox.SetActive(false);
         }
-    }
-
-    private void OnEnable()
-    {
-        CheckPlayerName();
-        print(PlayerGlobal.Instance.Name);
-        print("probando");
     }
 }
