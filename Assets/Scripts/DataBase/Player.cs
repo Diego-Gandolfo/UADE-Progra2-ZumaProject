@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
         this.Name = nameCollection.GetRandomName();
         this.Level = Random.Range(1, 10);
         this.Score = Random.Range(0, 1000000);
+        this.Time = Random.Range(10, 100).ToString();
     }
 
 }

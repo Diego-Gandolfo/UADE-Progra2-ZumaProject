@@ -6,8 +6,11 @@ public class PlayerGlobal : MonoBehaviour
 {
     static public PlayerGlobal instance;
 
-    public string Name { get; private set; }
-    public int Id { get; private set; }
+    public string Name { get; set; }
+    public int Id { get; set; }
+    public int Level { get; set; }
+    public int Score { get; set; }
+    public float Time { get; set; }
 
     public void Awake()
     {
@@ -15,15 +18,5 @@ public class PlayerGlobal : MonoBehaviour
         instance = this;
 
         DontDestroyOnLoad(this.gameObject);
-    }
-
-    public void SetName(string name)
-    {
-        this.Name = name;
-    }
-
-    public void SetId(int id)
-    {
-        this.Id = id;
     }
 }

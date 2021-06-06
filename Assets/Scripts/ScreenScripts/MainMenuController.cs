@@ -22,9 +22,8 @@ public class MainMenuController : MonoBehaviour
 
     private bool mainMenuCheck;
     private string level01 = "Level01";
-    private PlayerGlobal player;
+    [SerializeField] private PlayerGlobal player;
     private DBController database;
-
 
     [Header("Credits Settings")]
     [SerializeField] private Button goBackCreditsButton;
@@ -32,7 +31,6 @@ public class MainMenuController : MonoBehaviour
 
     void Start()
     {
-
         playButton.onClick.AddListener(OnPlayHandler);
         creditsButton.onClick.AddListener(OnCreditsHandler);
         goBackCreditsButton.onClick.AddListener(OnGoBackHandler);
@@ -40,20 +38,51 @@ public class MainMenuController : MonoBehaviour
         confirmButton.onClick.AddListener(OnConfirmHandler);
         OnGoBackHandler(); //Si o si, aseguramos que inicie en el MenuInicial
 
-        database = DBController.instance;
-        player = PlayerGlobal.instance;
-        CheckPlayerName();
+        database = DBController.instance; //Necesario para conectar a la base
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !mainMenuCheck) //Esto es porque si no estan en uno de los sub menus, pueden volver para atras con Escape
         {
             OnGoBackHandler();
         }
-    }
 
+        #region DATABASE_TESTING 
+        //TODO: ESTO ES TEMPORAL, NO TIENE QUE IR ACÁ
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            var trial = new Player(player.Name, UnityEngine.Random.Range(1, 5), UnityEngine.Random.Range(1, 10000));
+            trial.Time = UnityEngine.Random.Range(1, 1000).ToString();
+            trial.Id = player.Id;
+
+            database.InsertRanking(trial);
+
+            var ranking = database.GetLatestRanking();
+            print($"Ranking {ranking.Name}, Nivel: {ranking.Level} Score: {ranking.Score} Time: {ranking.Time}");
+        }
+
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            print("Generando");
+            var trial2 = new Player();
+            database.InsertPlayer(trial2); //lo insertamos en la base
+            trial2.Id = database.GetLastPlayerId(); //Obtenemos el id del ultimo player insertado 
+            print($"{trial2.Id} {trial2.Name} {trial2.Level} {trial2.Score} {trial2.Time}");
+            database.InsertRanking(trial2);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            print("AllRanking");
+            var rankings = database.GetAllRankings();
+            foreach (var ranking in rankings)
+            {
+                print($"Ranking {ranking.Name}, Nivel: {ranking.Level} Score: {ranking.Score} Time: {ranking.Time}");
+            }
+        }
+        #endregion
+    }
 
     private void OnPlayHandler()
     {
@@ -86,14 +115,15 @@ public class MainMenuController : MonoBehaviour
     {
         if(inputField.text != null)
         {
-            player.SetName(inputField.text);
+            player.Name = inputField.text;
 
             //INSERT PLAYER NO ME ACEPTA UN GLOBAL PLAYER... Y POR AHORA NO QUIERO CAMBIARLO
             Player player2 = new Player();
             player2.Name = player.Name;
-            database.InsertPlayer(player2); //lo insertamos en la base
-            player.SetId(database.GetLastPlayerId()); //Obtenemos el id del ultimo player insertado 
 
+            //database.InsertPlayer(player2); //lo insertamos en la base
+            //player.Id = database.GetLastPlayerId(); //Obtenemos el id del ultimo player insertado 
+            print(player.Name + " " + player.Id);
         }
         CheckPlayerName(); //Nos fijamos si tenemos que desaparecer la caja de nombres
     }
@@ -111,5 +141,13 @@ public class MainMenuController : MonoBehaviour
             nameBox.SetActive(true);
             inputBox.SetActive(false);
         }
+    }
+
+    private void OnEnable()
+    {
+        player = PlayerGlobal.instance;
+        CheckPlayerName();
+        print(player.Name);
+        print("probando");
     }
 }
