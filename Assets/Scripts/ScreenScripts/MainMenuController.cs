@@ -22,7 +22,6 @@ public class MainMenuController : MonoBehaviour
 
     private bool mainMenuCheck;
     private string level01 = "Level01";
-    [SerializeField] private PlayerGlobal player;
     private DBController database;
 
     [Header("Credits Settings")]
@@ -52,9 +51,9 @@ public class MainMenuController : MonoBehaviour
         //TODO: ESTO ES TEMPORAL, NO TIENE QUE IR ACÁ
         if (Input.GetKeyDown(KeyCode.F3))
         {
-            var trial = new Player(player.Name, UnityEngine.Random.Range(1, 5), UnityEngine.Random.Range(1, 10000));
+            var trial = new Player(PlayerGlobal.instance.Name, UnityEngine.Random.Range(1, 5), UnityEngine.Random.Range(1, 10000));
             trial.Time = UnityEngine.Random.Range(1, 1000).ToString();
-            trial.Id = player.Id;
+            trial.Id = PlayerGlobal.instance.Id;
 
             database.InsertRanking(trial);
 
@@ -115,29 +114,30 @@ public class MainMenuController : MonoBehaviour
     {
         if(inputField.text != null)
         {
-            player.Name = inputField.text;
+            PlayerGlobal.instance.Name = inputField.text;
 
-            //INSERT PLAYER NO ME ACEPTA UN GLOBAL PLAYER... Y POR AHORA NO QUIERO CAMBIARLO
+            //TODO: INSERT PLAYER NO ME ACEPTA UN GLOBAL PLAYER... Y POR AHORA NO QUIERO CAMBIARLO
             Player player2 = new Player();
-            player2.Name = player.Name;
+            player2.Name = PlayerGlobal.instance.Name;
 
+            //TODO: CUANDO SE SOLUCIONE EL TEMA DEL SCORE EN GENERAL, SE DESCOMENTA ESTO ASI NO CREAMOS JUGADORES VACIOS
             //database.InsertPlayer(player2); //lo insertamos en la base
             //player.Id = database.GetLastPlayerId(); //Obtenemos el id del ultimo player insertado 
-            print(player.Name + " " + player.Id);
+            print(PlayerGlobal.instance.Name + " " + PlayerGlobal.instance.Id);
+            CheckPlayerName(); //Nos fijamos si tenemos que desaparecer la caja de nombres
         }
-        CheckPlayerName(); //Nos fijamos si tenemos que desaparecer la caja de nombres
     }
 
     private void CheckPlayerName()
     {
-        if (player.Name == null)
+        if (PlayerGlobal.instance.Name == null)
         {
             nameBox.SetActive(false);
             inputBox.SetActive(true);
         }
         else
         {
-            nameBox.GetComponent<Text>().text = player.Name;
+            nameBox.GetComponent<Text>().text = PlayerGlobal.instance.Name;
             nameBox.SetActive(true);
             inputBox.SetActive(false);
         }
@@ -145,9 +145,8 @@ public class MainMenuController : MonoBehaviour
 
     private void OnEnable()
     {
-        player = PlayerGlobal.instance;
         CheckPlayerName();
-        print(player.Name);
+        print(PlayerGlobal.instance.Name);
         print("probando");
     }
 }

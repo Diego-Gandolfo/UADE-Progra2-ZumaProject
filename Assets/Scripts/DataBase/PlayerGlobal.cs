@@ -10,7 +10,7 @@ public class PlayerGlobal : MonoBehaviour
     public int Id { get; set; }
     public int Level { get; set; }
     public int Score { get; set; }
-    public float Time { get; set; }
+    public string Time { get; set; }
 
     public void Awake()
     {
