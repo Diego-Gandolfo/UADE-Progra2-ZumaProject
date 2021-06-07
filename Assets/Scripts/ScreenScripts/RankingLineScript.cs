@@ -61,6 +61,6 @@ public class RankingLineScript : MonoBehaviour
 
     public void SetTime(string time)
     {
-        this.time.text = time;
+        this.time.text = time + "s";
     }
 }

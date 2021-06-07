@@ -684,11 +684,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9048237516ee3d043a6bf76452b1db40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  screen: 1
   nextLevelButton: {fileID: 1801346773}
   playAgainButton: {fileID: 383399386}
   menuButton: {fileID: 1408594099}
   exitButton: {fileID: 123824860}
-  isGameOver: 0
 --- !u!4 &430959880
 Transform:
   m_ObjectHideFlags: 0
