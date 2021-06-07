@@ -21,7 +21,8 @@ public class Player : MonoBehaviour
     {
         var nameCollection = new NamesBaseCollection();
         this.Name = nameCollection.GetRandomName();
-        this.Level = Random.Range(1, 10);
+        //this.Level = Random.Range(1, 2);
+        this.Level = 1;
         this.Score = Random.Range(0, 1000000);
         this.Time = Random.Range(10, 100).ToString();
     }

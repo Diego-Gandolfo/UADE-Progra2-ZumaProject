@@ -26,8 +26,9 @@ public class EndScreenController : MonoBehaviour
         menuButton.onClick.AddListener(OnMenuHandler);
         exitButton.onClick.AddListener(OnQuitHandler);
 
-        //if (!isGameOver)
-        if (GameManager.instance.NextLevel != string.Empty)
+
+        //if (GameManager.instance.NextLevel != string.Empty)
+        if (!isGameOver)
             nextLevelButton.onClick.AddListener(OnNextLevelHandler);
     }
 

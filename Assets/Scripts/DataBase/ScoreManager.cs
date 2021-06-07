@@ -6,47 +6,18 @@ using UnityEngine.UI;
 public class ScoreManager : MonoBehaviour
 {
     [SerializeField] private int level;
+    [SerializeField] private RankingLineScript[] rankingLine;
+
     private DBController database;
 
-    [SerializeField] private Text[] textNameUI;
-    [SerializeField] private Text[] textLevelUI;
-    [SerializeField] private Text[] textScoreUI;
-
-    void Start()
+    private void Awake()
     {
         database = DBController.Instance;
     }
 
-    private void Awake() // TODO: el Awake es temporal para probar el QuickSort
+    void Start()
     {
-        // chequeamos que los tamaños de los 3 Arrays sean iguales
-        if (textNameUI.Length != textLevelUI.Length || textNameUI.Length != textScoreUI.Length)
-            Debug.LogError("Los tamaños de los Arrays del Canvas no coinciden");
-
-        var listPlayers = new List<Player>();
-
-        // llenamos la lista con player random
-        for (int i = 0; i < textNameUI.Length; i++)
-        {
-            var player = new Player();
-            listPlayers.Add(player);
-        }
-
-        // hacemos el QuickSort de la Lista y le indicamos cual es el primer y ultimo elemento que tiene que ordenar
-        QuickSort(listPlayers, 0, listPlayers.Count - 1);
-
-        // para ver si se cargo bien la lista
-        foreach (var player in listPlayers) 
-            print($"Name: {player.Name} / Level: {player.Level} / Score: {player.Score}");
-
-        // actualizamos los Text del Canvas
-        for (int i = 0; i < listPlayers.Count; i++)
-        {
-            var index = (listPlayers.Count - i) - 1;
-            textNameUI[i].text = listPlayers[index].Name;
-            textLevelUI[i].text = listPlayers[index].Level.ToString();
-            textScoreUI[i].text = listPlayers[index].Score.ToString();
-        }
+        GetLevelRanking(level);
     }
 
     private void Update()
@@ -61,18 +32,6 @@ public class ScoreManager : MonoBehaviour
         {
             print("Get Last Player Ranking");
             GetLastPlayerRanking();
-        }
-
-        if (Input.GetKeyDown(KeyCode.F3))
-        {
-            print("Get Ranking Level: " + level);
-            GetLevelRanking(level);
-        }
-
-        if (Input.GetKeyDown(KeyCode.F4))
-        {
-            print("Get All Ranking");
-            GetAllRanking();
         }
     }
 
@@ -117,19 +76,37 @@ public class ScoreManager : MonoBehaviour
     public void GetLevelRanking(int level)
     {
         var rankings = database.GetAllRankingsFromLevel(level);
-        foreach (var ranking in rankings)
-        {
-            print($"Ranking {ranking.Name}, Nivel: {ranking.Level} Score: {ranking.Score} Time: {ranking.Time}");
-        }
+        QuickSort(rankings, 0, rankings.Count - 1);
+        UpdateRankingList(rankings);
     }
 
     private void GetAllRanking()
     {
-        print("AllRanking");
         var rankings = database.GetAllRankings();
-        foreach (var ranking in rankings)
+        QuickSort(rankings, 0, rankings.Count - 1);
+        UpdateRankingList(rankings);
+    }
+
+    private void UpdateRankingList(List<Player> players)
+    {
+        for (int i = 0; i < rankingLine.Length; i++)
         {
-            print($"Ranking {ranking.Name}, Nivel: {ranking.Level} Score: {ranking.Score} Time: {ranking.Time}");
+            var index = (players.Count - i) - 1;
+            rankingLine[i].SetNickname(players[index].Name);
+            rankingLine[i].SetScore(players[index].Score);
+            rankingLine[i].SetTime(players[index].Time);
+        }
+    }
+
+    private void CleanRankingList()
+    {
+        string clean = "-";
+
+        for (int i = 0; i < rankingLine.Length; i++)
+        {
+            rankingLine[i].SetNickname(clean);
+            rankingLine[i].SetScore(int.Parse(clean));
+            rankingLine[i].SetTime(clean);
         }
     }
 
