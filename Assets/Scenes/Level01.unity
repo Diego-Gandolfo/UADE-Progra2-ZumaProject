@@ -630,6 +630,7 @@ MonoBehaviour:
   restartButton: {fileID: 293538513}
   mainMenuButton: {fileID: 1182982786}
   quitButton: {fileID: 2072538827}
+  timerObject: {fileID: 269311511}
 --- !u!4 &1123358936
 Transform:
   m_ObjectHideFlags: 0

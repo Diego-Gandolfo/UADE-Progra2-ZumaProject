@@ -532,6 +532,7 @@ MonoBehaviour:
   restartButton: {fileID: 1902444721}
   mainMenuButton: {fileID: 873134868}
   quitButton: {fileID: 245440107}
+  timerObject: {fileID: 269311511}
 --- !u!4 &1123358936
 Transform:
   m_ObjectHideFlags: 0
@@ -705,6 +706,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 735646269}
     m_Modifications:
+    - target: {fileID: 3785663286593590293, guid: c668f9b4d0760354abbab91a161c82bf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.060058594
+      objectReference: {fileID: 0}
     - target: {fileID: 3874431062814780570, guid: c668f9b4d0760354abbab91a161c82bf,
         type: 3}
       propertyPath: m_LocalPosition.x
