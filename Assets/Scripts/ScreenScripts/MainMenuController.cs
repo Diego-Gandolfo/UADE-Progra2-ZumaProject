@@ -15,13 +15,15 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private Button playButton = null;
     [SerializeField] private Button creditsButton = null;
     [SerializeField] private Button exitButton = null;
-    [SerializeField] private GameObject inputBox = null;
+
 
     [Header("Name Settings")]
     [SerializeField] private ScoreManager scoreManager = null;
     [SerializeField] private Button confirmButton = null;
+    [SerializeField] private GameObject inputBox = null;
     [SerializeField] private InputField inputField = null;
     [SerializeField] private GameObject nameBox = null;
+    [SerializeField] private Text nameText = null;
 
     private bool mainMenuCheck;
     private string level01 = "Level01";
@@ -97,10 +99,12 @@ public class MainMenuController : MonoBehaviour
         {
             nameBox.SetActive(false);
             inputBox.SetActive(true);
+            playButton.interactable = false; ;
         }
         else
         {
-            nameBox.GetComponent<Text>().text = PlayerGlobal.Instance.Name;
+            nameText.text = PlayerGlobal.Instance.Name;
+            playButton.interactable = true;
             nameBox.SetActive(true);
             inputBox.SetActive(false);
         }
