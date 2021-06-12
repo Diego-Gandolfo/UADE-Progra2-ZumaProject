@@ -78,19 +78,21 @@ public class QueueDynamicController : MonoBehaviour
         ShowQueue();
     }
 
-    public void EnqueueMiddleAfter(Ball newBall, Ball afterBall)
+    public void EnqueueMiddleAfter(Ball newBall, Ball afterBall, bool hasToCheck = true)
     {
         queueDynamic.EnqueueMiddleAfter(newBall, afterBall);
         var node = FindNode(newBall);
-        CheckColors(node);
+        if(hasToCheck)
+            CheckColors(node);
         ShowQueue();
     }
 
-    public void EnqueueMiddleBefore(Ball newBall, Ball beforeBall)
+    public void EnqueueMiddleBefore(Ball newBall, Ball beforeBall, bool hasToCheck = true)
     {
         queueDynamic.EnqueueMiddleBefore(newBall, beforeBall);
         var node = FindNode(newBall);
-        CheckColors(node);
+        if(hasToCheck)
+            CheckColors(node);
         ShowQueue();
     }
 
@@ -123,6 +125,43 @@ public class QueueDynamicController : MonoBehaviour
         return aux;
     }
 
+    public List<Ball> DequeueList(Ball ball, int index)
+    {
+        NodeBall node = FindNode(ball);
+        var auxNodeRight = node.nextNode;
+        var auxNodeLeft = node.previousNode;
+        List<Ball> ballsToDequeue = new List<Ball>();
+        if(auxNodeRight != null)
+        {
+            for (int i = 0; i < index; i++) // Recorrido Nodo Derecho
+            {
+                    var auxNodeSupp = auxNodeRight.nextNode;
+                    if (auxNodeSupp != null)
+                    {
+                        Ball aux = queueDynamic.DesqueueMiddle(auxNodeRight.element);
+                        auxNodeRight = auxNodeSupp;
+                        ballsToDequeue.Add(aux);
+                    }
+                    else break;
+               
+            }
+        }
+
+
+        for (int i = 0; i < index; i++) // Recorrido Nodo Izquierdo
+        {
+            var auxNodeSupp = node.previousNode;
+            if (auxNodeLeft != null)
+            {
+                var aux = queueDynamic.DesqueueMiddle(auxNodeLeft.element);
+                auxNodeLeft = auxNodeSupp;
+                ballsToDequeue.Add(aux);
+            }
+            else break;
+        }
+
+        return ballsToDequeue;
+    }
     // TODO: llevar a QueueDynamic
     public NodeBall FindNode(Ball ball) //RECIBE PELOTA Y BUSCA EL NODO
     {

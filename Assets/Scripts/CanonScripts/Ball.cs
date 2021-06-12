@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
@@ -8,7 +9,8 @@ public class Ball : MonoBehaviour
     [SerializeField] private float speed = 10;
     [SerializeField] private float lifeTime;
     private float lifeTimeTimer;
-
+    private string hexaString;
+    private int hexaInt;
     public QueueDynamicController QueueController { get; private set; }
 
     public Color Color { get; private set; }
@@ -68,5 +70,11 @@ public class Ball : MonoBehaviour
     public void SetQueueController(QueueDynamicController queueController)
     {
         this.QueueController = queueController;
+    }
+    public int ColorValue()
+    {
+        hexaString = ColorUtility.ToHtmlStringRGBA(Color);
+        hexaInt = System.Int32.Parse(hexaString, NumberStyles.AllowHexSpecifier);
+        return hexaInt;
     }
 }

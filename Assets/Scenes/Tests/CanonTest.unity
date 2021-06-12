@@ -121,6 +121,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!212 &234027360 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8063896038529965800, guid: d5fb24a439f438e4f8f69f1253f6fb51,
+    type: 3}
+  m_PrefabInstance: {fileID: 8063896038564283299}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &932313346
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,6 +210,56 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1324568019
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1324568021}
+  - component: {fileID: 1324568020}
+  m_Layer: 0
+  m_Name: TreeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1324568020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324568019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15319de0ccdc1b349aafea657cd307c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ballToOrder: 3
+  ballPrefab: {fileID: 7535913483028634844, guid: 2601f13924c22624a892517a8c6a1de2,
+    type: 3}
+  ballList: []
+  queueDynamic: {fileID: 1755319411}
+  currentBall: {fileID: 234027360}
+  rayLenght: 5
+--- !u!4 &1324568021
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324568019}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 398.61157, y: 221.38556, z: -6510.347}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1755319411 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 189333621410587846, guid: c526e0c9d83891c47a783c48728814ce,
@@ -227,6 +283,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: QueueManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 189333621410587844, guid: c526e0c9d83891c47a783c48728814ce,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 189333621410587846, guid: c526e0c9d83891c47a783c48728814ce,
+        type: 3}
+      propertyPath: ballSpawnCooldown
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 189333621410587847, guid: c526e0c9d83891c47a783c48728814ce,
         type: 3}
