@@ -48,7 +48,7 @@ public class QueueDynamicController : MonoBehaviour
         return ball; // devolvemos el clone creado
     }
 
-    public void ShowQueue()
+    public void ShowQueue(bool mustDebug = false)
     {
         if (!queueDynamic.IsEmpty())
         {
@@ -59,6 +59,7 @@ public class QueueDynamicController : MonoBehaviour
             if (auxNode != null) // si el auxNode es distinto de null
             {
                 auxNode.element.transform.position = (transform.right * index) + transform.position; // lo movemos en x según el valor del index
+                if (mustDebug) print($"ShowQueue: {auxNode.element.name} - Index: {index} - Time: {Time.time}");
                 index++; // aumentamos el index
             }
 
@@ -67,6 +68,7 @@ public class QueueDynamicController : MonoBehaviour
             {
                 auxNode = auxNode.nextNode; // sino guardamos el siguiente en auxNode y repetimos
                 auxNode.element.transform.position = (transform.right * index) + transform.position; // lo movemos en x según el valor del index
+                if (mustDebug) print($"ShowQueue: {auxNode.element.name} - Index: {index} - Time: {Time.time}");
                 index++; // aumentamos el index
             }
         }
@@ -91,7 +93,7 @@ public class QueueDynamicController : MonoBehaviour
     {
         queueDynamic.EnqueueMiddleBefore(newBall, beforeBall);
         var node = FindNode(newBall);
-        if(hasToCheck)
+        if (hasToCheck)
             CheckColors(node);
         ShowQueue();
     }
@@ -127,41 +129,43 @@ public class QueueDynamicController : MonoBehaviour
 
     public List<Ball> DequeueList(Ball ball, int index)
     {
+        List<Ball> ballsToDequeue = new List<Ball>();
         NodeBall node = FindNode(ball);
         var auxNodeRight = node.nextNode;
         var auxNodeLeft = node.previousNode;
-        List<Ball> ballsToDequeue = new List<Ball>();
-        if(auxNodeRight != null)
+
+        if (auxNodeRight != null) // Recorrido Nodo Derecho, si el nodo derecho es null, no hago nada
         {
-            for (int i = 0; i < index; i++) // Recorrido Nodo Derecho
+            for (int i = 0; i < index; i++) 
             {
-                    var auxNodeSupp = auxNodeRight.nextNode;
-                    if (auxNodeSupp != null)
+                    if (auxNodeRight != null)
                     {
                         Ball aux = queueDynamic.DesqueueMiddle(auxNodeRight.element);
-                        auxNodeRight = auxNodeSupp;
+                        auxNodeRight = auxNodeRight.nextNode;
                         ballsToDequeue.Add(aux);
                     }
                     else break;
-               
             }
         }
 
-
-        for (int i = 0; i < index; i++) // Recorrido Nodo Izquierdo
+        if(auxNodeLeft != null) // Recorrido Nodo Izquierdo
         {
-            var auxNodeSupp = node.previousNode;
-            if (auxNodeLeft != null)
+            for (int i = 0; i < index; i++) 
             {
-                var aux = queueDynamic.DesqueueMiddle(auxNodeLeft.element);
-                auxNodeLeft = auxNodeSupp;
-                ballsToDequeue.Add(aux);
+                if (auxNodeLeft != null)
+                {
+                    Ball aux = queueDynamic.DesqueueMiddle(auxNodeLeft.element);
+                    auxNodeLeft = auxNodeLeft.previousNode;
+                    ballsToDequeue.Add(aux);
+                }
+                else break;
             }
-            else break;
         }
 
+        ShowQueue();
         return ballsToDequeue;
     }
+
     // TODO: llevar a QueueDynamic
     public NodeBall FindNode(Ball ball) //RECIBE PELOTA Y BUSCA EL NODO
     {
@@ -171,7 +175,7 @@ public class QueueDynamicController : MonoBehaviour
         {
             auxNode = auxNode.nextNode;
         }
-        print(auxNode.element.name);
+        //print(auxNode.element.name);
         if (auxNode.element == ball) //SI LO ENCUENTRA, COMPRUEBA COLOR
             return auxNode;
         else

@@ -4,44 +4,24 @@ using UnityEngine;
 
 public class ABBManager : MonoBehaviour
 {
+    [SerializeField] private QueueDynamicController queueDynamic;
     [SerializeField] private int ballToOrder;
-    private ABBBall ballTree;
+    private TDA_ABB ballTree;
     public Ball ballPrefab;
-    [SerializeField]private List<ABBNode> abbList = new List<ABBNode>();
-    [SerializeField]private List<Ball> ballList = new List<Ball>();
-    [SerializeField]private QueueDynamicController queueDynamic;
+
 
     [Header("Raycast Settings")]
     [SerializeField] SpriteRenderer currentBall;
-    [SerializeField] private float rayLenght = 5f;
     private Transform raycastPoint;
     private Vector2 actualPositionMouse;
     private RaycastHit2D hit2D;
-    private LineRenderer laser;
     private Vector2 direction;
 
     private void Start()
     {
         raycastPoint = currentBall.gameObject.transform;
-        ballTree = new ABBBall();
+        ballTree = new TDA_ABB();
         ballTree.InicializarArbol();
-
-        //for (int i = 0; i < 10; i++)
-        //{
-
-        //    ballTree.AgregarElem(ref ballTree.raiz, CreateBall());
-            
-        //}
-        //
-        //for (int i = 0; i < ballList.Count; i++)
-        //{
-        //    ballList[i].QueueController.EnqueueTop();
-        //}
-        //foreach (var item in abbList)
-        //{
-        //    print(item.info.ColorValue());
-        //}
-        //ShowQueue();
     }
     public Ball CreateBall() // Creamos una nueva instancia y nodo
     {
@@ -59,22 +39,23 @@ public class ABBManager : MonoBehaviour
             hit2D = Physics2D.Raycast(raycastPoint.position, direction);
 
             if (hit2D)
-                BallDequeue(hit2D.collider.GetComponent<Ball>());
+                ReSortBalls(hit2D.collider.GetComponent<Ball>());
         }
-
     }
-    private void BallDequeue(Ball ball)
+    private void ReSortBalls(Ball ball)
     {
-        var ballDequeue = queueDynamic.DequeueList(ball, ballToOrder);
-        foreach (var item in ballDequeue)
+        var resortList = queueDynamic.DequeueList(ball, ballToOrder); //Se trae las pelotas en una lista.
+
+        foreach (var item in resortList) //recorre la lista y las agrega una por una al arbol
         {
             ballTree.AgregarElem(ref ballTree.raiz, item);
         }
-        ballTree.inOrder(ballTree.raiz, ballDequeue);
-        foreach (var item in ballDequeue)
+
+        ballTree.inOrder(ballTree.raiz, resortList); //acá las ordeno por color
+
+        foreach (var item in resortList) // recorro la lista y las vuelvo a meter en la cola una por una
         {
-            queueDynamic.EnqueueMiddleBefore(item, ball,false);
-        }
-        //todo: Cambiar nombre a otra cosa please.  
+            queueDynamic.EnqueueMiddleAfter(item, ball,false);
+        }  
     }
 }

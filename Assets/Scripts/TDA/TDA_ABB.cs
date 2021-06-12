@@ -9,7 +9,7 @@ public class ABBNode
     public ABBNode hijoDer;
     public ABBNode hijoIzq;
 }
-public interface ABBTDA
+public interface ITDAABB
 {
     int Raiz();
     ABBNode HijoIzq();
@@ -19,7 +19,7 @@ public interface ABBTDA
     void AgregarElem(ref ABBNode n, Ball x);
     void EliminarElem(ref ABBNode n, Ball x);
 }
-public class ABBBall : MonoBehaviour, ABBTDA
+public class TDA_ABB : MonoBehaviour, ITDAABB
 {
     public ABBNode raiz;
     public void AgregarElem(ref ABBNode raiz, Ball x)
@@ -105,10 +105,10 @@ public class ABBBall : MonoBehaviour, ABBTDA
     public void inOrder(ABBNode a,List<Ball> abbNode)
     {
         if (a != null)
-        {
-           
+        {           
             inOrder(a.hijoIzq,abbNode);
-            abbNode.Add(a.info);
+            if(!abbNode.Contains(a.info)) //Esta linea es necesaria para que no agregue dos veces la misma pelota
+                abbNode.Add(a.info);
             inOrder(a.hijoDer,abbNode);
         }
     }

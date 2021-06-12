@@ -10,7 +10,6 @@ public class CanonController : MonoBehaviour
 
 	[Header("Raycast Settings")]
 	[SerializeField] private float rayLenght = 5f;
-	//[SerializeField] private LayerMask layersToHit;
 	private Transform raycastPoint;
 	private Vector2 actualPositionMouse;
 	private RaycastHit2D hit2D;
