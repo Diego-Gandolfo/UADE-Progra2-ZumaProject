@@ -16,10 +16,12 @@ public class Ball : MonoBehaviour
     public Color Color { get; private set; }
 
     public bool IsProjectile { get; set; }
+    public int IndexValue { get; private set; }
 
     private void Awake()
     {
-        Color = colorBucket[Random.Range(0, colorBucket.Length)];
+        IndexValue = (int) Random.Range(0, colorBucket.Length);
+        Color = colorBucket[IndexValue];
         gameObject.GetComponent<SpriteRenderer>().color = Color;
         lifeTimeTimer = lifeTime;
     }
@@ -71,10 +73,10 @@ public class Ball : MonoBehaviour
     {
         this.QueueController = queueController;
     }
-    public int ColorValue()
-    {
-        hexaString = ColorUtility.ToHtmlStringRGBA(Color);
-        hexaInt = System.Int32.Parse(hexaString, NumberStyles.AllowHexSpecifier);
-        return hexaInt;
-    }
+    //public int ColorValue()
+    //{
+    //    hexaString = ColorUtility.ToHtmlStringRGBA(Color);
+    //    hexaInt = System.Int32.Parse(hexaString, NumberStyles.AllowHexSpecifier);
+    //    return hexaInt;
+    //}
 }

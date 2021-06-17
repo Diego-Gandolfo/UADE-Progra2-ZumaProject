@@ -29,11 +29,11 @@ public class TDA_ABB : MonoBehaviour, ITDAABB
             raiz = new ABBNode();
             raiz.info = x;
         }
-        else if (raiz.info.ColorValue() > x.ColorValue())
+        else if (raiz.info.IndexValue > x.IndexValue)
         {
             AgregarElem(ref raiz.hijoIzq, x);
         }
-        else if (raiz.info.ColorValue() <= x.ColorValue())
+        else if (raiz.info.IndexValue <= x.IndexValue)
         {
             AgregarElem(ref raiz.hijoDer, x);
         }
@@ -62,7 +62,7 @@ public class TDA_ABB : MonoBehaviour, ITDAABB
                 raiz.info = this.menor(raiz.hijoDer);
                 EliminarElem(ref raiz.hijoDer, raiz.info);
             }
-            else if (raiz.info.ColorValue() < x.ColorValue())
+            else if (raiz.info.IndexValue < x.IndexValue)
             {
                 EliminarElem(ref raiz.hijoDer, x);
             }
@@ -90,14 +90,14 @@ public class TDA_ABB : MonoBehaviour, ITDAABB
 
     public int Raiz()
     {
-        return raiz.info.ColorValue();
+        return raiz.info.IndexValue;
     }
 
    public void preOrder(ABBNode a)
     {
         if (a != null)
         {
-            print(a.info.ColorValue());
+            print(a.info.IndexValue);
             preOrder(a.hijoIzq);
             preOrder(a.hijoDer);
         }
