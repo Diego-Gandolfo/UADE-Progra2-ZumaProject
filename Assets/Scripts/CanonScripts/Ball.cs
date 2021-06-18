@@ -11,6 +11,7 @@ public class Ball : MonoBehaviour
     private float lifeTimeTimer;
     private string hexaString;
     private int hexaInt;
+
     public QueueDynamicController QueueController { get; private set; }
 
     public Color Color { get; private set; }
@@ -73,10 +74,4 @@ public class Ball : MonoBehaviour
     {
         this.QueueController = queueController;
     }
-    //public int ColorValue()
-    //{
-    //    hexaString = ColorUtility.ToHtmlStringRGBA(Color);
-    //    hexaInt = System.Int32.Parse(hexaString, NumberStyles.AllowHexSpecifier);
-    //    return hexaInt;
-    //}
 }

@@ -9,7 +9,6 @@ public class ABBManager : MonoBehaviour
     private TDA_ABB ballTree;
     public Ball ballPrefab;
 
-
     [Header("Raycast Settings")]
     [SerializeField] SpriteRenderer currentBall;
     private Transform raycastPoint;
@@ -23,11 +22,13 @@ public class ABBManager : MonoBehaviour
         ballTree = new TDA_ABB();
         ballTree.InicializarArbol();
     }
+
     public Ball CreateBall() // Creamos una nueva instancia y nodo
     {
         var ball = Instantiate(this.ballPrefab); // instanciamos una nueva Sphere
         return ball; // devolvemos el clone creado
     }
+
     private void Update()
     {
         actualPositionMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -53,27 +54,5 @@ public class ABBManager : MonoBehaviour
         }
 
         ballTree.inOrder(ballTree.raiz, queueDynamic, ball); //acá las ordeno por color
-
-        //foreach (var item in resortList) // recorro la lista y las vuelvo a meter en la cola una por una
-        //{
-        //    queueDynamic.EnqueueMiddleAfter(item, ball,false);
-        //}  
     }
-
-    //private void ReSortBalls(Ball ball)
-    //{
-    //    var resortList = queueDynamic.DequeueList(ball, ballToOrder); //Se trae las pelotas en una lista.
-
-    //    foreach (var item in resortList) //recorre la lista y las agrega una por una al arbol
-    //    {
-    //        ballTree.AgregarElem(ref ballTree.raiz, item);
-    //    }
-
-    //    ballTree.inOrder(ballTree.raiz, resortList); //acá las ordeno por color
-
-    //    foreach (var item in resortList) // recorro la lista y las vuelvo a meter en la cola una por una
-    //    {
-    //        queueDynamic.EnqueueMiddleAfter(item, ball,false);
-    //    }  
-    //}
 }

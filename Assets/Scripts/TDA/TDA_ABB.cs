@@ -112,24 +112,9 @@ public class TDA_ABB : MonoBehaviour, ITDAABB
         {           
             inOrder(a.hijoIzq, queueDynamic, ball);
             queueDynamic.EnqueueMiddleAfter(a.info, ball, false);
-            print($"Hola?");
             inOrder(a.hijoDer, queueDynamic, ball);
         }
     }
-
-    //public void inOrder(ABBNode a, List<Ball> abbNode)
-    //{
-    //    if (a != null)
-    //    {           
-    //        inOrder(a.hijoIzq,abbNode);
-    //        if (!abbNode.Contains(a.info)) //Esta linea es necesaria para que no agregue dos veces la misma pelota
-    //        {
-    //            abbNode.Add(a.info);
-    //        }
-    //        print($"Hola?");
-    //        inOrder(a.hijoDer,abbNode);
-    //    }
-    //}
 
     public void postOrder(ABBNode a)
     {
