@@ -6,7 +6,7 @@ using UnityEngine;
 public class PowerUp : MonoBehaviour, IBall
 {
     private QueueDynamicController queueDynamic;
-    [SerializeField] private int ballToOrder;
+    private int ballToOrder;
     private TDA_ABB ballTree;
 
     public PowerUp(QueueDynamicController queueDynamic)
@@ -24,6 +24,7 @@ public class PowerUp : MonoBehaviour, IBall
         {
             if (ball.IsProjectile)
             {
+                print(ball.IsProjectile);
                 ReSortBalls(ball); //Reordenamos las pelotas
                 queueDynamic.DesqueueMiddle(ball); //Sacamos el powerup del queue
                 Destroy(collision.gameObject); //Destruimos el proyectil
@@ -35,6 +36,11 @@ public class PowerUp : MonoBehaviour, IBall
     public void SetQueueController(QueueDynamicController queueController)
     {
         this.queueDynamic = queueController;
+    }
+
+    public void SetBallsToOrder(int number)
+    {
+        ballToOrder = number;
     }
 
     public GameObject GetGameObject()

@@ -7,14 +7,13 @@ using UnityEngine;
 public class QueueDynamicController : MonoBehaviour
 {
     [SerializeField] private int checkColorCountToPowerUp = 1;
+    [SerializeField] private int ballsToOrder = 1;
     [SerializeField] private Ball ballPrefab = null;
     [SerializeField] private PowerUp powerUpPrefab = null;
     [SerializeField] private float ballSpawnCooldown = 0f;
     private int checkColorCount;
     private float ballSpawnTimer = 0f;
-
     private QueueDymamic queueDynamic = null;
-    
     private int counter = 0;
 
     private void Start()
@@ -84,7 +83,7 @@ public class QueueDynamicController : MonoBehaviour
         ShowQueue();
     }
 
-    public void EnqueueMiddleAfter(Ball newBall, Ball afterBall, bool hasToCheck = true)
+    public void EnqueueMiddleAfter(IBall newBall, IBall afterBall, bool hasToCheck = true)
     {
         queueDynamic.EnqueueMiddleAfter(newBall, afterBall);
         var node = FindNode(newBall);
@@ -93,7 +92,7 @@ public class QueueDynamicController : MonoBehaviour
         ShowQueue();
     }
 
-    public void EnqueueMiddleBefore(Ball newBall, Ball beforeBall, bool hasToCheck = true)
+    public void EnqueueMiddleBefore(IBall newBall, IBall beforeBall, bool hasToCheck = true)
     {
         queueDynamic.EnqueueMiddleBefore(newBall, beforeBall);
         var node = FindNode(newBall);
@@ -131,16 +130,17 @@ public class QueueDynamicController : MonoBehaviour
         return aux;
     }
 
-    public List<IBall> DequeueList(IBall ball, int index)
+    public List<IBall> DequeueList(IBall ball, int ballsToOrder)
     {
         List<IBall> ballsToDequeue = new List<IBall>();
         NodeBall node = FindNode(ball);
-        var auxNodeRight = node.nextNode;
-        var auxNodeLeft = node.previousNode;
+        print("DequeueList " + node.element.GetGameObject().name);
+        var auxNodeRight = node.nextNode != null ? node.nextNode : null;
+        var auxNodeLeft = node.previousNode != null ? node.previousNode : null;
 
         if (auxNodeRight != null) // Recorrido Nodo Derecho, si el nodo derecho es null, no hago nada
         {
-            for (int i = 0; i < index; i++) 
+            for (int i = 0; i < ballsToOrder; i++) 
             {
                     if (auxNodeRight != null)
                     {
@@ -154,7 +154,7 @@ public class QueueDynamicController : MonoBehaviour
 
         if(auxNodeLeft != null) // Recorrido Nodo Izquierdo
         {
-            for (int i = 0; i < index; i++) 
+            for (int i = 0; i < ballsToOrder; i++) 
             {
                 if (auxNodeLeft != null)
                 {
@@ -179,8 +179,8 @@ public class QueueDynamicController : MonoBehaviour
         {
             auxNode = auxNode.nextNode;
         }
-        //print(auxNode.element.name);
-        if (auxNode.element == ball) //SI LO ENCUENTRA, COMPRUEBA COLOR
+        print("Find node " + auxNode.element.GetGameObject().name);
+        if (auxNode.element == ball) 
             return auxNode;
         else
             return null;
@@ -246,17 +246,15 @@ public class QueueDynamicController : MonoBehaviour
 
         if (ballList.Count >= 3)
         {
-            print("Cuantos Colores hay: " + ballList.Count);
+            //print("Cuantos Colores hay: " + ballList.Count);
             checkColorCount++; //Por cada vuelta de checkcolors que explota, sumamos uno al contador
-            print(checkColorCount);
+
             for (int i = 0; i < ballList.Count; i++)
             {
                 var aux = DesqueueMiddle(ballList[i]);
                 Destroy(aux.GetGameObject());
             }
         }
-
-
 
         Ball nextBall = nextNode != null ? nextNode.element as Ball : null;
         Ball previousBall = previousNode != null ? previousNode.element as Ball : null;
@@ -269,7 +267,6 @@ public class QueueDynamicController : MonoBehaviour
             }
             else //Si no coinciden el color -> no hay recursividad
             {
-                print("no hago recursividad");
                 if (checkColorCount >= checkColorCountToPowerUp) //chequeo si llega al powerup
                     InstantiatePowerUp(previousNode.element);
             }
@@ -278,7 +275,6 @@ public class QueueDynamicController : MonoBehaviour
         {
             if (checkColorCount >= checkColorCountToPowerUp) // Y si da para hacer un power up...
             {
-                print("tengo suficientes");
                 if (previousNode != null) //Me fijo si esta es Nula.. si no lo es, Instancio desde acá
                     InstantiatePowerUp(previousNode.element);
                 else if (nextNode != null) //Si la anterior es nula, pruebo con este. Si ambos lo son, no deberia haber una QueueDynamic
@@ -289,10 +285,10 @@ public class QueueDynamicController : MonoBehaviour
 
     private void InstantiatePowerUp(IBall ball)
     {
-        print("Instancio Power Up");
-        var newBall = Instantiate(this.powerUpPrefab); // instanciamos una nueva Sphere
-        newBall.SetQueueController(this); //Le seteamos el controller
-        queueDynamic.EnqueueMiddleAfter(newBall, ball); //Lo encolamos
+        var newPowerUp = Instantiate(this.powerUpPrefab); // instanciamos una nueva Sphere
+        newPowerUp.SetQueueController(this); //Le seteamos el controller
+        newPowerUp.SetBallsToOrder(ballsToOrder);
+        queueDynamic.EnqueueMiddleAfter(newPowerUp, ball); //Lo encolamos
         checkColorCount = 0; //Reseteamos el contador
     }
 

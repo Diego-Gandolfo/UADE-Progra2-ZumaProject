@@ -44,21 +44,25 @@ public class Ball : MonoBehaviour, IBall
     {
         if (IsProjectile)
         {
-            QueueController = collision.gameObject.GetComponent<Ball>().QueueController;
+            var ball = collision.gameObject.GetComponent<Ball>();
+            if (ball != null)
+            {
+                print("Es pelota");
+                QueueController = collision.gameObject.GetComponent<Ball>().QueueController;
+                ResetOnCollision();
 
-            Vector2 contactOnCollision = collision.GetContact(0).point;//Encuentra el punto de colision (devuelve un vector)
-            contactOnCollision.x -= collision.transform.position.x;
-            if (contactOnCollision.x > 0)
-            {
-                var afterBall = collision.gameObject.GetComponent<Ball>();
-                QueueController.EnqueueMiddleAfter(this, afterBall);
-                ResetOnCollision();
-            }
-            else if (contactOnCollision.x <= 0)
-            {
-                var beforeBall = collision.gameObject.GetComponent<Ball>();
-                QueueController.EnqueueMiddleBefore(this, beforeBall);
-                ResetOnCollision();
+                Vector2 contactOnCollision = collision.GetContact(0).point;//Encuentra el punto de colision (devuelve un vector)
+                contactOnCollision.x -= collision.transform.position.x;
+                if (contactOnCollision.x > 0)
+                {
+                    var afterBall = collision.gameObject.GetComponent<Ball>();
+                    QueueController.EnqueueMiddleAfter(this, afterBall);
+                }
+                else if (contactOnCollision.x <= 0)
+                {
+                    var beforeBall = collision.gameObject.GetComponent<Ball>();
+                    QueueController.EnqueueMiddleBefore(this, beforeBall);
+                }
             }
         }
     }
