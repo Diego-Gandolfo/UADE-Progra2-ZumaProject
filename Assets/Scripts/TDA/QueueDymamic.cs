@@ -1,19 +1,20 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Interface;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QueueDymamic : MonoBehaviour, IQueueDynamic<Ball> // Esta es la implementación, y el tipo de dato a usar son Spheres
+public class QueueDymamic : MonoBehaviour, IQueueDynamic<IBall> // Esta es la implementación, y el tipo de dato a usar son Spheres
 {
     public NodeBall rootNode = null; // Acá creo el Nodo Raíz, que va a trabajar con el tipo de dato Spheres
 
-    public void Initialize(Ball ball) // Para inicializar la Cola, recibe una Sphere
+    public void Initialize(IBall ball) // Para inicializar la Cola, recibe una Sphere
     {
         NodeBall newNode = new NodeBall(); // creamos un nuevo Nodo
         newNode.InitializeNode(ball, null, null); // lo inicializa con sphere como su elemento y tanto su previo como el siguiente son null
         rootNode = newNode; // decimos que el Nodo Raíz es el nuevo Nodo creado
     }
 
-    public void EnqueueTop(Ball ball) // Acá metemos en la cola un Sphere como primer elemento
+    public void EnqueueTop(IBall ball) // Acá metemos en la cola un Sphere como primer elemento
     {
         if (!IsEmpty())
         {
@@ -24,7 +25,7 @@ public class QueueDymamic : MonoBehaviour, IQueueDynamic<Ball> // Esta es la imp
         }
     }
 
-    public void EnqueueMiddleAfter(Ball newBall, Ball afterBall) // esta sirve para meter una Sphere despues del nodo que tiene la afterBall
+    public void EnqueueMiddleAfter(IBall newBall, IBall afterBall) // esta sirve para meter una Sphere despues del nodo que tiene la afterBall
     {
         if (!IsEmpty())
         {
@@ -50,7 +51,7 @@ public class QueueDymamic : MonoBehaviour, IQueueDynamic<Ball> // Esta es la imp
         }
     }
 
-    public void EnqueueMiddleBefore(Ball newBall, Ball beforeBall) // esta sirve para meter una Sphere antes del nodo que tiene la beforeSphere
+    public void EnqueueMiddleBefore(IBall newBall, IBall beforeBall) // esta sirve para meter una Sphere antes del nodo que tiene la beforeSphere
     {
         if (!IsEmpty())
         {
@@ -76,7 +77,7 @@ public class QueueDymamic : MonoBehaviour, IQueueDynamic<Ball> // Esta es la imp
         }
     }
 
-    public void EnqueueBottom(Ball ball) // este sirve para meter un Sphere al final de la cola
+    public void EnqueueBottom(IBall ball) // este sirve para meter un Sphere al final de la cola
     {
         if (!IsEmpty())
         {
@@ -93,12 +94,12 @@ public class QueueDymamic : MonoBehaviour, IQueueDynamic<Ball> // Esta es la imp
         }
     }
 
-    public Ball DesqueueTop() // para sacar y devolver el primer elemento
+    public IBall DesqueueTop() // para sacar y devolver el primer elemento
     {
         if (!IsEmpty())
         {
-            Ball auxBall = rootNode.element; // nos guardamos la referencia a la Sphere guarada en el rootNode
-            rootNode.element.gameObject.SetActive(false);
+            IBall auxBall = rootNode.element; // nos guardamos la referencia a la Sphere guarada en el rootNode
+            rootNode.element.GetGameObject().SetActive(false);
             if (rootNode.nextNode != null)
             {
                 rootNode.nextNode.previousNode = null; // decimos que el nodo previo del nodo siguiente de rootNode es null, antes referenciaba a rootNode
@@ -116,7 +117,7 @@ public class QueueDymamic : MonoBehaviour, IQueueDynamic<Ball> // Esta es la imp
         }
     }
 
-    public Ball DesqueueMiddle(Ball ball) // para quitar un elemento de la mitad de la cola
+    public IBall DesqueueMiddle(IBall ball) // para quitar un elemento de la mitad de la cola
     {
         NodeBall auxNode = rootNode; // creamos un nodo auxiliar y le asignamos la referencia del rootNode
             
@@ -148,14 +149,14 @@ public class QueueDymamic : MonoBehaviour, IQueueDynamic<Ball> // Esta es la imp
         }
         else // si no lo encontramos
         {
-            Debug.LogError($"No se ha encontrado {ball.name} en ningún nodo!"); // tiramos error en consola
+            Debug.LogError($"No se ha encontrado {ball.GetGameObject().name} en ningún nodo!"); // tiramos error en consola
         }
 
         //Destroy(auxNode.element.gameObject);
         return auxNode.element;
     }
 
-    public Ball DesqueueBottom() // para quitar y que nos devuleva el utlimo elemento
+    public IBall DesqueueBottom() // para quitar y que nos devuleva el utlimo elemento
     {
         if (!IsEmpty())
         {
@@ -168,15 +169,15 @@ public class QueueDymamic : MonoBehaviour, IQueueDynamic<Ball> // Esta es la imp
 
             if (auxNode != rootNode)
             {
-                Ball auxBall = auxNode.element; // nos guardamos la referencia a la Sphere guarada en el auxNode
-                auxNode.element.gameObject.SetActive(false);
+                IBall auxBall = auxNode.element; // nos guardamos la referencia a la Sphere guarada en el auxNode
+                auxNode.element.GetGameObject().SetActive(false);
                 auxNode.previousNode.nextNode = null; // decimos que el siguiente del previo del auxNode es null
                 return auxBall;  // devolvemos la Sphere
             }
             else
             {
-                Ball auxBall = rootNode.element; // nos guardamos la referencia a la Sphere guarada en el auxNode
-                rootNode.element.gameObject.SetActive(false);
+                IBall auxBall = rootNode.element; // nos guardamos la referencia a la Sphere guarada en el auxNode
+                rootNode.element.GetGameObject().SetActive(false);
                 rootNode = null; // decimos que el siguiente del previo del auxNode es null
                 return auxBall;  // devolvemos la Sphere
             }

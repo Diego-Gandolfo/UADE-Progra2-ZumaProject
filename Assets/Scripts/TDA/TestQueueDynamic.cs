@@ -65,7 +65,7 @@ public class TestQueueDynamic : MonoBehaviour
             // Para mostrar el Nodo Raíz
             if (auxNode != null) // si el auxNode es distinto de null
             {
-                auxNode.element.transform.position = new Vector3(index, 0f, 0f); // lo movemos en x según el valor del index
+                auxNode.element.GetGameObject().transform.position = new Vector3(index, 0f, 0f); // lo movemos en x según el valor del index
                 index++; // aumentamos el index
             }
 
@@ -73,7 +73,7 @@ public class TestQueueDynamic : MonoBehaviour
             while (auxNode.nextNode != null) // nos fijamos si es el ultimo
             {
                 auxNode = auxNode.nextNode; // sino guardamos el siguiente en auxNode y repetimos
-                auxNode.element.transform.position = new Vector3(index, 0f, 0f); // lo movemos en x según el valor del index
+                auxNode.element.GetGameObject().transform.position = new Vector3(index, 0f, 0f); // lo movemos en x según el valor del index
                 index++; // aumentamos el index
             }
         }

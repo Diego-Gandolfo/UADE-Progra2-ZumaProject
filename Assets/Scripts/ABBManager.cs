@@ -50,7 +50,7 @@ public class ABBManager : MonoBehaviour
 
         foreach (var item in resortList) //recorre la lista y las agrega una por una al arbol
         {
-            ballTree.AgregarElem(ref ballTree.raiz, item);
+            ballTree.AgregarElem(ref ballTree.raiz, item as Ball);
         }
 
         ballTree.inOrder(ballTree.raiz, queueDynamic, ball); //acá las ordeno por color

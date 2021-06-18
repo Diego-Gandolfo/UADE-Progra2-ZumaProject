@@ -1,16 +1,15 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Interface;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
 
-public class Ball : MonoBehaviour
+public class Ball : MonoBehaviour, IBall
 {
     [SerializeField] private Color[] colorBucket = new Color[3];
     [SerializeField] private float speed = 10;
     [SerializeField] private float lifeTime;
     private float lifeTimeTimer;
-    private string hexaString;
-    private int hexaInt;
 
     public QueueDynamicController QueueController { get; private set; }
 
@@ -73,5 +72,10 @@ public class Ball : MonoBehaviour
     public void SetQueueController(QueueDynamicController queueController)
     {
         this.QueueController = queueController;
+    }
+
+    public GameObject GetGameObject()
+    {
+        return gameObject;
     }
 }
