@@ -239,13 +239,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15319de0ccdc1b349aafea657cd307c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  queueDynamic: {fileID: 1755319411}
   ballToOrder: 3
   ballPrefab: {fileID: 7535913483028634844, guid: 2601f13924c22624a892517a8c6a1de2,
     type: 3}
-  ballList: []
-  queueDynamic: {fileID: 1755319411}
   currentBall: {fileID: 234027360}
-  rayLenght: 5
 --- !u!4 &1324568021
 Transform:
   m_ObjectHideFlags: 0
@@ -294,6 +292,12 @@ PrefabInstance:
       propertyPath: ballSpawnCooldown
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 189333621410587846, guid: c526e0c9d83891c47a783c48728814ce,
+        type: 3}
+      propertyPath: powerUpPrefab
+      value: 
+      objectReference: {fileID: 5230431254757149322, guid: c1a9b9f0fab086a47be8c4fcd8b7eab9,
+        type: 3}
     - target: {fileID: 189333621410587847, guid: c526e0c9d83891c47a783c48728814ce,
         type: 3}
       propertyPath: m_RootOrder

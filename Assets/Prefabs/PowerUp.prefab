@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 6808222489710163917}
   - component: {fileID: 6808222489710163919}
   - component: {fileID: 6808222489710163905}
-  - component: {fileID: 7535913483028634844}
+  - component: {fileID: 5230431254757149322}
   m_Layer: 8
-  m_Name: Bala
+  m_Name: PowerUp
   m_TagString: Sphere
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ece04dfc66506014ab57486adc451bd0, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.96142375, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -121,7 +121,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.23
---- !u!114 &7535913483028634844
+--- !u!114 &5230431254757149322
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,12 +130,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6808222489710163904}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04c48ef47fe9a914e98b6f526b6600cd, type: 3}
+  m_Script: {fileID: 11500000, guid: f30319934469f134eb02520215c2a6d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorBucket:
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 0, g: 0, b: 1, a: 1}
-  speed: 10
-  lifeTime: 3
+  ballToOrder: 0

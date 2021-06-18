@@ -6,8 +6,11 @@ using UnityEngine;
 
 public class QueueDynamicController : MonoBehaviour
 {
+    [SerializeField] private int checkColorCountToPowerUp = 1;
     [SerializeField] private Ball ballPrefab = null;
+    [SerializeField] private PowerUp powerUpPrefab = null;
     [SerializeField] private float ballSpawnCooldown = 0f;
+    private int checkColorCount;
     private float ballSpawnTimer = 0f;
 
     private QueueDymamic queueDynamic = null;
@@ -200,7 +203,7 @@ public class QueueDynamicController : MonoBehaviour
                 Ball auxBall = (Ball) auxNode.element;
                 Ball auxBallSupp = (Ball) auxNodeSupp.element;
 
-                print($"auxBall.Color: {auxBall.IndexValue} - auxBallSupp.Color: {auxBallSupp.IndexValue}");
+                //print($"auxBall.Color: {auxBall.IndexValue} - auxBallSupp.Color: {auxBallSupp.IndexValue}");
 
                 while (auxBall.Color == auxBallSupp.Color && auxNodeSupp.nextNode != null)
                 {
@@ -225,7 +228,7 @@ public class QueueDynamicController : MonoBehaviour
                 Ball auxBall = (Ball)auxNode.element;
                 Ball auxBallSupp = (Ball)auxNodeSupp.element;
 
-                print($"auxBall.Color: {auxBall.IndexValue} - auxBallSupp.Color: {auxBallSupp.IndexValue}");
+                //print($"auxBall.Color: {auxBall.IndexValue} - auxBallSupp.Color: {auxBallSupp.IndexValue}");
 
                 while (auxBall.Color == auxBallSupp.Color && auxNodeSupp.previousNode != null)
                 {
@@ -243,7 +246,7 @@ public class QueueDynamicController : MonoBehaviour
 
         if (ballList.Count >= 3)
         {
-            print(ballList.Count);
+            checkColorCount++;
             for (int i = 0; i < ballList.Count; i++)
             {
                 var aux = DesqueueMiddle(ballList[i]);
@@ -251,13 +254,38 @@ public class QueueDynamicController : MonoBehaviour
             }
         }
 
+
+
         Ball nextBall = nextNode != null ? nextNode.element as Ball : null;
         Ball previousBall = previousNode != null ? previousNode.element as Ball : null;
 
         // SI EL NODO PREVIO Y NODO SIGUIENTE COINDICEN COLOR, le paso el CHECKCOLOR de uno para que haga de nuevo toda la lista 
         if (previousNode != null && nextNode != null)
-            if(previousBall.Color == nextBall.Color)
+        {
+            if (previousBall.Color == nextBall.Color)
+            {
                 CheckColors(previousNode); //RECURSIVIDAD!!!
+            }
+        }
+        else
+        {
+            if (checkColorCount >= checkColorCountToPowerUp)
+            {
+                print("Hola2");
+                if (previousNode != null)
+                    InstantiatePowerUp(previousNode.element);
+                else if (nextNode != null)
+                    InstantiatePowerUp(nextNode.element);
+            }
+        }
+    }
+
+    private void InstantiatePowerUp(IBall ball)
+    {
+        print("Hola1");
+        var newBall = Instantiate(this.powerUpPrefab); // instanciamos una nueva Sphere
+        newBall.SetQueueController(this);
+        queueDynamic.EnqueueMiddleAfter(newBall, ball);
     }
 
     public IBall GetRootNode()
