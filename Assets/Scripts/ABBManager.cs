@@ -42,6 +42,7 @@ public class ABBManager : MonoBehaviour
                 ReSortBalls(hit2D.collider.GetComponent<Ball>());
         }
     }
+
     private void ReSortBalls(Ball ball)
     {
         var resortList = queueDynamic.DequeueList(ball, ballToOrder); //Se trae las pelotas en una lista.
@@ -51,11 +52,28 @@ public class ABBManager : MonoBehaviour
             ballTree.AgregarElem(ref ballTree.raiz, item);
         }
 
-        ballTree.inOrder(ballTree.raiz, resortList); //acá las ordeno por color
+        ballTree.inOrder(ballTree.raiz, queueDynamic, ball); //acá las ordeno por color
 
-        foreach (var item in resortList) // recorro la lista y las vuelvo a meter en la cola una por una
-        {
-            queueDynamic.EnqueueMiddleAfter(item, ball,false);
-        }  
+        //foreach (var item in resortList) // recorro la lista y las vuelvo a meter en la cola una por una
+        //{
+        //    queueDynamic.EnqueueMiddleAfter(item, ball,false);
+        //}  
     }
+
+    //private void ReSortBalls(Ball ball)
+    //{
+    //    var resortList = queueDynamic.DequeueList(ball, ballToOrder); //Se trae las pelotas en una lista.
+
+    //    foreach (var item in resortList) //recorre la lista y las agrega una por una al arbol
+    //    {
+    //        ballTree.AgregarElem(ref ballTree.raiz, item);
+    //    }
+
+    //    ballTree.inOrder(ballTree.raiz, resortList); //acá las ordeno por color
+
+    //    foreach (var item in resortList) // recorro la lista y las vuelvo a meter en la cola una por una
+    //    {
+    //        queueDynamic.EnqueueMiddleAfter(item, ball,false);
+    //    }  
+    //}
 }

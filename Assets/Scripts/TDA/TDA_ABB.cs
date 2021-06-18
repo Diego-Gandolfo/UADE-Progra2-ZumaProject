@@ -19,15 +19,18 @@ public interface ITDAABB
     void AgregarElem(ref ABBNode n, Ball x);
     void EliminarElem(ref ABBNode n, Ball x);
 }
+
 public class TDA_ABB : MonoBehaviour, ITDAABB
 {
     public ABBNode raiz;
+
     public void AgregarElem(ref ABBNode raiz, Ball x)
     {
         if (raiz == null)
         {
             raiz = new ABBNode();
             raiz.info = x;
+            //print($"{x.gameObject.name} - {x.IndexValue}");
         }
         else if (raiz.info.IndexValue > x.IndexValue)
         {
@@ -102,16 +105,32 @@ public class TDA_ABB : MonoBehaviour, ITDAABB
             preOrder(a.hijoDer);
         }
     }
-    public void inOrder(ABBNode a,List<Ball> abbNode)
+
+    public void inOrder(ABBNode a, QueueDynamicController queueDynamic, Ball ball)
     {
         if (a != null)
         {           
-            inOrder(a.hijoIzq,abbNode);
-            if(!abbNode.Contains(a.info)) //Esta linea es necesaria para que no agregue dos veces la misma pelota
-                abbNode.Add(a.info);
-            inOrder(a.hijoDer,abbNode);
+            inOrder(a.hijoIzq, queueDynamic, ball);
+            queueDynamic.EnqueueMiddleAfter(a.info, ball, false);
+            print($"Hola?");
+            inOrder(a.hijoDer, queueDynamic, ball);
         }
     }
+
+    //public void inOrder(ABBNode a, List<Ball> abbNode)
+    //{
+    //    if (a != null)
+    //    {           
+    //        inOrder(a.hijoIzq,abbNode);
+    //        if (!abbNode.Contains(a.info)) //Esta linea es necesaria para que no agregue dos veces la misma pelota
+    //        {
+    //            abbNode.Add(a.info);
+    //        }
+    //        print($"Hola?");
+    //        inOrder(a.hijoDer,abbNode);
+    //    }
+    //}
+
     public void postOrder(ABBNode a)
     {
         if (a != null)
@@ -121,6 +140,7 @@ public class TDA_ABB : MonoBehaviour, ITDAABB
             // Console.WriteLine(a.info.ToString());    IMPLEMENTACION
         }
     }
+
     public void levelOrder(ABBNode nodo)
     {
         Queue<ABBNode> q = new Queue<ABBNode>();
