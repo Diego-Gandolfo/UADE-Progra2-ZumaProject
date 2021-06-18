@@ -246,7 +246,9 @@ public class QueueDynamicController : MonoBehaviour
 
         if (ballList.Count >= 3)
         {
-            checkColorCount++;
+            print("Cuantos Colores hay: " + ballList.Count);
+            checkColorCount++; //Por cada vuelta de checkcolors que explota, sumamos uno al contador
+            print(checkColorCount);
             for (int i = 0; i < ballList.Count; i++)
             {
                 var aux = DesqueueMiddle(ballList[i]);
@@ -259,22 +261,27 @@ public class QueueDynamicController : MonoBehaviour
         Ball nextBall = nextNode != null ? nextNode.element as Ball : null;
         Ball previousBall = previousNode != null ? previousNode.element as Ball : null;
 
-        // SI EL NODO PREVIO Y NODO SIGUIENTE COINDICEN COLOR, le paso el CHECKCOLOR de uno para que haga de nuevo toda la lista 
-        if (previousNode != null && nextNode != null)
+        if (previousNode != null && nextNode != null) //Si AMBOS nodos existen
         {
-            if (previousBall.Color == nextBall.Color)
+            if (previousBall.Color == nextBall.Color) //Y si los colores coinciden
             {
                 CheckColors(previousNode); //RECURSIVIDAD!!!
             }
-        }
-        else
-        {
-            if (checkColorCount >= checkColorCountToPowerUp)
+            else //Si no coinciden el color -> no hay recursividad
             {
-                print("Hola2");
-                if (previousNode != null)
+                print("no hago recursividad");
+                if (checkColorCount >= checkColorCountToPowerUp) //chequeo si llega al powerup
                     InstantiatePowerUp(previousNode.element);
-                else if (nextNode != null)
+            }
+        }
+        else //Si una de las dos (o las dos) es nula...
+        {
+            if (checkColorCount >= checkColorCountToPowerUp) // Y si da para hacer un power up...
+            {
+                print("tengo suficientes");
+                if (previousNode != null) //Me fijo si esta es Nula.. si no lo es, Instancio desde acá
+                    InstantiatePowerUp(previousNode.element);
+                else if (nextNode != null) //Si la anterior es nula, pruebo con este. Si ambos lo son, no deberia haber una QueueDynamic
                     InstantiatePowerUp(nextNode.element);
             }
         }
@@ -282,10 +289,11 @@ public class QueueDynamicController : MonoBehaviour
 
     private void InstantiatePowerUp(IBall ball)
     {
-        print("Hola1");
+        print("Instancio Power Up");
         var newBall = Instantiate(this.powerUpPrefab); // instanciamos una nueva Sphere
-        newBall.SetQueueController(this);
-        queueDynamic.EnqueueMiddleAfter(newBall, ball);
+        newBall.SetQueueController(this); //Le seteamos el controller
+        queueDynamic.EnqueueMiddleAfter(newBall, ball); //Lo encolamos
+        checkColorCount = 0; //Reseteamos el contador
     }
 
     public IBall GetRootNode()

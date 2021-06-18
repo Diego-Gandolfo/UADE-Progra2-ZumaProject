@@ -298,6 +298,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5230431254757149322, guid: c1a9b9f0fab086a47be8c4fcd8b7eab9,
         type: 3}
+    - target: {fileID: 189333621410587846, guid: c526e0c9d83891c47a783c48728814ce,
+        type: 3}
+      propertyPath: checkColorCountToPowerUp
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 189333621410587847, guid: c526e0c9d83891c47a783c48728814ce,
         type: 3}
       propertyPath: m_RootOrder
