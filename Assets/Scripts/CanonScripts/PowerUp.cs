@@ -23,10 +23,10 @@ public class PowerUp : MonoBehaviour, IBall
         {
             if (ball.IsProjectile)
             {
-                print(ball.IsProjectile);
                 ReSortBalls(this); //Reordenamos las pelotas
                 queueDynamic.DesqueueMiddle(this); //Sacamos el powerup del queue
                 Destroy(collision.gameObject); //Destruimos el proyectil
+                queueDynamic.SetCanInstantiatePowerUp(true);
                 Destroy(gameObject); //Destruimos el powerup
             }
         }

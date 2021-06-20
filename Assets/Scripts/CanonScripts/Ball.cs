@@ -47,7 +47,7 @@ public class Ball : MonoBehaviour, IBall
             var ball = collision.gameObject.GetComponent<Ball>();
             if (ball != null)
             {
-                print("Es pelota");
+                //print("Es pelota");
                 QueueController = collision.gameObject.GetComponent<Ball>().QueueController;
                 ResetOnCollision();
 

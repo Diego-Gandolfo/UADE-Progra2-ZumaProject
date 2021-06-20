@@ -15,6 +15,7 @@ public class QueueDynamicController : MonoBehaviour
     private float ballSpawnTimer = 0f;
     private QueueDymamic queueDynamic = null;
     private int counter = 0;
+    private bool canInstantiatePowerUp = true;
 
     private void Start()
     {
@@ -179,7 +180,7 @@ public class QueueDynamicController : MonoBehaviour
         {
             auxNode = auxNode.nextNode;
         }
-        print("Find node " + auxNode.element.GetGameObject().name);
+        //print("Find node " + auxNode.element.GetGameObject().name);
         if (auxNode.element == ball) 
             return auxNode;
         else
@@ -209,7 +210,11 @@ public class QueueDynamicController : MonoBehaviour
                 {
                     ballList.Add(auxNodeSupp.element);
                     auxNodeSupp = auxNodeSupp.nextNode;
-                    auxBallSupp = (Ball) auxNodeSupp.element;
+
+                    if (auxNodeSupp.element is Ball)
+                        auxBallSupp = (Ball) auxNodeSupp.element;
+                    else
+                        break;
                 }
 
                 if (auxBall.Color == auxBallSupp.Color)
@@ -234,7 +239,11 @@ public class QueueDynamicController : MonoBehaviour
                 {
                     ballList.Add(auxNodeSupp.element);
                     auxNodeSupp = auxNodeSupp.previousNode;
-                    auxBallSupp = (Ball) auxNodeSupp.element;
+
+                    if (auxNodeSupp.element is Ball)
+                        auxBallSupp = (Ball) auxNodeSupp.element;
+                    else
+                        break;
                 }
 
                 if (auxBall.Color == auxBallSupp.Color)
@@ -247,12 +256,19 @@ public class QueueDynamicController : MonoBehaviour
         if (ballList.Count >= 3)
         {
             //print("Cuantos Colores hay: " + ballList.Count);
-            checkColorCount++; //Por cada vuelta de checkcolors que explota, sumamos uno al contador
+            if (canInstantiatePowerUp) //Por cada vuelta de checkcolors que explota, sumamos uno al contador
+            {
+                checkColorCount++;
+                print("checkColorCount: " + checkColorCount);
+            }
 
             for (int i = 0; i < ballList.Count; i++)
             {
-                var aux = DesqueueMiddle(ballList[i]);
-                Destroy(aux.GetGameObject());
+                if (ballList[i] is Ball)
+                {
+                    var aux = DesqueueMiddle(ballList[i]);
+                    Destroy(aux.GetGameObject());
+                }
             }
         }
 
@@ -285,16 +301,26 @@ public class QueueDynamicController : MonoBehaviour
 
     private void InstantiatePowerUp(IBall ball)
     {
-        var newPowerUp = Instantiate(this.powerUpPrefab); // instanciamos una nueva Sphere
-        newPowerUp.SetQueueController(this); //Le seteamos el controller
-        newPowerUp.SetBallsToOrder(ballsToOrder);
-        queueDynamic.EnqueueMiddleAfter(newPowerUp, ball); //Lo encolamos
-        checkColorCount = 0; //Reseteamos el contador
+        if (canInstantiatePowerUp)
+        {
+            print("InstantiatePowerUp: " + ball.GetGameObject().name);
+            SetCanInstantiatePowerUp(false);
+            var newPowerUp = Instantiate(this.powerUpPrefab); // instanciamos una nueva Sphere
+            newPowerUp.SetQueueController(this); //Le seteamos el controller
+            newPowerUp.SetBallsToOrder(ballsToOrder);
+            queueDynamic.EnqueueMiddleAfter(newPowerUp, ball); //Lo encolamos
+            checkColorCount = 0; //Reseteamos el contador
+        }
     }
 
     public IBall GetRootNode()
     {
         var auxNode = queueDynamic.rootNode;
         return auxNode.element;
+    }
+
+    public void SetCanInstantiatePowerUp(bool value)
+    {
+        canInstantiatePowerUp = value;
     }
 }
