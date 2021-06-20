@@ -15,7 +15,6 @@ public class GrafosManager : MonoBehaviour, IGrafosManager
     private TDA_GrafoTransform pointsGraph = new TDA_GrafoTransform();
     private int endingIndex;
 
-
     void Start()
     {
         pointsGraph.InicializarGrafo(pointsArray.Length);
@@ -49,7 +48,6 @@ public class GrafosManager : MonoBehaviour, IGrafosManager
             recorrido[i] = pointsArray[Convert.ToInt32(splitString[i])];
         }
 
-        print("dikstra: " + recorrido.Length);
         return recorrido;
     }
 }

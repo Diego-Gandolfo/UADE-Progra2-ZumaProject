@@ -38,6 +38,6 @@ public class LevelManager : MonoBehaviour
         //    gameManager.Victory();
         //}
 
-        //queueController.
+        //TODO: Crear CONDICION DE VICTORIA cuando se explotaron todas las pelotas de la cola
     }
 }

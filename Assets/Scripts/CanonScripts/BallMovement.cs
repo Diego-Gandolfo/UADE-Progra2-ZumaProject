@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BallMovement : MonoBehaviour
 {
-    //[SerializeField] Transform[] testPath;
     private Transform[] path;
     private int currentPosition = 0;
 
@@ -35,7 +34,6 @@ public class BallMovement : MonoBehaviour
     public void GetPath(Transform[] recorrido)
     {
         path = recorrido;
-        print("recorrido " +path.Length);
         currentPosition = 0;
         CanMove = true;
         this.transform.position = path[currentPosition].position;
