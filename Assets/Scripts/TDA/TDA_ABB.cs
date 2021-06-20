@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Interface;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -106,7 +107,7 @@ public class TDA_ABB : MonoBehaviour, ITDAABB
         }
     }
 
-    public void inOrder(ABBNode a, QueueDynamicController queueDynamic, Ball ball)
+    public void inOrder(ABBNode a, QueueDynamicController queueDynamic, IBall ball)
     {
         if (a != null)
         {           
