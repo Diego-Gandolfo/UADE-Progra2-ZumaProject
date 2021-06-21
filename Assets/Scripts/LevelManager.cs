@@ -52,6 +52,7 @@ public class LevelManager : MonoBehaviour
 
         //InsertPlayerInRanking(GameManager.instance.CurrentScore, numberLevel, currentTimer); //Lo insertamos en el ranking
 
+        PlayerGlobal.Instance.RankingId = 39; //TODO: Para temporal con lo que ya esta en la base de datos...
         GameManager.instance.Victory();
     }
 
