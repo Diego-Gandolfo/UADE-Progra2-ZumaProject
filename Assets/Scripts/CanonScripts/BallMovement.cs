@@ -52,17 +52,17 @@ public class BallMovement : MonoBehaviour
 
     private void SetNextNodesCanMove(bool value) // recorre los nodos siguientes para cambiarles el valor de CanMove
     {
-        if (Node != null)
+        if (Node != null) // nos aseguramos que esté seteado el Node
         {
-            var auxNode = Node.nextNode;
+            var auxNode = Node.nextNode; // creamos una variable auxiliar para guardar el nodo siguiente
 
-            while (auxNode != null)
+            while (auxNode != null) // mientras el auxiliar no sea null, es que hay un nodo sobre el que trabajar
             {
-                var ballMovement = auxNode.element.gameObject.GetComponent<BallMovement>();
+                var ballMovement = auxNode.element.gameObject.GetComponent<BallMovement>(); // obtenemos el BallMovement
 
-                if (ballMovement != null) ballMovement.CanMove = value;
+                if (ballMovement != null) ballMovement.CanMove = value; // si lo tiene, ponemos CanMove según el parametro recibido
 
-                auxNode = auxNode.nextNode;
+                auxNode = auxNode.nextNode; // guardamos en auxiliar la referencia al nodo siguiente
             }
         }
     }
