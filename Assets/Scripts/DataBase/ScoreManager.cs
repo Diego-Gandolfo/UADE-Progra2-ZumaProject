@@ -47,9 +47,14 @@ public class ScoreManager : MonoBehaviour
         print(PlayerGlobal.Instance.Name + " " + PlayerGlobal.Instance.Id);
     }
 
-    public void InsertPlayerInRanking() //Esto se haria cuando se termina un nivel
+    public void InsertPlayerInRanking(int score, int level, float time) //Esto se haria cuando se termina un nivel
     {
+        //PlayerGlobal.Instance.Level = level;
+        //PlayerGlobal.Instance.Score = score;
+        //PlayerGlobal.Instance.Time = time.ToString();
+
         var player = new Player(PlayerGlobal.Instance.Name, PlayerGlobal.Instance.Level, PlayerGlobal.Instance.Score);
+        player.Id = PlayerGlobal.Instance.Id;
         player.Time = PlayerGlobal.Instance.Time;
         database.InsertRanking(player);
     }
@@ -78,6 +83,8 @@ public class ScoreManager : MonoBehaviour
         var rankings = database.GetAllRankingsFromLevel(level);
         QuickSort(rankings, 0, rankings.Count - 1);
         UpdateRankingList(rankings);
+
+        CheckCurrentPlayerInRanking(rankings, PlayerGlobal.Instance.RankingId);
     }
 
     private void GetAllRanking()
@@ -157,4 +164,39 @@ public class ScoreManager : MonoBehaviour
             }
         }
     }
+
+    private void CheckCurrentPlayerInRanking(List<Player> players, int id)
+    {
+        print("chequeamos ranking id: " + PlayerGlobal.Instance.RankingId);
+        bool isPlayerThere = false;
+        for (int i = 0; i < rankingLine.Length; i++) //El largo del ranking
+        {
+            var index = (players.Count - i) - 1; //No se porque, esto lo hizo Diego
+            if (players[index].RankingId == id) //Si el ID del player en este puesto es igual al player
+            {
+                //TODO: Hacele un efecto a la caja o algo para resaltar su posicion
+                isPlayerThere = true;
+                print($"SI ESTABA: PUESTO: {index} DATOS: {players[index].Id} {players[index].Name} {players[index].Score}");
+            }
+        }
+
+        print(isPlayerThere);
+        if (!isPlayerThere) //Si el player no esta en el TOP 5, entonces recorre TODA la lista de ese nivel 
+        {
+            for (int i = 0; i < players.Count; i++)
+            {
+                if(players[i].RankingId == id)
+                {
+                    //TODO: Agregalo en una caja extra abajo, mostrando su posicion
+
+                    print($"NO ESTA: PUESTO: {i} DATOS: {players[i].Id} {players[i].Name} {players[i].Score}");
+
+                    i = players.Count;//Frenamos el for
+                }
+            }
+        }
+
+        print("llegamos al final");
+    }
+
 }
