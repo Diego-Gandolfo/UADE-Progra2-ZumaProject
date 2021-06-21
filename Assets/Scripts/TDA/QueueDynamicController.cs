@@ -87,7 +87,10 @@ public class QueueDynamicController : MonoBehaviour
 
     public void EnqueueTop()
     {
-        queueDynamic.EnqueueTop(CreateBall());
+        var ball = CreateBall();
+        queueDynamic.EnqueueTop(ball);
+        var node = FindNode(ball);
+        ball.gameObject.GetComponent<BallMovement>().Node = node;
         ShowQueue();
     }
 
@@ -145,7 +148,7 @@ public class QueueDynamicController : MonoBehaviour
         {
             auxNode = auxNode.nextNode;
         }
-        print(auxNode.element.name);
+        //print(auxNode.element.name);
         if (auxNode.element == ball) //SI LO ENCUENTRA, COMPRUEBA COLOR
             return auxNode;
         else
