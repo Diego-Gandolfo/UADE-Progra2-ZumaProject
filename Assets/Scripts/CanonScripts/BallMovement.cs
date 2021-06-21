@@ -11,6 +11,7 @@ public class BallMovement : MonoBehaviour
     public bool CanMove; //{ get; set; }
     public NodeBall Node { get; set; }
 
+
     void Update()
     {
         if (CanMove && currentPosition < path.Length)
@@ -25,6 +26,26 @@ public class BallMovement : MonoBehaviour
                 currentPosition++;
             }
         }
+
+    }
+
+    public void GetTargetBallInfo(Ball ball) //SI o si la que se va a correr a la derecha
+    {
+        var targetBall = ball.GetComponent<BallMovement>();
+        transform.position = ball.transform.position;
+        path = targetBall.GetPathInfo();
+        currentPosition = targetBall.GetCurrentPosition();
+        //Y le decimos correte que entro.
+    }
+
+    public Transform[] GetPathInfo()
+    {
+        return path;
+    }
+
+    public int GetCurrentPosition()
+    {
+        return currentPosition;
     }
 
     public void GetPath(Transform[] recorrido)
@@ -38,16 +59,16 @@ public class BallMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        CanMove = true;
         SetNextNodesCanMove(true);
-        SetPreviousNodesCanMove(true);
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        CanMove = false;
-        SetNextNodesCanMove(false);
-        SetPreviousNodesCanMove(false);
+        var rootNode = Node.element.QueueController.GetRootNode();
+
+        if (rootNode != Node)
+            if (rootNode.nextNode != null)
+                SetNextNodesCanMove(false);
     }
 
     private void SetNextNodesCanMove(bool value) // recorre los nodos siguientes para cambiarles el valor de CanMove

@@ -208,10 +208,14 @@ public class QueueDynamicController : MonoBehaviour
                 CheckColors(previousNode); //RECURSIVIDAD!!!
     }
 
-    public Ball GetRootNode()
+    public NodeBall GetRootNode()
     {
         var auxNode = queueDynamic.rootNode;
-        return auxNode.element;
+        return auxNode;
     }
 
+    public bool IsEmpty()
+    {
+        return queueDynamic.IsEmpty();
+    }
 }
