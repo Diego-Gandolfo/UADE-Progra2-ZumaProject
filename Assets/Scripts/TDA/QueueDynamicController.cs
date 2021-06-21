@@ -98,6 +98,7 @@ public class QueueDynamicController : MonoBehaviour
     {
         queueDynamic.EnqueueMiddleAfter(newBall, afterBall);
         var node = FindNode(newBall);
+        newBall.gameObject.GetComponent<BallMovement>().Node = node;
         CheckColors(node);
         ShowQueue();
     }
@@ -106,6 +107,7 @@ public class QueueDynamicController : MonoBehaviour
     {
         queueDynamic.EnqueueMiddleBefore(newBall, beforeBall);
         var node = FindNode(newBall);
+        newBall.gameObject.GetComponent<BallMovement>().Node = node;
         CheckColors(node);
         ShowQueue();
     }

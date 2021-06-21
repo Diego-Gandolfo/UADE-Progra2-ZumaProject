@@ -40,22 +40,25 @@ public class Ball : MonoBehaviour
     {
         if (IsProjectile)
         {
-            QueueController = collision.gameObject.GetComponent<Ball>().QueueController;
+            var ball = collision.gameObject.GetComponent<Ball>();
+            QueueController = ball.QueueController;
 
             Vector2 contactOnCollision = collision.GetContact(0).point;//Encuentra el punto de colision (devuelve un vector)
             contactOnCollision.x -= collision.transform.position.x;
             if (contactOnCollision.x > 0)
             {
-                var afterBall = collision.gameObject.GetComponent<Ball>();
-                QueueController.EnqueueMiddleAfter(this, afterBall);
-                ResetOnCollision();
+                var aux = ball.GetComponent<BallMovement>().Node.nextNode;//Si entro a la derecha, necesito correr a la derecha la pelota que sigue
+                QueueController.EnqueueMiddleAfter(this, ball); 
+                this.GetComponent<BallMovement>().GetTargetBallInfo(aux);
             }
             else if (contactOnCollision.x <= 0)
             {
-                var beforeBall = collision.gameObject.GetComponent<Ball>();
-                QueueController.EnqueueMiddleBefore(this, beforeBall);
-                ResetOnCollision();
+                var aux = ball.GetComponent<BallMovement>().Node; //Corro a la derecha a la que entro en contacto
+                QueueController.EnqueueMiddleBefore(this, ball);
+                this.GetComponent<BallMovement>().GetTargetBallInfo(aux);
             }
+
+            ResetOnCollision();
         }
     }
 
