@@ -22,6 +22,9 @@ public class PauseMenuController : MonoBehaviour
     [SerializeField] private Button mainMenuButton;
     [SerializeField] private Button quitButton;
 
+    [Header("Hidables Settings")]
+    [SerializeField] private GameObject timerObject;
+
     //Extras
     private bool isActive;
 
@@ -65,6 +68,7 @@ public class PauseMenuController : MonoBehaviour
         isActive = true;
         pauseMenu.SetActive(true);
         //musicLevel.volume -= lowerVolume;
+        timerObject.SetActive(false);
     }
 
     private void ExitMenu()
@@ -74,6 +78,7 @@ public class PauseMenuController : MonoBehaviour
         isActive = false;
         pauseMenu.SetActive(false);
         //musicLevel.volume += lowerVolume;
+        timerObject.SetActive(true);
     }
 
     private void OnResumeHandler()
