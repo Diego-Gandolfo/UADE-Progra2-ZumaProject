@@ -4,16 +4,11 @@ using UnityEngine;
 
 public class BallMovement : MonoBehaviour
 {
-    [SerializeField] private float minDistance;
-    [SerializeField] private float maxDistance;
-    [SerializeField] private float reduceSpeedMultiplier;
-    [SerializeField] private float inreaseSpeedMultiplier;
-
     private Transform[] path;
     private int currentPosition = 0;
 
     public float Speed { get; set ; }
-    public bool CanMove { get; set; }
+    public bool CanMove; //{ get; set; }
     public NodeBall Node { get; set; }
 
     void Update()
@@ -43,44 +38,48 @@ public class BallMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (Node != null)
-        {
-            var ball = collision.gameObject.GetComponent<Ball>();
-
-            if (ball != null)
-            {
-                if (!ball.IsProjectile)
-                {
-                    if (Node.nextNode != null)
-                    {
-                        if (collision.gameObject == Node.nextNode.element.gameObject)
-                        {
-                            CanMove = true;
-                        }
-                    }
-                }
-            }
-        }
+        CanMove = true;
+        SetNextNodesCanMove(true);
+        SetPreviousNodesCanMove(true);
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
+        CanMove = false;
+        SetNextNodesCanMove(false);
+        SetPreviousNodesCanMove(false);
+    }
+
+    private void SetNextNodesCanMove(bool value) // recorre los nodos siguientes para cambiarles el valor de CanMove
+    {
         if (Node != null)
         {
-            var ball = collision.gameObject.GetComponent<Ball>();
+            var auxNode = Node.nextNode;
 
-            if (ball != null)
+            while (auxNode != null)
             {
-                if (!ball.IsProjectile)
-                {
-                    if (Node.nextNode != null)
-                    {
-                        if (collision.gameObject == Node.nextNode.element.gameObject)
-                        {
-                            CanMove = false;
-                        }
-                    }
-                }
+                var ballMovement = auxNode.element.gameObject.GetComponent<BallMovement>();
+
+                if (ballMovement != null) ballMovement.CanMove = value;
+
+                auxNode = auxNode.nextNode;
+            }
+        }
+    }
+
+    private void SetPreviousNodesCanMove(bool value) // recorre los nodos anteriores para cambiarles el valor de CanMove
+    {
+        if (Node != null)
+        {
+            var auxNode = Node.previousNode;
+
+            while (auxNode != null)
+            {
+                var ballMovement = auxNode.element.gameObject.GetComponent<BallMovement>();
+
+                if (ballMovement != null) ballMovement.CanMove = value;
+
+                auxNode = auxNode.previousNode;
             }
         }
     }
