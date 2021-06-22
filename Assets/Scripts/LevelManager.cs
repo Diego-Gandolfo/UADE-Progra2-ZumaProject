@@ -5,44 +5,48 @@ using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
+    [Header("Queue Settings")]
     [SerializeField] private QueueDynamicController queueController;
     [SerializeField] private int quantityBallsLevel;
+    [SerializeField] private int ballPointValue = 10;
     [SerializeField] private float speed;
 
-    [SerializeField] private int numberLevel;
+    [Header("HUD Settings")]
+    [SerializeField] private float gameDuration = 0f;
+    [SerializeField] private Text textTimeCounter = null;
+
+    [Header("Level Settings")]
+    [SerializeField] private int numberLevel = 1;
     [SerializeField] private string currentLevel;
     [SerializeField] private string nextLevel;
-    [SerializeField] private Text textTimeCounter = null;
-    [SerializeField] private float gameDuration = 0f;
 
     private float timeCounter = 0f;
 	private float currentTimer = 0f;
 	
 	private DBController database;
-    private GameManager gameManager;
     private IGrafosManager grafosManager;
 
     private void Start()
     {
-
 		//GameManager.instance.CurrentLevel = currentLevel;
         //GameManager.instance.NextLevel = nextLevel;
-        GameManager.instance.NumberLevel = numberLevel;
-		
+        //GameManager.instance.NumberLevel = numberLevel;
         //timeCounter = gameDuration;
+
         grafosManager = gameObject.GetComponent<IGrafosManager>();
-        queueController.Initialize(speed, quantityBallsLevel, grafosManager);
-		        database = DBController.Instance;
+        queueController.Initialize(speed, quantityBallsLevel, grafosManager, ballPointValue);
+
+		database = DBController.Instance;
     }
 
-    private void Update()
+    private void Update() //TEMPORALMENTE COMENTADO PARA TEST GRAFOS
     {
         //timeCounter -= Time.deltaTime;
         //currentTimer += Time.deltaTime;
         //string msg = string.Format("{0:00.00}", timeCounter);
         //textTimeCounter.text = msg;
 
-        //if (timeCounter <= 0)
+        //if (timeCounter <= 0)  
         //{
         //    Victory();
         //}
@@ -59,7 +63,7 @@ public class LevelManager : MonoBehaviour
 
     private void Victory()
     {
-        //InsertPlayerInRanking(GameManager.instance.CurrentScore, numberLevel, currentTimer); //Lo insertamos en el ranking
+        //InsertPlayerInRanking(GameManager.instance.CurrentScore, numberLevel, currentTimer); //Lo insertamos en el ranking -  TEMPORALMENTE COMENTADO
 
         PlayerGlobal.Instance.RankingId = 39; //TODO: Para temporal con lo que ya esta en la base de datos...
         GameManager.instance.Victory();

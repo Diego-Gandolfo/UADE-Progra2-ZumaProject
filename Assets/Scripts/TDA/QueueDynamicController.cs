@@ -10,9 +10,7 @@ public class QueueDynamicController : MonoBehaviour
     private float speed;
     private int maxQuantity;
     private int currentQuantity;
-
-    private int ballPointValue = 10; //TODO: Este dato lo deberia recibir de Level Manager junto con los otros datos que le pasamos en la branch de Grafos
-
+    private int ballPointValue; 
     private QueueDymamic queueDynamic = null;
     private IGrafosManager grafosManager;
     
@@ -45,11 +43,12 @@ public class QueueDynamicController : MonoBehaviour
         }
     }
 
-    public void Initialize(float speed, int maxQuantity, IGrafosManager grafosManager)
+    public void Initialize(float speed, int maxQuantity, IGrafosManager grafosManager, int ballPointValue)
     {
         this.speed = speed;
         this.maxQuantity = maxQuantity;
         this.grafosManager = grafosManager;
+        this.ballPointValue = ballPointValue;
     }
 
     public Ball CreateBall() // Creamos una nueva instancia y nodo
