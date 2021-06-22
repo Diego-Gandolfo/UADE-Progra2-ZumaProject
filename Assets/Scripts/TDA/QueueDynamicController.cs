@@ -17,7 +17,7 @@ public class QueueDynamicController : MonoBehaviour
     private void Awake()
     {
         queueDynamic = gameObject.GetComponent<QueueDymamic>();
-        ShowQueue();
+        //ShowQueue();
     }
 
     private void Update()
@@ -34,7 +34,7 @@ public class QueueDynamicController : MonoBehaviour
                     queueDynamic.Initialize(ball);
                     var node = FindNode(ball);
                     ball.gameObject.GetComponent<BallMovement>().Node = node;
-                    ShowQueue();
+                    //ShowQueue();
                 }
                 else
                 {
@@ -94,44 +94,63 @@ public class QueueDynamicController : MonoBehaviour
         var ball = CreateBall();
         queueDynamic.EnqueueTop(ball);
         var node = FindNode(ball);
-        ball.gameObject.GetComponent<BallMovement>().Node = node;
-        ShowQueue();
+        ball.GetComponent<BallMovement>().Node = node;
+        //ShowQueue();
     }
 
     public void EnqueueMiddleAfter(Ball newBall, Ball afterBall)
     {
         queueDynamic.EnqueueMiddleAfter(newBall, afterBall);
-        var node = FindNode(newBall);
-        newBall.gameObject.GetComponent<BallMovement>().Node = node;
-        CheckColors(node);
-        ShowQueue();
+        EnqueueMiddleMain(newBall);
     }
 
     public void EnqueueMiddleBefore(Ball newBall, Ball beforeBall)
     {
         queueDynamic.EnqueueMiddleBefore(newBall, beforeBall);
+        EnqueueMiddleMain(newBall);
+    }
+
+    public void EnqueueMiddleMain(Ball newBall) // son cosas que hacen ambos EnqueueMiddle, para no repetir codigo
+    {
         var node = FindNode(newBall);
-        newBall.gameObject.GetComponent<BallMovement>().Node = node;
+        var newBallMovement = newBall.GetComponent<BallMovement>();
+        newBallMovement.Node = node;
+
+        // menos la parte del CheckColors, que es lo unico que se tiene que quedar, el resto es solo provisorio
+
+        // esto hace que todo se detenga
+        newBallMovement.CanMove = false;
+        node.previousNode?.element.GetComponent<BallMovement>()?.SetPreviousNodesCanMove(false);
+        node.nextNode?.element.GetComponent<BallMovement>()?.SetNextNodesCanMove(false);
+
         CheckColors(node);
-        ShowQueue();
+
+        // esto hace que todo se vuelva a mover
+        newBallMovement.CanMove = true;
+        node.previousNode?.element.GetComponent<BallMovement>()?.SetPreviousNodesCanMove(true);
+        node.nextNode?.element.GetComponent<BallMovement>()?.SetNextNodesCanMove(true);
+
+        //TODO: hay que ver como hacer que las bolas luego de ser explotadas se vuelvan a unir
+
+        //ShowQueue();
     }
 
     public void EnqueueBottom()
     {
         queueDynamic.EnqueueBottom(CreateBall());
-        ShowQueue();
+        //ShowQueue();
     }
 
     public void DesqueueTop()
     {
         queueDynamic.DesqueueTop();
-        ShowQueue();
+        //ShowQueue();
     }
 
     public void DesqueueBottom()
     {
         queueDynamic.DesqueueBottom();
-        ShowQueue();
+        //ShowQueue();
     }
 
     public Ball DesqueueMiddle(Ball targetBall)
@@ -140,7 +159,7 @@ public class QueueDynamicController : MonoBehaviour
         
         var aux = queueDynamic.DesqueueMiddle(targetBall);
         
-        ShowQueue();
+        //ShowQueue();
         targetBall = null;
         return aux;
     }
