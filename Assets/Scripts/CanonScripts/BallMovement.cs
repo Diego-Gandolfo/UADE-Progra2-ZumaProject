@@ -14,7 +14,6 @@ public class BallMovement : MonoBehaviour
 
     private bool canSpeedUp;
     private bool canStartMoving;
-    private bool canCheck = true;
     private float currentCountdown;
 
     void Update()
@@ -25,39 +24,22 @@ public class BallMovement : MonoBehaviour
             float step = Speed * Time.deltaTime;
             transform.position = Vector2.MoveTowards(transform.position, currentTarget, step);
             
-            //transform.position += transform.right * Speed * Time.deltaTime;
-
-             var distance = Vector2.Distance(transform.position, currentTarget);
+            var distance = Vector2.Distance(transform.position, currentTarget);
             if (distance < 0.1f)
-            {
                 currentPosition++;
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            print(Speed * Time.deltaTime);
-            StartSpeedUp();
-            print("current " + Speed * Time.deltaTime);
         }
 
         if (canSpeedUp && currentCountdown < Time.time)
-        {
             ResetSpeed();
-        }
 
         if(canStartMoving && currentCountdown < Time.time)
-        {
             StartMovement();
-        }
     }
 
     public void GetTargetBallInfo(NodeBall targetNode) //SI o si paso la que se va a correr a la derecha
     {
-        print("GO: "+ gameObject.name + " Target: " + targetNode.element.gameObject.name);
-
         var targetBallMovement = targetNode.element.GetComponent<BallMovement>();
-        transform.position = targetNode.element.transform.position;
+        Speed = targetBallMovement.Speed;
 
         path = targetBallMovement.GetPathInfo(); // agarramos el path
         currentPosition = targetBallMovement.GetCurrentPosition(); // agarramos el index de la posicion actual del path
@@ -87,25 +69,7 @@ public class BallMovement : MonoBehaviour
         currentPosition++;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        //if(canCheck)
-        //    SetNextNodesCanMove(true);
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        //if (canCheck)
-        //{
-        //    var rootNode = Node.element.QueueController.GetRootNode();
-
-        //    if (rootNode != Node)
-        //        if (rootNode.nextNode != null && rootNode.previousNode != null)
-        //            SetNextNodesCanMove(false);
-        //}
-    }
-
-    private void SetNextNodesCanMove(bool value) // recorre los nodos siguientes para cambiarles el valor de CanMove
+    public void SetNextNodesCanMove(bool value) // recorre los nodos siguientes para cambiarles el valor de CanMove
     {
         if (Node != null) // nos aseguramos que esté seteado el Node
         {
@@ -122,7 +86,7 @@ public class BallMovement : MonoBehaviour
         }
     }
 
-    private void SetPreviousNodesCanMove(bool value) // recorre los nodos anteriores para cambiarles el valor de CanMove
+    public void SetPreviousNodesCanMove(bool value) // recorre los nodos anteriores para cambiarles el valor de CanMove
     {
         if (Node != null)
         {
@@ -139,7 +103,7 @@ public class BallMovement : MonoBehaviour
         }
     }
 
-    private void MakeSpaceToRight()
+    public void MakeSpaceToRight()
     {
         if (Node != null) // nos aseguramos que esté seteado el Node
         {
@@ -179,34 +143,26 @@ public class BallMovement : MonoBehaviour
     private void ResetSpeed()
     {
         canSpeedUp = false;
-        canCheck = true;
         Speed /= multiplierSpeed;
-        //print($"{gameObject.name} ResetSpeed {Speed}");
     }
 
     private void StartSpeedUp()
     {
-        canCheck = false;
         canSpeedUp = true;
         currentCountdown = Time.time + (1 / (Speed * multiplierSpeed));
         Speed *= multiplierSpeed;
-        //print($"{gameObject.name} StartSpeedUp {Speed}");
     }
 
-    private void StopMovement()
+    public void StopMovement()
     {
         CanMove = false;
-        canCheck = false;
         canStartMoving = true;
         currentCountdown = Time.time + (1 / (Speed * multiplierSpeed));
-        //print($"{gameObject.name} StopMovement {CanMove}");
     }
 
-    private void StartMovement()
+    public void StartMovement()
     {
         CanMove = true;
-        canCheck = true;
         canStartMoving = false;
-        //print($"{gameObject.name} StartMovement {CanMove}");
     }
 }

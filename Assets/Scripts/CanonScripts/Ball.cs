@@ -8,6 +8,7 @@ public class Ball : MonoBehaviour
     [SerializeField] private float speed = 10;
     [SerializeField] private float lifeTime;
     private float lifeTimeTimer;
+    private BallMovement myBallMovement;
 
     public QueueDynamicController QueueController { get; private set; }
 
@@ -20,6 +21,7 @@ public class Ball : MonoBehaviour
         Color = colorBucket[Random.Range(0, colorBucket.Length)];
         gameObject.GetComponent<SpriteRenderer>().color = Color;
         lifeTimeTimer = lifeTime;
+        myBallMovement = this.GetComponent<BallMovement>();
     }
 
     private void Update()
@@ -40,33 +42,29 @@ public class Ball : MonoBehaviour
     {
         if (IsProjectile)
         {
-            var ball = collision.gameObject.GetComponent<Ball>();
-            var ballMovement = ball.GetComponent<BallMovement>();
-            QueueController = ball.QueueController;
-            NodeBall aux = null;
+            var collisionBall = collision.gameObject.GetComponent<Ball>();
+            var collisionBallMovement = collisionBall.GetComponent<BallMovement>();
+            QueueController = collisionBall.QueueController;
 
             Vector2 contactOnCollision = collision.GetContact(0).point;//Encuentra el punto de colision (devuelve un vector)
             contactOnCollision.x -= collision.transform.position.x;
 
             if (contactOnCollision.x > 0)
             {
-                print("<<<<<< Desde la derecha");
-                if (ballMovement != null)
-                    aux = ball.GetComponent<BallMovement>().Node;//Si entro a la derecha, necesito correr a la derecha la pelota que sigue
-                QueueController.EnqueueMiddleAfter(this, ball); 
-                
+                var aux = collisionBallMovement.Node;
+                transform.position = collisionBallMovement.Node.nextNode.element.transform.position;
+                QueueController.EnqueueMiddleAfter(this, collisionBall);
+                myBallMovement.StopMovement();
+                myBallMovement.GetTargetBallInfo(aux);
             }
             else if (contactOnCollision.x <= 0)
             {
-                print("Desde la izquierda >>>>");
-                if (ballMovement != null)
-                    if (ballMovement.Node.previousNode != null)
-                        aux = ball.GetComponent<BallMovement>().Node.previousNode; //Corro a la derecha a la que entro en contacto
-                QueueController.EnqueueMiddleBefore(this, ball);
+                var aux = collisionBallMovement.Node.previousNode;
+                transform.position = collisionBallMovement.Node.element.transform.position;
+                QueueController.EnqueueMiddleBefore(this, collisionBall);
+                myBallMovement.StartMovement();
+                myBallMovement.GetTargetBallInfo(aux);
             }
-
-            if (aux != null)
-                this.GetComponent<BallMovement>().GetTargetBallInfo(aux);
 
             ResetOnCollision();
         }

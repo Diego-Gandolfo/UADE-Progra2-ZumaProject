@@ -283,7 +283,7 @@ MonoBehaviour:
   queueController: {fileID: 1755319411}
   quantityBallsLevel: 5
   ballPointValue: 10
-  speed: 1
+  speed: 2
   gameDuration: 25
   textTimeCounter: {fileID: 0}
   numberLevel: 1
