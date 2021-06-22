@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class BallMovement : MonoBehaviour
 {
+    [SerializeField] private int multiplierSpeed = 4;
     private Transform[] path;
     private int currentPosition = 0;
 
     public float Speed { get; set ; }
-    public int multiplierSpeed = 2;
-    public bool CanMove; //{ get; set; }
+    public bool CanMove { get; set; }
     public NodeBall Node { get; set; }
 
-    public float timer = 1;
     private bool canSpeedUp;
     private bool canStartMoving;
     private bool canCheck = true;
@@ -42,29 +41,31 @@ public class BallMovement : MonoBehaviour
             print("current " + Speed * Time.deltaTime);
         }
 
-        if (canSpeedUp && currentCountdown > Time.time)
+        if (canSpeedUp && currentCountdown < Time.time)
         {
             ResetSpeed();
         }
 
-        if(canStartMoving && currentCountdown > Time.time)
+        if(canStartMoving && currentCountdown < Time.time)
         {
-            CanMove = true;
-            canCheck = true;
+            StartMovement();
         }
     }
 
-    public void GetTargetBallInfo(NodeBall ball) //SI o si paso la que se va a correr a la derecha
+    public void GetTargetBallInfo(NodeBall targetNode) //SI o si paso la que se va a correr a la derecha
     {
-        print("GO: "+ gameObject.name + " Target: " + ball.element.gameObject.name);
-        var targetBall = ball.element.GetComponent<BallMovement>();
-        transform.position = ball.element.transform.position;
+        print("GO: "+ gameObject.name + " Target: " + targetNode.element.gameObject.name);
 
-        path = targetBall.GetPathInfo();
+        var targetBallMovement = targetNode.element.GetComponent<BallMovement>();
+        transform.position = targetNode.element.transform.position;
 
-        currentPosition = targetBall.GetCurrentPosition();
-        targetBall.MakeSpaceToRight(); //Le digo a todas las pelotas que me hagan lugar 
-        Node.previousNode.element.GetComponent<BallMovement>().MakeSpaceToLeft(); //Le digo a las de la izquierda que esperen por el mismo tiempo
+        path = targetBallMovement.GetPathInfo(); // agarramos el path
+        currentPosition = targetBallMovement.GetCurrentPosition(); // agarramos el index de la posicion actual del path
+
+        if (targetNode.nextNode != null)
+            targetBallMovement.MakeSpaceToRight(); //Le digo a todas las pelotas que me hagan lugar 
+        if (targetNode.previousNode != null)
+            targetBallMovement.MakeSpaceToLeft(); //Le digo a las de la izquierda que esperen por el mismo tiempo
     }
 
     public Transform[] GetPathInfo()
@@ -88,21 +89,20 @@ public class BallMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(canCheck)
-            SetNextNodesCanMove(true);
+        //if(canCheck)
+        //    SetNextNodesCanMove(true);
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (canCheck)
-        {
-            var rootNode = Node.element.QueueController.GetRootNode();
+        //if (canCheck)
+        //{
+        //    var rootNode = Node.element.QueueController.GetRootNode();
 
-            if (rootNode != Node)
-                if (rootNode.nextNode != null && rootNode.previousNode != null)
-                    SetNextNodesCanMove(false);
-        }
-
+        //    if (rootNode != Node)
+        //        if (rootNode.nextNode != null && rootNode.previousNode != null)
+        //            SetNextNodesCanMove(false);
+        //}
     }
 
     private void SetNextNodesCanMove(bool value) // recorre los nodos siguientes para cambiarles el valor de CanMove
@@ -161,13 +161,15 @@ public class BallMovement : MonoBehaviour
     {
         if (Node != null)
         {
+            StopMovement();
+
             var auxNode = Node.previousNode;
             while (auxNode != null)
             {
                 var ballMovement = auxNode.element.gameObject.GetComponent<BallMovement>();
-                print(ballMovement + " " + auxNode.element.name);
+                
                 if (ballMovement != null)
-                    StopMovement();
+                    ballMovement.StopMovement();
 
                 auxNode = auxNode.previousNode;
             }
@@ -178,25 +180,33 @@ public class BallMovement : MonoBehaviour
     {
         canSpeedUp = false;
         canCheck = true;
-        Speed -= multiplierSpeed;
+        Speed /= multiplierSpeed;
+        //print($"{gameObject.name} ResetSpeed {Speed}");
     }
 
     private void StartSpeedUp()
     {
-
-        currentCountdown = Time.time + timer;
         canCheck = false;
         canSpeedUp = true;
-        Speed += multiplierSpeed;
-        print("StartSpeedUp" + gameObject.name + " " + Speed);
+        currentCountdown = Time.time + (1 / (Speed * multiplierSpeed));
+        Speed *= multiplierSpeed;
+        //print($"{gameObject.name} StartSpeedUp {Speed}");
     }
 
     private void StopMovement()
     {
         CanMove = false;
         canCheck = false;
-        print(gameObject.name + " " + CanMove);
-        currentCountdown = Time.time + timer;
         canStartMoving = true;
+        currentCountdown = Time.time + (1 / (Speed * multiplierSpeed));
+        //print($"{gameObject.name} StopMovement {CanMove}");
+    }
+
+    private void StartMovement()
+    {
+        CanMove = true;
+        canCheck = true;
+        canStartMoving = false;
+        //print($"{gameObject.name} StartMovement {CanMove}");
     }
 }

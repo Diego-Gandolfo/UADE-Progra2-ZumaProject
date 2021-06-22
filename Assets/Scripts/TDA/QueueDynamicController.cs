@@ -30,7 +30,10 @@ public class QueueDynamicController : MonoBehaviour
             {
                 if (queueDynamic.IsEmpty())
                 {
-                    queueDynamic.Initialize(CreateBall());
+                    var ball = CreateBall();
+                    queueDynamic.Initialize(ball);
+                    var node = FindNode(ball);
+                    ball.gameObject.GetComponent<BallMovement>().Node = node;
                     ShowQueue();
                 }
                 else
@@ -227,6 +230,6 @@ public class QueueDynamicController : MonoBehaviour
     public void CalculatePoints(int ballsQuantity, int checkColorsRecursivityRound = 1)
     {
         GameManager.instance.CurrentScore += (ballPointValue * ballsQuantity * checkColorsRecursivityRound);
-        print("Current Score: " + GameManager.instance.CurrentScore);
+        //print("Current Score: " + GameManager.instance.CurrentScore);
     }
 }
