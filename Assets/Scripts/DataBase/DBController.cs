@@ -192,9 +192,9 @@ public class DBController : MonoBehaviour
     {
         var playerList = new List<Player>();
 
-        var query = $"SELECT Player.Name, Ranking.Level, Ranking.Score, Ranking.Time FROM Ranking " +
+        var query = $"SELECT Player.Name, Ranking.Level, Ranking.Score, Ranking.Time, Player.ID, Ranking.ID FROM Ranking " +
                       $"INNER JOIN Player ON Player.ID = Ranking.ID_Player WHERE Ranking.Level = {level}";
-        var list = GetQueries(query, 4);
+        var list = GetQueries(query, 6);
 
         foreach (var tupla in list)
         {
@@ -202,6 +202,8 @@ public class DBController : MonoBehaviour
 
             var player = new Player(values[0], int.Parse(values[1]), int.Parse(values[2]));
             player.Time = values[3];
+            player.Id = int.Parse(values[4]);
+            player.RankingId = int.Parse(values[5]);
             playerList.Add(player);
         }
 
@@ -212,9 +214,9 @@ public class DBController : MonoBehaviour
     {
         var playerList = new List<Player>();
 
-        var query = $"SELECT Player.Name, Ranking.Level, Ranking.Score, Ranking.Time FROM Ranking " +
+        var query = $"SELECT Player.Name, Ranking.Level, Ranking.Score, Ranking.Time, Player.ID FROM Ranking " +
                       $"INNER JOIN Player ON Player.ID = Ranking.ID_Player";
-        var list = GetQueries(query, 4);
+        var list = GetQueries(query, 5);
 
         foreach (var tupla in list)
         {
@@ -222,6 +224,7 @@ public class DBController : MonoBehaviour
 
             var player = new Player(values[0], int.Parse(values[1]), int.Parse(values[2]));
             player.Time = values[3];
+            player.Id = int.Parse(values[4]);
             playerList.Add(player);
         }
 
@@ -241,9 +244,9 @@ public class DBController : MonoBehaviour
         var playerList = new List<Player>();
         Player player = null;
 
-        var query = $"SELECT Player.Name, Ranking.Level, Ranking.Score, Ranking.Time FROM Ranking " + 
+        var query = $"SELECT Player.Name, Ranking.Level, Ranking.Score, Ranking.Time, Ranking.Id FROM Ranking " + 
                 $"INNER JOIN Player ON Player.ID = Ranking.ID_Player  ORDER BY Ranking.Id DESC LIMIT 1";
-        var list = GetQueries(query, 4);
+        var list = GetQueries(query, 5);
 
         foreach (var tupla in list)
         {
@@ -251,6 +254,7 @@ public class DBController : MonoBehaviour
 
             player = new Player(values[0], int.Parse(values[1]), int.Parse(values[2]));
             player.Time = values[3].ToString();
+            player.RankingId = int.Parse(values[4]);
         }
 
         return player;

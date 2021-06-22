@@ -7,32 +7,21 @@ public class ScoreManager : MonoBehaviour
 {
     [SerializeField] private int level;
     [SerializeField] private RankingLineScript[] rankingLine;
+    [SerializeField] private GameObject extraRanking;
+    private RankingLineScript extraRankingScript;
 
     private DBController database;
 
     private void Awake()
     {
         database = DBController.Instance;
+        extraRanking.SetActive(false);
+        extraRankingScript = extraRanking.GetComponent<RankingLineScript>();
     }
 
     void Start()
     {
         GetLevelRanking(level);
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            print("Insert a Random Player");
-            InsertRandomPlayerInRanking();
-        }
-
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            print("Get Last Player Ranking");
-            GetLastPlayerRanking();
-        }
     }
 
     public void InsertPlayer(string name) //Inserta un player en tabla Player (solo usar en Main Menu) 
@@ -47,9 +36,14 @@ public class ScoreManager : MonoBehaviour
         print(PlayerGlobal.Instance.Name + " " + PlayerGlobal.Instance.Id);
     }
 
-    public void InsertPlayerInRanking() //Esto se haria cuando se termina un nivel
+    public void InsertPlayerInRanking(int score, int level, float time) //Esto se haria cuando se termina un nivel
     {
+        //PlayerGlobal.Instance.Level = level;
+        //PlayerGlobal.Instance.Score = score;
+        //PlayerGlobal.Instance.Time = time.ToString();
+
         var player = new Player(PlayerGlobal.Instance.Name, PlayerGlobal.Instance.Level, PlayerGlobal.Instance.Score);
+        player.Id = PlayerGlobal.Instance.Id;
         player.Time = PlayerGlobal.Instance.Time;
         database.InsertRanking(player);
     }
@@ -78,23 +72,27 @@ public class ScoreManager : MonoBehaviour
         var rankings = database.GetAllRankingsFromLevel(level);
         QuickSort(rankings, 0, rankings.Count - 1);
         UpdateRankingList(rankings);
+        List<Player> playersNew = ReOrderQuickSort(rankings);
+
+        CheckCurrentPlayerInRanking(playersNew, PlayerGlobal.Instance.RankingId);
     }
 
     private void GetAllRanking()
     {
         var rankings = database.GetAllRankings();
         QuickSort(rankings, 0, rankings.Count - 1);
-        UpdateRankingList(rankings);
+        List<Player> playersNew = ReOrderQuickSort(rankings);
+        UpdateRankingList(playersNew);
     }
 
     private void UpdateRankingList(List<Player> players)
     {
         for (int i = 0; i < rankingLine.Length; i++)
         {
-            var index = (players.Count - i) - 1;
-            rankingLine[i].SetNickname(players[index].Name);
-            rankingLine[i].SetScore(players[index].Score);
-            rankingLine[i].SetTime(players[index].Time);
+            rankingLine[i].SetPosition(i+1);
+            rankingLine[i].SetNickname(players[i].Name);
+            rankingLine[i].SetScore(players[i].Score);
+            rankingLine[i].SetTime(players[i].Time);
         }
     }
 
@@ -156,5 +154,48 @@ public class ScoreManager : MonoBehaviour
                 QuickSort(arr, pivot + 1, right);
             }
         }
+    }
+
+    private List<Player> ReOrderQuickSort(List<Player> players)
+    {
+        List<Player> resultado = new List<Player>(); 
+        for (int i = players.Count - 1; i >= 0; i--)
+        {
+            resultado.Add(players[i]);
+        }
+        return resultado;
+    }
+
+    private void CheckCurrentPlayerInRanking(List<Player> players, int id)
+    {
+        bool isPlayerThere = false;
+        for (int i = 0; i < rankingLine.Length; i++) //El largo del ranking
+        {
+            if (players[i].RankingId == id) //Si el ID del player en este puesto es igual al player
+            {
+                rankingLine[i].ChangeBackground(); //Le cambiamos el color
+                isPlayerThere = true;
+            }
+        }
+
+        if (!isPlayerThere) //Si el player no esta en el TOP 5, entonces recorre TODA la lista de ese nivel 
+        {
+            for (int i = 5; i < players.Count; i++)
+            {
+                if(players[i].RankingId == id)
+                {
+                    extraRanking.SetActive(true); //Activamos la caja extra
+                    extraRankingScript.SetPosition(i+1);
+                    extraRankingScript.SetNickname(players[i+1].Name);
+                    extraRankingScript.SetScore(players[i].Score);
+                    extraRankingScript.SetTime(players[i].Time);
+                    extraRankingScript.ChangeBackground();
+
+                    i = players.Count;//Frenamos el for
+                }
+            }
+        }
+
+
     }
 }
