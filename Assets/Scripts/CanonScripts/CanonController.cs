@@ -21,7 +21,6 @@ public class CanonController : MonoBehaviour
 	private CanonQueue canonQueue;
 	private CanonStack canonStack;
 	private Ball projectile;
-
 	void Start()
     {
 		canonStack = gameObject.GetComponent<CanonStack>();
@@ -37,8 +36,12 @@ public class CanonController : MonoBehaviour
     {
 		actualPositionMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		direction = actualPositionMouse - (Vector2)raycastPoint.position;
-		direction.Normalize();
-		transform.up = direction;
+		var distance = Vector3.Distance(transform.position, actualPositionMouse);
+		if(distance >= 3f)
+        {
+			transform.up = direction.normalized;
+		}
+
 
 		CastLaser(); 
 

@@ -11,6 +11,8 @@ public class QueueDynamicController : MonoBehaviour
     private int maxQuantity;
     private int currentQuantity;
 
+    private int ballPointValue = 10; //TODO: Este dato lo deberia recibir de Level Manager junto con los otros datos que le pasamos en la branch de Grafos
+
     private QueueDymamic queueDynamic = null;
     private IGrafosManager grafosManager;
     
@@ -197,6 +199,8 @@ public class QueueDynamicController : MonoBehaviour
 
         if (ballList.Count >= 3)
         {
+            CalculatePoints(ballList.Count); //TODO: Incorporar con checkRecursivity en branch Arbol
+
             for (int i = 0; i < ballList.Count; i++)
             {
                 var aux = DesqueueMiddle(ballList[i]);
@@ -219,5 +223,11 @@ public class QueueDynamicController : MonoBehaviour
     public bool IsEmpty()
     {
         return queueDynamic.IsEmpty();
+    }
+
+    public void CalculatePoints(int ballsQuantity, int checkColorsRecursivityRound = 1)
+    {
+        GameManager.instance.CurrentScore += (ballPointValue * ballsQuantity * checkColorsRecursivityRound);
+        print("Current Score: " + GameManager.instance.CurrentScore);
     }
 }

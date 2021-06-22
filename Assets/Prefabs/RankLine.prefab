@@ -210,10 +210,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   order: 0
+  number: 0
   nickname: {fileID: 1083219532919255263}
   puesto: {fileID: 1083219533502228482}
   score: {fileID: 1083219534560411931}
   time: {fileID: 1083219533223989344}
+  bg: {fileID: 7426183910883853172}
+  newColor: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 1}
 --- !u!1 &1083219533502228732
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,7 +437,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: ff7e19a7c6b340f4c8532dcf32ebc059, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
