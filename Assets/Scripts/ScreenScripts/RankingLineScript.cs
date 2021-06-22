@@ -15,38 +15,36 @@ public enum Orders
 public class RankingLineScript : MonoBehaviour
 {
     [SerializeField] private Orders order;
+    [SerializeField] private int number;
     [SerializeField] private Text nickname;
     [SerializeField] private Text puesto;
     [SerializeField] private Text score;
     [SerializeField] private Text time;
+    [SerializeField] private Image bg;
+    [SerializeField] private Color newColor;
     private string position;
 
-    private void Start()
+    public void SetPosition(int value = 0)
     {
-        SetPosition();
-    }
-
-    public void SetPosition()
-    {
-        switch (order)
-        {
-            case Orders.First:
-                position = "1st";
-                break;
-            case Orders.Second:
-                position = "2nd";
-                break;
-            case Orders.Third:
-                position = "3rd";
-                break;
-            case Orders.Fourth:
-                position = "4th";
-                break;
-            case Orders.Fifth:
-                position = "5th";
-                break;
-        }
-        puesto.text = position;
+        //switch (order)
+        //{
+        //    case Orders.First:
+        //        position = "1";
+        //        break;
+        //    case Orders.Second:
+        //        position = "2";
+        //        break;
+        //    case Orders.Third:
+        //        position = "3";
+        //        break;
+        //    case Orders.Fourth:
+        //        position = "4";
+        //        break;
+        //    case Orders.Fifth:
+        //        position = "5";
+        //        break;
+        //}
+            puesto.text = value.ToString();
     }
 
     public void SetNickname(string name)
@@ -62,5 +60,15 @@ public class RankingLineScript : MonoBehaviour
     public void SetTime(string time)
     {
         this.time.text = time + "s";
+    }
+
+    public void SetRanking (int number)
+    {
+        puesto.text = number.ToString();
+    }
+
+    public void ChangeBackground()
+    {
+        bg.color = newColor;
     }
 }

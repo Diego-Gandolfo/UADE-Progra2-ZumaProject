@@ -7,32 +7,21 @@ public class ScoreManager : MonoBehaviour
 {
     [SerializeField] private int level;
     [SerializeField] private RankingLineScript[] rankingLine;
+    [SerializeField] private GameObject extraRanking;
+    private RankingLineScript extraRankingScript;
 
     private DBController database;
 
     private void Awake()
     {
         database = DBController.Instance;
+        extraRanking.SetActive(false);
+        extraRankingScript = extraRanking.GetComponent<RankingLineScript>();
     }
 
     void Start()
     {
         GetLevelRanking(level);
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            print("Insert a Random Player");
-            InsertRandomPlayerInRanking();
-        }
-
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            print("Get Last Player Ranking");
-            GetLastPlayerRanking();
-        }
     }
 
     public void InsertPlayer(string name) //Inserta un player en tabla Player (solo usar en Main Menu) 
@@ -83,25 +72,27 @@ public class ScoreManager : MonoBehaviour
         var rankings = database.GetAllRankingsFromLevel(level);
         QuickSort(rankings, 0, rankings.Count - 1);
         UpdateRankingList(rankings);
+        List<Player> playersNew = ReOrderQuickSort(rankings);
 
-        CheckCurrentPlayerInRanking(rankings, PlayerGlobal.Instance.RankingId);
+        CheckCurrentPlayerInRanking(playersNew, PlayerGlobal.Instance.RankingId);
     }
 
     private void GetAllRanking()
     {
         var rankings = database.GetAllRankings();
         QuickSort(rankings, 0, rankings.Count - 1);
-        UpdateRankingList(rankings);
+        List<Player> playersNew = ReOrderQuickSort(rankings);
+        UpdateRankingList(playersNew);
     }
 
     private void UpdateRankingList(List<Player> players)
     {
         for (int i = 0; i < rankingLine.Length; i++)
         {
-            var index = (players.Count - i) - 1;
-            rankingLine[i].SetNickname(players[index].Name);
-            rankingLine[i].SetScore(players[index].Score);
-            rankingLine[i].SetTime(players[index].Time);
+            rankingLine[i].SetPosition(i+1);
+            rankingLine[i].SetNickname(players[i].Name);
+            rankingLine[i].SetScore(players[i].Score);
+            rankingLine[i].SetTime(players[i].Time);
         }
     }
 
@@ -165,38 +156,46 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    private List<Player> ReOrderQuickSort(List<Player> players)
+    {
+        List<Player> resultado = new List<Player>(); 
+        for (int i = players.Count - 1; i >= 0; i--)
+        {
+            resultado.Add(players[i]);
+        }
+        return resultado;
+    }
+
     private void CheckCurrentPlayerInRanking(List<Player> players, int id)
     {
-        print("chequeamos ranking id: " + PlayerGlobal.Instance.RankingId);
         bool isPlayerThere = false;
         for (int i = 0; i < rankingLine.Length; i++) //El largo del ranking
         {
-            var index = (players.Count - i) - 1; //No se porque, esto lo hizo Diego
-            if (players[index].RankingId == id) //Si el ID del player en este puesto es igual al player
+            if (players[i].RankingId == id) //Si el ID del player en este puesto es igual al player
             {
-                //TODO: Hacele un efecto a la caja o algo para resaltar su posicion
+                rankingLine[i].ChangeBackground(); //Le cambiamos el color
                 isPlayerThere = true;
-                print($"SI ESTABA: PUESTO: {index} DATOS: {players[index].Id} {players[index].Name} {players[index].Score}");
             }
         }
 
-        print(isPlayerThere);
         if (!isPlayerThere) //Si el player no esta en el TOP 5, entonces recorre TODA la lista de ese nivel 
         {
-            for (int i = 0; i < players.Count; i++)
+            for (int i = 5; i < players.Count; i++)
             {
                 if(players[i].RankingId == id)
                 {
-                    //TODO: Agregalo en una caja extra abajo, mostrando su posicion
-
-                    print($"NO ESTA: PUESTO: {i} DATOS: {players[i].Id} {players[i].Name} {players[i].Score}");
+                    extraRanking.SetActive(true); //Activamos la caja extra
+                    extraRankingScript.SetPosition(i+1);
+                    extraRankingScript.SetNickname(players[i+1].Name);
+                    extraRankingScript.SetScore(players[i].Score);
+                    extraRankingScript.SetTime(players[i].Time);
+                    extraRankingScript.ChangeBackground();
 
                     i = players.Count;//Frenamos el for
                 }
             }
         }
 
-        print("llegamos al final");
-    }
 
+    }
 }
