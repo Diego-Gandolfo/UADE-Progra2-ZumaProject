@@ -209,11 +209,11 @@ public class BallMovement : MonoBehaviour
 
             //if (canCheck)
             //{
-                var rootNode = Node.element.QueueController.GetRootNode();
+            //    var rootNode = Node.element.QueueController.GetRootNode();
 
-                if (rootNode != Node)
-                    if (rootNode.nextNode != null && rootNode.previousNode != null)
-                        SetNextNodesCanMove(false);
+            //    if (rootNode != Node)
+            //        if (rootNode.nextNode != null && rootNode.previousNode != null)
+            //        SetNextNodesCanMove(false);
             //}
         }
     }
