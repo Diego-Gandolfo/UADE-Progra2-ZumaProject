@@ -187,11 +187,11 @@ public class BallMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //if (Node != null && !StartingPoint)
-        //{
-        //    if (canCheck)
-        //        SetNextNodesCanMove(true);
-        //}
+        if (Node != null && !StartingPoint)
+        {
+            if (canCheck && collision.gameObject.name == Node.nextNode.element.name)
+                SetNextNodesCanMove(true);
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -209,11 +209,11 @@ public class BallMovement : MonoBehaviour
 
             //if (canCheck)
             //{
-            //    var rootNode = Node.element.QueueController.GetRootNode();
+                var rootNode = Node.element.QueueController.GetRootNode();
 
-            //    if (rootNode != Node)
-            //        if (rootNode.nextNode != null && rootNode.previousNode != null)
-            //            SetNextNodesCanMove(false);
+                if (rootNode != Node)
+                    if (rootNode.nextNode != null && rootNode.previousNode != null)
+                        SetNextNodesCanMove(false);
             //}
         }
     }
