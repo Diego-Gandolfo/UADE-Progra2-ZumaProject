@@ -15,6 +15,7 @@ public class BallMovement : MonoBehaviour
     private bool canSpeedUp;
     private bool canStartMoving;
     private float currentCountdown;
+    private bool canCheck = true;
 
     public bool StartingPoint { get;set; }
 
@@ -105,10 +106,7 @@ public class BallMovement : MonoBehaviour
 
             while (auxNode != null) // mientras el auxiliar no sea null, es que hay un nodo sobre el que trabajar
             {
-                var ballMovement = auxNode.element.gameObject.GetComponent<BallMovement>(); // obtenemos el BallMovement
-
-                if (ballMovement != null) ballMovement.CanMove = value; // si lo tiene, ponemos CanMove según el parametro recibido
-
+                auxNode.element.gameObject.GetComponent<BallMovement>().CanMove = value; // ponemos CanMove según el parametro recibido
                 auxNode = auxNode.nextNode; // guardamos en auxiliar la referencia al nodo siguiente
             }
         }
@@ -122,10 +120,7 @@ public class BallMovement : MonoBehaviour
 
             while (auxNode != null)
             {
-                var ballMovement = auxNode.element.gameObject.GetComponent<BallMovement>();
-
-                if (ballMovement != null) ballMovement.CanMove = value;
-
+                auxNode.element.gameObject.GetComponent<BallMovement>().CanMove = value;
                 auxNode = auxNode.previousNode;
             }
         }
@@ -139,11 +134,7 @@ public class BallMovement : MonoBehaviour
 
             while (auxNode != null) // mientras el auxiliar no sea null, es que hay un nodo sobre el que trabajar
             {
-                var ballMovement = auxNode.element.gameObject.GetComponent<BallMovement>(); // obtenemos el BallMovement
-
-                if (ballMovement != null)
-                    ballMovement.StartSpeedUp();
-                
+                auxNode.element.gameObject.GetComponent<BallMovement>().StartSpeedUp();
                 auxNode = auxNode.nextNode; // guardamos en auxiliar la referencia al nodo siguiente
             }
         }
@@ -158,11 +149,7 @@ public class BallMovement : MonoBehaviour
             var auxNode = Node.previousNode;
             while (auxNode != null)
             {
-                var ballMovement = auxNode.element.gameObject.GetComponent<BallMovement>();
-                
-                if (ballMovement != null)
-                    ballMovement.StopMovement();
-
+                auxNode.element.gameObject.GetComponent<BallMovement>().StopMovement();
                 auxNode = auxNode.previousNode;
             }
         }
@@ -171,12 +158,14 @@ public class BallMovement : MonoBehaviour
     private void ResetSpeed()
     {
         canSpeedUp = false;
+        canCheck = true;
         Speed /= multiplierSpeed;
     }
 
-    private void StartSpeedUp()
+    public void StartSpeedUp()
     {
         canSpeedUp = true;
+        canCheck = false;
         currentCountdown = Time.time + (1 / (Speed * multiplierSpeed));
         Speed *= multiplierSpeed;
     }
@@ -184,6 +173,7 @@ public class BallMovement : MonoBehaviour
     public void StopMovement()
     {
         CanMove = false;
+        canCheck = false;
         canStartMoving = true;
         currentCountdown = Time.time + (1 / (Speed * multiplierSpeed));
     }
@@ -191,26 +181,40 @@ public class BallMovement : MonoBehaviour
     public void StartMovement()
     {
         CanMove = true;
+        canCheck = true;
         canStartMoving = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
+        //if (Node != null && !StartingPoint)
+        //{
+        //    if (canCheck)
+        //        SetNextNodesCanMove(true);
+        //}
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (Node != null)
         {
-            if(StartingPoint) //ESTO ES SOLO PARA EL INICIO, PARA QUE SE MUEVAN EN CADENA, NO BORRAR
+            if (StartingPoint) //ESTO ES SOLO PARA EL INICIO, PARA QUE SE MUEVAN EN CADENA, NO BORRAR
             {
-                if (collision.gameObject.name == Node.previousNode.element.name)
+                if (collision.gameObject.name == Node.previousNode?.element.name)
                 {
                     StartingPoint = false;
                     Node.previousNode.element.GetComponent<BallMovement>().CanMove = true;
                 }
             }
+
+            //if (canCheck)
+            //{
+            //    var rootNode = Node.element.QueueController.GetRootNode();
+
+            //    if (rootNode != Node)
+            //        if (rootNode.nextNode != null && rootNode.previousNode != null)
+            //            SetNextNodesCanMove(false);
+            //}
         }
     }
 }
