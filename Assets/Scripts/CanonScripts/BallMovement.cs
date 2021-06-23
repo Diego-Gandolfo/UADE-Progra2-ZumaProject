@@ -34,6 +34,17 @@ public class BallMovement : MonoBehaviour
 
         if(canStartMoving && currentCountdown < Time.time)
             StartMovement();
+
+        if (Node != null)
+        {
+            if (Node.nextNode != null && Node.element.transform.position == Node.nextNode.element.transform.position)
+            {
+                var diference = Node.nextNode.element.transform.position - Node.previousNode.element.transform.position;
+
+                transform.position -= diference.normalized;
+                print("me corregi");
+            }
+        }
     }
 
     public void GetTargetBallInfo(NodeBall targetNode) //SI o si paso la que se va a correr a la derecha
