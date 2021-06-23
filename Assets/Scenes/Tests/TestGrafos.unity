@@ -244,7 +244,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 601753019}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20, y: 4, z: 0}
+  m_LocalPosition: {x: -6.34, y: 4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1654154228}
@@ -314,7 +314,8 @@ MonoBehaviour:
   queueController: {fileID: 1755319411}
   quantityBallsLevel: 10
   ballPointValue: 10
-  speed: 2
+  speed: 1
+  delayStartingTimer: 0
   gameDuration: 25
   textTimeCounter: {fileID: 0}
   numberLevel: 1
@@ -521,7 +522,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1724331233}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8, y: 4, z: 0}
+  m_LocalPosition: {x: 3.28, y: 4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1654154228}

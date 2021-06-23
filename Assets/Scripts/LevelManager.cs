@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private int quantityBallsLevel;
     [SerializeField] private int ballPointValue = 10;
     [SerializeField] private float speed;
+    [SerializeField] private float delayStartingTimer;
 
     [Header("HUD Settings")]
     [SerializeField] private float gameDuration = 0f;
@@ -34,7 +35,7 @@ public class LevelManager : MonoBehaviour
         //timeCounter = gameDuration;
 
         grafosManager = gameObject.GetComponent<IGrafosManager>();
-        queueController.Initialize(speed, quantityBallsLevel, grafosManager, ballPointValue);
+        queueController.Initialize(speed, quantityBallsLevel, grafosManager, ballPointValue, delayStartingTimer);
 
 		database = DBController.Instance;
     }

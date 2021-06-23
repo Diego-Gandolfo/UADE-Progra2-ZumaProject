@@ -7,6 +7,9 @@ public class QueueDynamicController : MonoBehaviour
 {
     [SerializeField] private Ball ballPrefab = null;
     private float ballSpawnTimer = 0f;
+    private float startingTimer;
+    private float startingCountdown = 0f;
+    private bool canStartMoving;
     private float speed;
     private int maxQuantity;
     private int currentQuantity;
@@ -18,15 +21,15 @@ public class QueueDynamicController : MonoBehaviour
     {
         queueDynamic = gameObject.GetComponent<QueueDymamic>();
         //ShowQueue();
+
     }
 
-    private void Update()
+    private void Update() 
     {
-        ballSpawnTimer += Time.deltaTime;
-
-        if(currentQuantity < maxQuantity)
+        if (currentQuantity < maxQuantity) //Esto se usa en el inicio para rapidamente crear la cola y luego nunca más.
         {
-            if (ballSpawnTimer >= (1/speed))
+            ballSpawnTimer += Time.deltaTime;
+            if (ballSpawnTimer >= (0.01))
             {
                 if (queueDynamic.IsEmpty())
                 {
@@ -44,14 +47,27 @@ public class QueueDynamicController : MonoBehaviour
                 currentQuantity++;
             }
         }
+
+
+        startingCountdown += Time.deltaTime;
+        if (startingCountdown >= startingTimer) //Esto es para inicializar el movimiento de la cola
+        {
+            var auxNodeSupp = GetRootNode();
+            while (auxNodeSupp.nextNode != null)
+            {
+                auxNodeSupp = auxNodeSupp.nextNode;
+            }
+            auxNodeSupp.element.GetComponent<BallMovement>().CanMove = true;
+        }
     }
 
-    public void Initialize(float speed, int maxQuantity, IGrafosManager grafosManager, int ballPointValue)
+    public void Initialize(float speed, int maxQuantity, IGrafosManager grafosManager, int ballPointValue, float delayStartingTimer)
     {
         this.speed = speed;
         this.maxQuantity = maxQuantity;
         this.grafosManager = grafosManager;
         this.ballPointValue = ballPointValue;
+        this.startingTimer = delayStartingTimer;
     }
 
     public Ball CreateBall() // Creamos una nueva instancia y nodo
@@ -62,31 +78,33 @@ public class QueueDynamicController : MonoBehaviour
         var ballMovement = ball.GetComponent<BallMovement>();
         ballMovement.Speed = speed;
         ballMovement.GetPath(grafosManager.GetDijkstra(0));
+        ballMovement.CanMove = false;
+        ballMovement.StartingPoint = true;
         return ball; // devolvemos el clone creado
     }
 
     public void ShowQueue()
     {
-        //if (!queueDynamic.IsEmpty())
-        //{
-        //    NodeBall auxNode = queueDynamic.rootNode; // creamos un nodo auxiliar y le asignamos la referencia del rootNode
-        //    int index = 0; // iniciamos el index
+        if (!queueDynamic.IsEmpty())
+        {
+            NodeBall auxNode = queueDynamic.rootNode; // creamos un nodo auxiliar y le asignamos la referencia del rootNode
+            int index = 0; // iniciamos el index
 
-        //    // Para mostrar el Nodo Raíz
-        //    if (auxNode != null) // si el auxNode es distinto de null
-        //    {
-        //        auxNode.element.transform.position = (transform.right * index) + transform.position; // lo movemos en x según el valor del index
-        //        index++; // aumentamos el index
-        //    }
+            // Para mostrar el Nodo Raíz
+            if (auxNode != null) // si el auxNode es distinto de null
+            {
+                auxNode.element.transform.position = (transform.right * index) + transform.position; // lo movemos en x según el valor del index
+                index++; // aumentamos el index
+            }
 
-        //    // Para mostrar el resto de los Nodos
-        //    while (auxNode.nextNode != null) // nos fijamos si es el ultimo
-        //    {
-        //        auxNode = auxNode.nextNode; // sino guardamos el siguiente en auxNode y repetimos
-        //        auxNode.element.transform.position = (transform.right * index) + transform.position; // lo movemos en x según el valor del index
-        //        index++; // aumentamos el index
-        //    }
-        //}
+            // Para mostrar el resto de los Nodos
+            while (auxNode.nextNode != null) // nos fijamos si es el ultimo
+            {
+                auxNode = auxNode.nextNode; // sino guardamos el siguiente en auxNode y repetimos
+                auxNode.element.transform.position = (transform.right * index) + transform.position; // lo movemos en x según el valor del index
+                index++; // aumentamos el index
+            }
+        }
     }
 
     public void EnqueueTop()

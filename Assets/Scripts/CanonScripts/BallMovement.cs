@@ -6,7 +6,7 @@ public class BallMovement : MonoBehaviour
 {
     [SerializeField] private int multiplierSpeed = 4;
     private Transform[] path;
-    private int currentPosition = 0;
+    public int CurrentPosition { get; private set; }
 
     public float Speed { get; set ; }
     public bool CanMove { get; set; }
@@ -16,17 +16,24 @@ public class BallMovement : MonoBehaviour
     private bool canStartMoving;
     private float currentCountdown;
 
+    public bool StartingPoint { get;set; }
+
+    void Start()
+    {
+        CurrentPosition = 0;
+    }
+
     void Update()
     {
-        if (CanMove && currentPosition < path.Length)
+        if (CanMove && CurrentPosition < path.Length)
         {
-            var currentTarget = path[currentPosition].position;
+            var currentTarget = path[CurrentPosition].position;
             float step = Speed * Time.deltaTime;
             transform.position = Vector2.MoveTowards(transform.position, currentTarget, step);
             
             var distance = Vector2.Distance(transform.position, currentTarget);
             if (distance < 0.1f)
-                currentPosition++;
+                CurrentPosition++;
         }
 
         if (canSpeedUp && currentCountdown < Time.time)
@@ -37,12 +44,20 @@ public class BallMovement : MonoBehaviour
 
         if (Node != null)
         {
-            if (Node.nextNode != null && Node.element.transform.position == Node.nextNode.element.transform.position)
+            if (!StartingPoint) //Solo chequear cuando salieron el punto de inicio
             {
-                var diference = Node.nextNode.element.transform.position - Node.previousNode.element.transform.position;
-
-                transform.position -= diference.normalized;
-                print("me corregi");
+                if (Node.nextNode != null && Node.element.transform.position == Node.nextNode.element.transform.position)
+                {
+                    if (Node.previousNode != null && Node.nextNode.element.GetComponent<BallMovement>().CurrentPosition == Node.previousNode.element.GetComponent<BallMovement>().CurrentPosition)
+                    {
+                        var diference = Node.nextNode.element.transform.position - Node.previousNode.element.transform.position;
+                        transform.position -= diference.normalized;
+                    }
+                    else
+                    {
+                        //TOMAR LA QUE ESTA ADELANTE UNICAMENTE (?)
+                    }
+                }
             }
         }
     }
@@ -52,8 +67,10 @@ public class BallMovement : MonoBehaviour
         var targetBallMovement = targetNode.element.GetComponent<BallMovement>();
         Speed = targetBallMovement.Speed;
 
+        //var diference = Node.element.transform.position - Node.nextNode.element.transform.position;
+
         path = targetBallMovement.GetPathInfo(); // agarramos el path
-        currentPosition = targetBallMovement.GetCurrentPosition(); // agarramos el index de la posicion actual del path
+        CurrentPosition = targetBallMovement.GetCurrentPosition(); // agarramos el index de la posicion actual del path
 
         if (targetNode.nextNode != null)
             targetBallMovement.MakeSpaceToRight(); //Le digo a todas las pelotas que me hagan lugar 
@@ -68,16 +85,16 @@ public class BallMovement : MonoBehaviour
 
     public int GetCurrentPosition()
     {
-        return currentPosition;
+        return CurrentPosition;
     }
 
     public void GetPath(Transform[] recorrido)
     {
         path = recorrido;
-        currentPosition = 0;
+        CurrentPosition = 0;
         CanMove = true;
-        this.transform.position = path[currentPosition].position;
-        currentPosition++;
+        this.transform.position = path[CurrentPosition].position;
+        CurrentPosition++;
     }
 
     public void SetNextNodesCanMove(bool value) // recorre los nodos siguientes para cambiarles el valor de CanMove
@@ -175,5 +192,25 @@ public class BallMovement : MonoBehaviour
     {
         CanMove = true;
         canStartMoving = false;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (Node != null)
+        {
+            if(StartingPoint) //ESTO ES SOLO PARA EL INICIO, PARA QUE SE MUEVAN EN CADENA, NO BORRAR
+            {
+                if (collision.gameObject.name == Node.previousNode.element.name)
+                {
+                    StartingPoint = false;
+                    Node.previousNode.element.GetComponent<BallMovement>().CanMove = true;
+                }
+            }
+        }
     }
 }
