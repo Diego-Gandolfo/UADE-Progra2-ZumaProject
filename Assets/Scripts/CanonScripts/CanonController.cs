@@ -7,6 +7,8 @@ public class CanonController : MonoBehaviour
 	[Header("Shoot Settings")]
 	[SerializeField] SpriteRenderer currentBall;
 	[SerializeField] SpriteRenderer nextBall;
+	[SerializeField] private float minDistanceToPoint;
+
 
 	[Header("Raycast Settings")]
 	[SerializeField] private float rayLenght = 5f;
@@ -38,7 +40,7 @@ public class CanonController : MonoBehaviour
 			actualPositionMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			direction = actualPositionMouse - (Vector2)raycastPoint.position;
 			var distance = Vector3.Distance(transform.position, actualPositionMouse);
-			if (distance >= 3f)
+			if (distance >= minDistanceToPoint)
 			{
 				transform.up = direction.normalized;
 			}
