@@ -40,7 +40,7 @@ public class QueueDynamicController : MonoBehaviour
         {
             if(currentIndex != maxQuantity)
             {
-                StartMovingQueue(currentIndex);
+                ShowQueue(currentIndex);
                 currentIndex++;
                 movingCountdown = 0f;
             } else
@@ -51,7 +51,7 @@ public class QueueDynamicController : MonoBehaviour
 
         if (movingCountdown >= movingTimer && !canInitializeMoving)
         {
-            StartMovingQueue(GetNumberOfBallsInQueue());
+            ShowQueue(GetNumberOfCurrentBalls());
             movingCountdown = 0f;
         }
 
@@ -86,7 +86,7 @@ public class QueueDynamicController : MonoBehaviour
                 var ball = CreateBall();
                 queueDynamic.Initialize(ball);
                 var node = FindNode(ball);
-                ball.ballSQ.Node = node;
+                ball.BallSQ.Node = node;
             }
             else
             {
@@ -97,7 +97,7 @@ public class QueueDynamicController : MonoBehaviour
         }
     }
 
-    public void StartMovingQueue(int index)
+    public void ShowQueue(int index)
     {
         int auxIndex = index; 
         
@@ -109,33 +109,33 @@ public class QueueDynamicController : MonoBehaviour
 
         for (int i = 0; i < auxIndex; i++)
         {
-            auxNodeSupp.element.ballSQ.Move();
+            auxNodeSupp.element.BallSQ.Move();
             auxNodeSupp = auxNodeSupp.previousNode; // guardamos el anterior en auxNode y repetimos
         }
     }
 
-    public void ShowQueue()
+    public void ShowQueueOLD()
     {
-        if (!queueDynamic.IsEmpty())
-        {
-            NodeBall auxNode = queueDynamic.rootNode; // creamos un nodo auxiliar y le asignamos la referencia del rootNode
-            int index = 0; // iniciamos el index
+        //if (!queueDynamic.IsEmpty())
+        //{
+        //    NodeBall auxNode = queueDynamic.rootNode; // creamos un nodo auxiliar y le asignamos la referencia del rootNode
+        //    int index = 0; // iniciamos el index
 
-            // Para mostrar el Nodo Raíz
-            if (auxNode != null) // si el auxNode es distinto de null
-            {
-                auxNode.element.transform.position = (transform.right * index) + transform.position; // lo movemos en x según el valor del index
-                index++; // aumentamos el index
-            }
+        //    // Para mostrar el Nodo Raíz
+        //    if (auxNode != null) // si el auxNode es distinto de null
+        //    {
+        //        auxNode.element.transform.position = (transform.right * index) + transform.position; // lo movemos en x según el valor del index
+        //        index++; // aumentamos el index
+        //    }
 
-            // Para mostrar el resto de los Nodos
-            while (auxNode.nextNode != null) // nos fijamos si es el ultimo
-            {
-                auxNode = auxNode.nextNode; // sino guardamos el siguiente en auxNode y repetimos
-                auxNode.element.transform.position = (transform.right * index) + transform.position; // lo movemos en x según el valor del index
-                index++; // aumentamos el index
-            }
-        }
+        //    // Para mostrar el resto de los Nodos
+        //    while (auxNode.nextNode != null) // nos fijamos si es el ultimo
+        //    {
+        //        auxNode = auxNode.nextNode; // sino guardamos el siguiente en auxNode y repetimos
+        //        auxNode.element.transform.position = (transform.right * index) + transform.position; // lo movemos en x según el valor del index
+        //        index++; // aumentamos el index
+        //    }
+        //}
     }
 
     public void EnqueueTop()
@@ -143,29 +143,30 @@ public class QueueDynamicController : MonoBehaviour
         var ball = CreateBall();
         queueDynamic.EnqueueTop(ball);
         var node = FindNode(ball);
-        //ball.GetComponent<BallMovement>().Node = node;
-        //ball.GetComponent<BallShowQueue>().AddNode(node);
-        ball.GetComponent<BallShowQueue>().Node = node;
+        ball.BallSQ.Node = node;
     }
 
     public void EnqueueMiddleAfter(Ball newBall, Ball afterBall)
     {
         queueDynamic.EnqueueMiddleAfter(newBall, afterBall);
+        newBall.BallSQ.GetTargetBallInfo(afterBall);
         EnqueueMiddleMain(newBall);
+        afterBall.BallSQ.MakeSpaceToRight();
     }
 
     public void EnqueueMiddleBefore(Ball newBall, Ball beforeBall)
     {
         queueDynamic.EnqueueMiddleBefore(newBall, beforeBall);
+        newBall.BallSQ.GetTargetBallInfo(beforeBall);
         EnqueueMiddleMain(newBall);
+        newBall.BallSQ.MakeSpaceToRight();
     }
 
     public void EnqueueMiddleMain(Ball newBall) // son cosas que hacen ambos EnqueueMiddle, para no repetir codigo
     {
+        ShowQueue(GetNumberOfCurrentBalls());
         var node = FindNode(newBall);
-        var newBallMovement = newBall.GetComponent<BallMovement>();
-        newBallMovement.Node = node;
-
+        newBall.BallSQ.Node = node;
         CheckColors(node);
     }
 
@@ -284,7 +285,7 @@ public class QueueDynamicController : MonoBehaviour
         //print("Current Score: " + GameManager.instance.CurrentScore);
     }
 
-    public int GetNumberOfBallsInQueue()
+    public int GetNumberOfCurrentBalls()
     {
         if (!IsEmpty())
         {

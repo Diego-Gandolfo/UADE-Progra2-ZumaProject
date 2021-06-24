@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class QueueStartTrigger : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D collision) //Todas las pelotas que empiezan esta con el collider desactivado
+    private void OnTriggerStay2D(Collider2D collision) //Todas las pelotas que empiezan esta con el collider desactivado
     {
         var ball = collision.gameObject.GetComponent<Ball>();
         if (ball != null && !ball.IsProjectile)

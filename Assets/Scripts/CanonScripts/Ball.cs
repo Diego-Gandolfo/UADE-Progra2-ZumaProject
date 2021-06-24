@@ -12,7 +12,7 @@ public class Ball : MonoBehaviour
     
     public QueueDynamicController QueueController { get; private set; }
 
-    public BallShowQueue ballSQ { get; private set; }
+    public BallShowQueue BallSQ { get; private set; }
 
     public Color Color { get; private set; }
 
@@ -24,7 +24,7 @@ public class Ball : MonoBehaviour
         gameObject.GetComponent<SpriteRenderer>().color = Color;
         lifeTimeTimer = lifeTime;
         myBallMovement = this.GetComponent<BallMovement>();
-        ballSQ = GetComponent<BallShowQueue>();
+        BallSQ = GetComponent<BallShowQueue>();
     }
 
     private void Update()
@@ -55,18 +55,16 @@ public class Ball : MonoBehaviour
             if (contactOnCollision.x > 0)
             {
                 var aux = collisionBallMovement.Node;
-                transform.position = collisionBallMovement.Node.nextNode.element.transform.position;
+                //transform.position = collisionBallMovement.Node.nextNode.element.transform.position; //SE LO DEBERIA DECIR EL SHOWQUEUE
                 QueueController.EnqueueMiddleAfter(this, collisionBall);
-                myBallMovement.StopMovement();
-                myBallMovement.GetTargetBallInfo(aux);
+                //BallSQ.GetTargetBallInfo(aux);
             }
             else if (contactOnCollision.x <= 0)
             {
                 var aux = collisionBallMovement.Node.previousNode;
-                transform.position = collisionBallMovement.Node.element.transform.position;
+                //transform.position = collisionBallMovement.Node.element.transform.position;
                 QueueController.EnqueueMiddleBefore(this, collisionBall);
-                myBallMovement.StartMovement();
-                myBallMovement.GetTargetBallInfo(aux);
+                //BallSQ.GetTargetBallInfo(aux);
             }
 
             ResetOnCollision();
