@@ -79,10 +79,10 @@ public class QueueDynamicController : MonoBehaviour
     public void PowerUpSettings(PowerUp powerUpPrefab, bool playWithPowerUp, int ballsToOrder, int checkColorCountToPowerUp)
     {
         canInstantiatePowerUp = playWithPowerUp;
-        this.powerUpPrefab = null;
+        this.powerUpPrefab = powerUpPrefab;
         this.checkColorCountToPowerUp = checkColorCountToPowerUp;
         this.ballsToOrder = ballsToOrder;
-}
+    }
 
     public Ball CreateBall() // Creamos una nueva instancia y nodo
     {
