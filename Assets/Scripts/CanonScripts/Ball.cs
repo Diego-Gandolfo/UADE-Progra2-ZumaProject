@@ -54,20 +54,16 @@ public class Ball : MonoBehaviour
 
             if (contactOnCollision.x > 0)
             {
-                var aux = collisionBallMovement.Node;
-                //transform.position = collisionBallMovement.Node.nextNode.element.transform.position; //SE LO DEBERIA DECIR EL SHOWQUEUE
+                print($"<<<<< Derecha - {collisionBall.name}-{this.name}");
                 QueueController.EnqueueMiddleAfter(this, collisionBall);
-                //BallSQ.GetTargetBallInfo(aux);
+                ResetOnCollision();
             }
             else if (contactOnCollision.x <= 0)
             {
-                var aux = collisionBallMovement.Node.previousNode;
-                //transform.position = collisionBallMovement.Node.element.transform.position;
+                print($"Izquierda >>> - {this.name}-{collisionBall.name}");
                 QueueController.EnqueueMiddleBefore(this, collisionBall);
-                //BallSQ.GetTargetBallInfo(aux);
+                ResetOnCollision();
             }
-
-            ResetOnCollision();
         }
     }
 

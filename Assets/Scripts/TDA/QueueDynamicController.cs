@@ -152,7 +152,7 @@ public class QueueDynamicController : MonoBehaviour
         queueDynamic.EnqueueMiddleAfter(newBall, afterBall);
         newBall.BallSQ.GetTargetBallInfo(afterBall);
         EnqueueMiddleMain(newBall);
-        afterBall.BallSQ.MakeSpaceToRight();
+        newBall.BallSQ.MakeSpaceToRight();
     }
 
     public void EnqueueMiddleBefore(Ball newBall, Ball beforeBall)
@@ -160,7 +160,7 @@ public class QueueDynamicController : MonoBehaviour
         queueDynamic.EnqueueMiddleBefore(newBall, beforeBall);
         newBall.BallSQ.GetTargetBallInfo(beforeBall);
         EnqueueMiddleMain(newBall);
-        newBall.BallSQ.MakeSpaceToRight();
+        beforeBall.BallSQ.MakeSpaceToRight();
     }
 
     public void EnqueueMiddleMain(Ball newBall) // son cosas que hacen ambos EnqueueMiddle, para no repetir codigo

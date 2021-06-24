@@ -23,7 +23,6 @@ public class BallShowQueue : MonoBehaviour
         CanMove = value;
         transform.position = Path[CurrentPosition].position;
     }
-
    
     public void Move()
     {
@@ -41,6 +40,5 @@ public class BallShowQueue : MonoBehaviour
         {
             Node.nextNode.element.BallSQ.MakeSpaceToRight();
         }
-
     }
 }
