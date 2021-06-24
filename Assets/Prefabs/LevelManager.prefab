@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6247410222405867779}
   - component: {fileID: 6247410222405867778}
+  - component: {fileID: 6856503079738691422}
   - component: {fileID: 651114151}
   - component: {fileID: 651114152}
   m_Layer: 0
@@ -46,14 +47,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   queueController: {fileID: 0}
-  quantityBallsLevel: 25
+  ballPrefab: {fileID: 7535913483028634844, guid: 2601f13924c22624a892517a8c6a1de2,
+    type: 3}
+  quantityBallsLevel: 32
   ballPointValue: 10
-  speed: 2
+  movingTime: 1
+  playWithPowerUp: 0
+  powerUpPrefab: {fileID: 5230431254757149322, guid: c1a9b9f0fab086a47be8c4fcd8b7eab9,
+    type: 3}
+  checkColorCountToPowerUp: 1
+  ballsToOrder: 3
   gameDuration: 60
   textTimeCounter: {fileID: 0}
   numberLevel: 1
   currentLevel: Level01
   nextLevel: Level02
+--- !u!114 &6856503079738691422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6247410222405867780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6e1fec54c223864796195b16f8c9dcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 0}
+  resumeButton: {fileID: 0}
+  restartButton: {fileID: 0}
+  mainMenuButton: {fileID: 0}
+  quitButton: {fileID: 0}
 --- !u!114 &651114151
 MonoBehaviour:
   m_ObjectHideFlags: 0

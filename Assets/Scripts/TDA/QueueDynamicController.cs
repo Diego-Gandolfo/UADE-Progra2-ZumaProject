@@ -6,29 +6,29 @@ using UnityEngine;
 
 public class QueueDynamicController : MonoBehaviour
 {
-    [SerializeField] private int checkColorCountToPowerUp = 1;
-    [SerializeField] private int ballsToOrder = 1;
-    [SerializeField] private Ball ballPrefab = null;
-    [SerializeField] private PowerUp powerUpPrefab = null;
-    [SerializeField] private float ballSpawnCooldown = 0f;
-    private int checkColorCount;
-    private int counter = 0;
-    private bool canInstantiatePowerUp = true;
     private QueueDymamic queueDynamic = null;
     private IGrafosManager grafosManager;
     private Transform[] path;
-
+    private Ball ballPrefab = null;
     private int ballPointValue;
 
+    //QUANTITY
     private int maxQuantity;
     private int currentQuantity;
     private int currentIndex = 1;
 
+    //MOVEMENT AND TIMERS
     private bool canInitializeMoving = true;
-
     private float ballSpawnTimer = 0f;
     private float movingTimer;
     private float movingCountdown = 0f;
+
+    //POWER UP
+    private PowerUp powerUpPrefab = null;
+    private int checkColorCount;
+    private bool canInstantiatePowerUp = true;
+    private int checkColorCountToPowerUp = 1;
+    private int ballsToOrder = 1;
 
     private void Awake()
     {
@@ -66,15 +66,24 @@ public class QueueDynamicController : MonoBehaviour
         }
     }
 
-    public void Initialize(float timer, int maxQuantity, IGrafosManager grafosManager, int ballPointValue, bool playWithPowerUp)
+    public void Initialize(Ball ballPrefab, float timer, int maxQuantity, IGrafosManager grafosManager, int ballPointValue)
     {
+        this.ballPrefab = ballPrefab;
         this.maxQuantity = maxQuantity;
         this.grafosManager = grafosManager;
         this.ballPointValue = ballPointValue;
         this.movingTimer = timer;
-        canInstantiatePowerUp = playWithPowerUp;
+
         path = grafosManager.GetDijkstra(0);
     }
+
+    public void PowerUpSettings(PowerUp powerUpPrefab, bool playWithPowerUp, int ballsToOrder, int checkColorCountToPowerUp)
+    {
+        canInstantiatePowerUp = playWithPowerUp;
+        this.powerUpPrefab = null;
+        this.checkColorCountToPowerUp = checkColorCountToPowerUp;
+        this.ballsToOrder = ballsToOrder;
+}
 
     public Ball CreateBall() // Creamos una nueva instancia y nodo
     {

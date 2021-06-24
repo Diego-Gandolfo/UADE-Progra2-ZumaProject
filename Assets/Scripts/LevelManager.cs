@@ -7,10 +7,16 @@ public class LevelManager : MonoBehaviour
 {
     [Header("Queue Settings")]
     [SerializeField] private QueueDynamicController queueController;
+    [SerializeField] private Ball ballPrefab = null;
     [SerializeField] private int quantityBallsLevel;
     [SerializeField] private int ballPointValue = 10;
     [SerializeField] private float movingTime;
+
+    [Header("PowerUp Settings")]
     [SerializeField] private bool playWithPowerUp = false;
+    [SerializeField] private PowerUp powerUpPrefab = null;
+    [SerializeField] private int checkColorCountToPowerUp = 1;
+    [SerializeField] private int ballsToOrder = 1;
 
     [Header("HUD Settings")]
     [SerializeField] private float gameDuration = 0f;
@@ -35,7 +41,8 @@ public class LevelManager : MonoBehaviour
         //timeCounter = gameDuration;
 
         grafosManager = gameObject.GetComponent<IGrafosManager>();
-        queueController.Initialize(movingTime, quantityBallsLevel, grafosManager, ballPointValue, playWithPowerUp);
+        queueController.Initialize(ballPrefab, movingTime, quantityBallsLevel, grafosManager, ballPointValue);
+        queueController.PowerUpSettings(powerUpPrefab, playWithPowerUp, ballsToOrder, checkColorCountToPowerUp);
 
 		database = DBController.Instance;
     }
