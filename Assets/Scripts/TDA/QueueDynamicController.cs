@@ -64,6 +64,7 @@ public class QueueDynamicController : MonoBehaviour
         this.ballPointValue = ballPointValue;
         this.movingTimer = timer;
         path = grafosManager.GetDijkstra(0);
+        print(path.Length);
     }
 
     public Ball CreateBall() // Creamos una nueva instancia y nodo

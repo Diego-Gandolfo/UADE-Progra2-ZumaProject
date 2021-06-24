@@ -7105,10 +7105,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2134628774}
   - component: {fileID: 2134628777}
-  - component: {fileID: 2134628778}
   - component: {fileID: 2134628776}
   - component: {fileID: 2134628775}
   - component: {fileID: 2134628779}
+  - component: {fileID: 2134628778}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
