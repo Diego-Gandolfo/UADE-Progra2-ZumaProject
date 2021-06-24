@@ -8,11 +8,13 @@ public class PowerUp : MonoBehaviour, IBall
     private QueueDynamicController queueDynamic;
     private int ballToOrder;
     private TDA_ABB ballTree;
+    public BallShowQueue BallSQ { get; private set; }
 
-    private void Start()
+    private void Awake()
     {
         ballTree = new TDA_ABB();
         ballTree.InicializarArbol();
+        BallSQ = GetComponent<BallShowQueue>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

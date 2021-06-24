@@ -9179,8 +9179,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 329f652fa4ede6545913e9e3c1e199e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  checkColorCountToPowerUp: 1
+  ballsToOrder: 1
   ballPrefab: {fileID: 7535913483028634844, guid: 2601f13924c22624a892517a8c6a1de2,
     type: 3}
+  powerUpPrefab: {fileID: 5230431254757149322, guid: c1a9b9f0fab086a47be8c4fcd8b7eab9,
+    type: 3}
+  ballSpawnCooldown: 0
 --- !u!1 &1476586803
 GameObject:
   m_ObjectHideFlags: 0

@@ -81,8 +81,7 @@ public class QueueDynamicController : MonoBehaviour
         ball.name = $"QueueController Ball ({currentQuantity})"; // le cambiamos el nombre para diferenciarlas
         ball.SetQueueController(this);
 
-        var ballShowQueue = ball.GetComponent<BallShowQueue>();
-        ballShowQueue.InitializePath(path, false);
+        ball.BallSQ.InitializePath(path, false);
         return ball; // devolvemos el clone creado
     }
 
@@ -91,6 +90,7 @@ public class QueueDynamicController : MonoBehaviour
         if (ballSpawnTimer >= (0.01))
         {
             if (queueDynamic.IsEmpty())
+            { 
                 var ball = CreateBall();
                 queueDynamic.Initialize(ball);
                 var node = FindNode(ball);
@@ -154,23 +154,25 @@ public class QueueDynamicController : MonoBehaviour
         ball.BallSQ.Node = node;
     }
 
-    public void EnqueueMiddleAfter(IBall newBall, IBall afterBall, bool hasToCheck = true)
+    public void EnqueueMiddleAfter(IBall newBall, IBall afterBall)
     {
         queueDynamic.EnqueueMiddleAfter(newBall, afterBall);
         newBall.BallSQ.GetTargetBallInfo(afterBall);
+        if (newBall is PowerUp) print($"{newBall.GetGameObject().name} - {afterBall.GetGameObject().name}");
         EnqueueMiddleMain(newBall);
         newBall.BallSQ.MakeSpaceToRight();
     }
 
-    public void EnqueueMiddleBefore(IBall newBall, IBall beforeBall, bool hasToCheck = true)
+    public void EnqueueMiddleBefore(IBall newBall, IBall beforeBall)
     {
+        if (newBall is PowerUp) print($"{newBall.GetGameObject().name}");
         queueDynamic.EnqueueMiddleBefore(newBall, beforeBall);
         newBall.BallSQ.GetTargetBallInfo(beforeBall);
         EnqueueMiddleMain(newBall);
         beforeBall.BallSQ.MakeSpaceToRight();
     }
 
-    public void EnqueueMiddleMain(Ball newBall) // son cosas que hacen ambos EnqueueMiddle, para no repetir codigo
+    public void EnqueueMiddleMain(IBall newBall) // son cosas que hacen ambos EnqueueMiddle, para no repetir codigo
     {
         ShowQueue(GetNumberOfCurrentBalls());
         var node = FindNode(newBall);
@@ -239,7 +241,7 @@ public class QueueDynamicController : MonoBehaviour
             }
         }
 
-        ShowQueue();
+        //ShowQueue();
         return ballsToDequeue;
     }
 
@@ -340,6 +342,7 @@ public class QueueDynamicController : MonoBehaviour
                     var aux = DesqueueMiddle(ballList[i]);
                     Destroy(aux.GetGameObject());
                 }
+            }
 
             CalculatePoints(ballList.Count); //TODO: Incorporar con checkRecursivity en branch Arbol
 
@@ -379,12 +382,12 @@ public class QueueDynamicController : MonoBehaviour
     {
         if (canInstantiatePowerUp)
         {
-            print("InstantiatePowerUp: " + ball.GetGameObject().name);
             SetCanInstantiatePowerUp(false);
             var newPowerUp = Instantiate(this.powerUpPrefab); // instanciamos una nueva Sphere
             newPowerUp.SetQueueController(this); //Le seteamos el controller
             newPowerUp.SetBallsToOrder(ballsToOrder);
-            queueDynamic.EnqueueMiddleAfter(newPowerUp, ball); //Lo encolamos
+            print("InstantiatePowerUp: " + ball.GetGameObject().name);
+            EnqueueMiddleAfter(newPowerUp, ball); //Lo encolamos
             checkColorCount = 0; //Reseteamos el contador
         }
     }
