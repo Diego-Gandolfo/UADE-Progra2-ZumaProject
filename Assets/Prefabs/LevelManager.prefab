@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6247410222405867779}
   - component: {fileID: 6247410222405867778}
+  - component: {fileID: 651114151}
+  - component: {fileID: 651114152}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -24,7 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6247410222405867780}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -43,7 +45,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cc2436120c202a49bed753e141c0e17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentLevel: 
-  nextLevel: 
+  queueController: {fileID: 0}
+  quantityBallsLevel: 25
+  ballPointValue: 10
+  speed: 2
+  gameDuration: 60
   textTimeCounter: {fileID: 0}
-  gameDuration: 30
+  numberLevel: 1
+  currentLevel: Level01
+  nextLevel: Level02
+--- !u!114 &651114151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6247410222405867780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53e2f658a7def7441ad68f406baa89d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &651114152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6247410222405867780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4485758a1f3f50441b63990a3e4d8974, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

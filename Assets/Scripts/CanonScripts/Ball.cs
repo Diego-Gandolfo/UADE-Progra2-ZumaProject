@@ -10,8 +10,10 @@ public class Ball : MonoBehaviour, IBall
     [SerializeField] private float speed = 10;
     [SerializeField] private float lifeTime;
     private float lifeTimeTimer;
-
+    
     public QueueDynamicController QueueController { get; private set; }
+
+    public BallShowQueue BallSQ { get; private set; }
 
     public Color Color { get; private set; }
 
@@ -24,6 +26,7 @@ public class Ball : MonoBehaviour, IBall
         Color = colorBucket[IndexValue];
         gameObject.GetComponent<SpriteRenderer>().color = Color;
         lifeTimeTimer = lifeTime;
+        BallSQ = GetComponent<BallShowQueue>();
     }
 
     private void Update()
@@ -44,25 +47,21 @@ public class Ball : MonoBehaviour, IBall
     {
         if (IsProjectile)
         {
-            var ball = collision.gameObject.GetComponent<Ball>();
-            if (ball != null)
-            {
-                //print("Es pelota");
-                QueueController = collision.gameObject.GetComponent<Ball>().QueueController;
-                ResetOnCollision();
+            var collisionBall = collision.gameObject.GetComponent<Ball>();
+            QueueController = collisionBall.QueueController;
 
-                Vector2 contactOnCollision = collision.GetContact(0).point;//Encuentra el punto de colision (devuelve un vector)
-                contactOnCollision.x -= collision.transform.position.x;
-                if (contactOnCollision.x > 0)
-                {
-                    var afterBall = collision.gameObject.GetComponent<Ball>();
-                    QueueController.EnqueueMiddleAfter(this, afterBall);
-                }
-                else if (contactOnCollision.x <= 0)
-                {
-                    var beforeBall = collision.gameObject.GetComponent<Ball>();
-                    QueueController.EnqueueMiddleBefore(this, beforeBall);
-                }
+            Vector2 contactOnCollision = collision.GetContact(0).point;//Encuentra el punto de colision (devuelve un vector)
+            contactOnCollision.x -= collision.transform.position.x;
+
+            if (contactOnCollision.x > 0)
+            {
+                QueueController.EnqueueMiddleAfter(this, collisionBall);
+                ResetOnCollision();
+            }
+            else if (contactOnCollision.x <= 0)
+            {
+                QueueController.EnqueueMiddleBefore(this, collisionBall);
+                ResetOnCollision();
             }
         }
     }

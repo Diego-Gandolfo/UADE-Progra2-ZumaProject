@@ -5,30 +5,80 @@ using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
+    [Header("Queue Settings")]
+    [SerializeField] private QueueDynamicController queueController;
+    [SerializeField] private int quantityBallsLevel;
+    [SerializeField] private int ballPointValue = 10;
+    [SerializeField] private float movingTime;
+    [SerializeField] private float delayStartingTimer;
+
+    [Header("HUD Settings")]
+    [SerializeField] private float gameDuration = 0f;
+    [SerializeField] private Text textTimeCounter = null;
+
+    [Header("Level Settings")]
+    [SerializeField] private int numberLevel = 1;
     [SerializeField] private string currentLevel;
     [SerializeField] private string nextLevel;
-    [SerializeField] private Text textTimeCounter = null;
-    [SerializeField] private float gameDuration = 0f;
+
     private float timeCounter = 0f;
-    private GameManager gameManager;
+	private float currentTimer = 0f;
+	
+	private DBController database;
+    private IGrafosManager grafosManager;
 
     private void Start()
     {
-        gameManager = GameManager.instance;
-        gameManager.CurrentLevel = currentLevel;
-        gameManager.NextLevel = nextLevel;
-        timeCounter = gameDuration;
+		//GameManager.instance.CurrentLevel = currentLevel;
+        //GameManager.instance.NextLevel = nextLevel;
+        //GameManager.instance.NumberLevel = numberLevel;
+        //timeCounter = gameDuration;
+
+        grafosManager = gameObject.GetComponent<IGrafosManager>();
+        queueController.Initialize(movingTime, quantityBallsLevel, grafosManager, ballPointValue);
+
+		database = DBController.Instance;
     }
 
-    private void Update()
+    private void Update() //TEMPORALMENTE COMENTADO PARA TEST GRAFOS
     {
-        timeCounter -= Time.deltaTime;
-        string msg = string.Format("{0:00.00}", timeCounter);
-        textTimeCounter.text = msg;
+        //timeCounter -= Time.deltaTime;
+        //currentTimer += Time.deltaTime;
+        //string msg = string.Format("{0:00.00}", timeCounter);
+        //textTimeCounter.text = msg;
 
-        if (timeCounter <= 0)
-        {
-            gameManager.Victory();
-        }
+        //if (timeCounter <= 0)  
+        //{
+        //    Victory();
+        //}
+
+        //if (Input.GetKeyDown(KeyCode.Space)) //ESTO ES TEMPORAL
+        //{
+        //    PlayerGlobal.Instance.Id = 1;
+        //    currentTimer = 100f; 
+        //    GameManager.instance.CurrentScore = 7143;
+        //    numberLevel = 1;
+        //    Victory();
+        //}
+    }
+
+    private void Victory()
+    {
+        //InsertPlayerInRanking(GameManager.instance.CurrentScore, numberLevel, currentTimer); //Lo insertamos en el ranking -  TEMPORALMENTE COMENTADO
+
+        PlayerGlobal.Instance.RankingId = 39; //TODO: Para temporal con lo que ya esta en la base de datos...
+        GameManager.instance.Victory();
+    }
+
+    public void InsertPlayerInRanking(int score, int level, float time) //Esto se haria cuando se termina un nivel
+    {
+        PlayerGlobal.Instance.Level = level;
+        PlayerGlobal.Instance.Score = score;
+        PlayerGlobal.Instance.Time = time.ToString();
+
+        var player = new Player(PlayerGlobal.Instance.Name, PlayerGlobal.Instance.Level, PlayerGlobal.Instance.Score);
+        player.Time = PlayerGlobal.Instance.Time;
+        database.InsertRanking(player);
+        PlayerGlobal.Instance.RankingId = database.GetLatestRanking().RankingId; //Nos guardamos el ID de esa tabla para buscar más facil
     }
 }

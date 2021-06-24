@@ -34,6 +34,8 @@ public class CanonStack : MonoBehaviour
             Ball nextBall = nextNode.element as Ball;
             Ball previousBall = previousNode.element as Ball;
 
+            if (nextNode != null) nextNode.element.BallSQ.Regroup(1);
+
             if (nextNode != null && previousNode != null)
                 if (previousBall.Color == nextBall.Color)
                     selected.QueueController.CheckColors(nextNode);
