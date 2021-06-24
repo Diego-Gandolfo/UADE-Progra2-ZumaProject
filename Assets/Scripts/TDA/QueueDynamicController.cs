@@ -254,13 +254,17 @@ public class QueueDynamicController : MonoBehaviour
         {
             CalculatePoints(ballList.Count); //TODO: Incorporar con checkRecursivity en branch Arbol
 
-            if (nextNode != null) nextNode.element.BallSQ.Regroup(ballList.Count);
-
             for (int i = 0; i < ballList.Count; i++)
             {
                 var aux = DesqueueMiddle(ballList[i]);
-                Destroy(aux.gameObject);
+                //Destroy(aux.gameObject);
+                aux.gameObject.SetActive(false);
             }
+
+            print(ballList.Count);
+
+            if (nextNode != null)
+                nextNode.element.BallSQ.Regroup(ballList.Count);
         }
 
         // SI EL NODO PREVIO Y NODO SIGUIENTE COINDICEN COLOR, le paso el CHECKCOLOR de uno para que haga de nuevo toda la lista 
