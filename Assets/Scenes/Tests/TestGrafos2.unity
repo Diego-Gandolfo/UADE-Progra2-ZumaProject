@@ -9180,7 +9180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   checkColorCountToPowerUp: 1
-  ballsToOrder: 1
+  ballsToOrder: 3
   ballPrefab: {fileID: 7535913483028634844, guid: 2601f13924c22624a892517a8c6a1de2,
     type: 3}
   powerUpPrefab: {fileID: 5230431254757149322, guid: c1a9b9f0fab086a47be8c4fcd8b7eab9,

@@ -12,7 +12,7 @@ public class PowerUp : MonoBehaviour, IBall
 
     private void Awake()
     {
-        ballTree = new TDA_ABB();
+        ballTree = GetComponent<TDA_ABB>();
         ballTree.InicializarArbol();
         BallSQ = GetComponent<BallShowQueue>();
     }
@@ -56,7 +56,10 @@ public class PowerUp : MonoBehaviour, IBall
         foreach (var item in resortList) //recorre la lista y las agrega una por una al arbol
         {
             if (item is Ball)
+            {
+                print($"item: {item.GetGameObject().name}");
                 ballTree.AgregarElem(ref ballTree.raiz, item as Ball);
+            }
         }
 
         ballTree.inOrder(ballTree.raiz, queueDynamic, ball); //acá las ordeno por color

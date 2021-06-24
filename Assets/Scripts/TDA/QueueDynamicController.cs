@@ -154,12 +154,11 @@ public class QueueDynamicController : MonoBehaviour
         ball.BallSQ.Node = node;
     }
 
-    public void EnqueueMiddleAfter(IBall newBall, IBall afterBall)
+    public void EnqueueMiddleAfter(IBall newBall, IBall afterBall, bool hasToCheckColors = true)
     {
         queueDynamic.EnqueueMiddleAfter(newBall, afterBall);
         newBall.BallSQ.GetTargetBallInfo(afterBall);
-        if (newBall is PowerUp) print($"{newBall.GetGameObject().name} - {afterBall.GetGameObject().name}");
-        EnqueueMiddleMain(newBall);
+        EnqueueMiddleMain(newBall, hasToCheckColors);
         newBall.BallSQ.MakeSpaceToRight();
     }
 
@@ -172,12 +171,12 @@ public class QueueDynamicController : MonoBehaviour
         beforeBall.BallSQ.MakeSpaceToRight();
     }
 
-    public void EnqueueMiddleMain(IBall newBall) // son cosas que hacen ambos EnqueueMiddle, para no repetir codigo
+    public void EnqueueMiddleMain(IBall newBall, bool hasToCheckColors = true) // son cosas que hacen ambos EnqueueMiddle, para no repetir codigo
     {
         ShowQueue(GetNumberOfCurrentBalls());
         var node = FindNode(newBall);
         newBall.BallSQ.Node = node;
-        CheckColors(node);
+        if (hasToCheckColors) CheckColors(node);
     }
 
     public void EnqueueBottom()
@@ -209,7 +208,6 @@ public class QueueDynamicController : MonoBehaviour
     {
         List<IBall> ballsToDequeue = new List<IBall>();
         NodeBall node = FindNode(ball);
-        print("DequeueList " + node.element.GetGameObject().name);
         var auxNodeRight = node.nextNode != null ? node.nextNode : null;
         var auxNodeLeft = node.previousNode != null ? node.previousNode : null;
 
@@ -332,7 +330,6 @@ public class QueueDynamicController : MonoBehaviour
             if (canInstantiatePowerUp) //Por cada vuelta de checkcolors que explota, sumamos uno al contador
             {
                 checkColorCount++;
-                print("checkColorCount: " + checkColorCount);
             }
 
             for (int i = 0; i < ballList.Count; i++)
@@ -386,7 +383,6 @@ public class QueueDynamicController : MonoBehaviour
             var newPowerUp = Instantiate(this.powerUpPrefab); // instanciamos una nueva Sphere
             newPowerUp.SetQueueController(this); //Le seteamos el controller
             newPowerUp.SetBallsToOrder(ballsToOrder);
-            print("InstantiatePowerUp: " + ball.GetGameObject().name);
             EnqueueMiddleAfter(newPowerUp, ball); //Lo encolamos
             checkColorCount = 0; //Reseteamos el contador
         }

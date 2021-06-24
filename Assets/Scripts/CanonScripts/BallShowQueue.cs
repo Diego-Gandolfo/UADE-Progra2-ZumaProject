@@ -14,7 +14,6 @@ public class BallShowQueue : MonoBehaviour
     {
         Path = targetBall.BallSQ.Path;
         CurrentPosition = targetBall.BallSQ.CurrentPosition; 
-        print($"GetInfo: {Path != null}");
     }
 
     public void InitializePath(Transform[] recorrido, bool value)

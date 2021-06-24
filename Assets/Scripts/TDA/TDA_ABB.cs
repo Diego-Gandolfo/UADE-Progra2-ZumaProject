@@ -112,7 +112,7 @@ public class TDA_ABB : MonoBehaviour, ITDAABB
         if (a != null)
         {           
             inOrder(a.hijoIzq, queueDynamic, ball);
-            queueDynamic.EnqueueMiddleAfter(a.info, ball);
+            queueDynamic.EnqueueMiddleAfter(a.info, ball, false);
             inOrder(a.hijoDer, queueDynamic, ball);
         }
     }
