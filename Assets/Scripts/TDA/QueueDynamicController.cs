@@ -66,12 +66,13 @@ public class QueueDynamicController : MonoBehaviour
         }
     }
 
-    public void Initialize(float timer, int maxQuantity, IGrafosManager grafosManager, int ballPointValue)
+    public void Initialize(float timer, int maxQuantity, IGrafosManager grafosManager, int ballPointValue, bool playWithPowerUp)
     {
         this.maxQuantity = maxQuantity;
         this.grafosManager = grafosManager;
         this.ballPointValue = ballPointValue;
         this.movingTimer = timer;
+        canInstantiatePowerUp = playWithPowerUp;
         path = grafosManager.GetDijkstra(0);
     }
 
