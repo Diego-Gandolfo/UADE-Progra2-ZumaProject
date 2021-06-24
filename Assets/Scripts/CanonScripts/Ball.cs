@@ -9,8 +9,10 @@ public class Ball : MonoBehaviour
     [SerializeField] private float lifeTime;
     private float lifeTimeTimer;
     private BallMovement myBallMovement;
-
+    
     public QueueDynamicController QueueController { get; private set; }
+
+    public BallShowQueue ballSQ { get; private set; }
 
     public Color Color { get; private set; }
 
@@ -22,6 +24,7 @@ public class Ball : MonoBehaviour
         gameObject.GetComponent<SpriteRenderer>().color = Color;
         lifeTimeTimer = lifeTime;
         myBallMovement = this.GetComponent<BallMovement>();
+        ballSQ = GetComponent<BallShowQueue>();
     }
 
     private void Update()

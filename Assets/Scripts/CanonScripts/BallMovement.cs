@@ -16,7 +16,6 @@ public class BallMovement : MonoBehaviour
     private bool canStartMoving;
     private float currentCountdown;
     private bool canCheck = true;
-
     public bool StartingPoint { get;set; }
 
     void Start()
@@ -187,11 +186,11 @@ public class BallMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (Node != null && !StartingPoint)
-        {
-            if (canCheck && collision.gameObject.name == Node.nextNode.element.name)
-                SetNextNodesCanMove(true);
-        }
+        //if (Node != null && !StartingPoint)
+        //{
+        //    if (canCheck && collision.gameObject.name == Node.nextNode.element.name)
+        //        SetNextNodesCanMove(true);
+        //}
     }
 
     private void OnCollisionExit2D(Collision2D collision)

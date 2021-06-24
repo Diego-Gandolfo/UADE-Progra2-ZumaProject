@@ -15,6 +15,7 @@ public class GameOverTriggerScript : MonoBehaviour
         var ball = collision.gameObject.GetComponent<Ball>();
         if (ball != null && !ball.IsProjectile)
         {
+            print("perdi");
             gameManager.GameOver();
         }
     }

@@ -6,17 +6,24 @@ using UnityEngine;
 public class QueueDynamicController : MonoBehaviour
 {
     [SerializeField] private Ball ballPrefab = null;
-    private float ballSpawnTimer = 0f;
-    private float startingTimer;
-    private float startingCountdown = 0f;
-    private bool canStartMoving;
-    private float speed;
+
+    private float ballSpeed;
     private int maxQuantity;
     private int currentQuantity;
     private int ballPointValue; 
     private QueueDymamic queueDynamic = null;
     private IGrafosManager grafosManager;
-    
+    private Transform[] path;
+
+    private float ballSpawnTimer = 0f;
+    private float startingTimer;
+    private float startingCountdown = 0f;
+
+    private float startMovingTimer;
+    private float startMovingTimerCountdown = 0f;
+    private int currentIndex = 1;
+
+
     private void Awake()
     {
         queueDynamic = gameObject.GetComponent<QueueDymamic>();
@@ -27,44 +34,31 @@ public class QueueDynamicController : MonoBehaviour
         if (currentQuantity < maxQuantity) //Esto se usa en el inicio para rapidamente crear la cola y luego nunca más.
         {
             ballSpawnTimer += Time.deltaTime;
-            if (ballSpawnTimer >= (0.01))
-            {
-                if (queueDynamic.IsEmpty())
-                {
-                    var ball = CreateBall();
-                    queueDynamic.Initialize(ball);
-                    var node = FindNode(ball);
-                    ball.gameObject.GetComponent<BallMovement>().Node = node;
-                }
-                else
-                {
-                    EnqueueTop();
-                }
-                ballSpawnTimer = 0;
-                currentQuantity++;
-            }
+            CreateAllQueue();
         }
-
 
         startingCountdown += Time.deltaTime;
         if (startingCountdown >= startingTimer) //Esto es para inicializar el movimiento de la cola
         {
-            var auxNodeSupp = GetRootNode();
-            while (auxNodeSupp.nextNode != null)
-            {
-                auxNodeSupp = auxNodeSupp.nextNode;
-            }
-            auxNodeSupp.element.GetComponent<BallMovement>().CanMove = true;
+            StartMovingQueue(currentIndex);
+
+            //if (currentIndex != maxQuantity)
+            //    currentIndex++;
+            //currentIndex = GetNumberOfBallsInQueue();
+
         }
+
     }
 
     public void Initialize(float speed, int maxQuantity, IGrafosManager grafosManager, int ballPointValue, float delayStartingTimer)
     {
-        this.speed = speed;
+        ballSpeed = speed;
+        startMovingTimer = speed;
         this.maxQuantity = maxQuantity;
         this.grafosManager = grafosManager;
         this.ballPointValue = ballPointValue;
         this.startingTimer = delayStartingTimer;
+        path = grafosManager.GetDijkstra(0);
     }
 
     public Ball CreateBall() // Creamos una nueva instancia y nodo
@@ -72,12 +66,47 @@ public class QueueDynamicController : MonoBehaviour
         var ball = Instantiate(this.ballPrefab); // instanciamos una nueva Sphere
         ball.name = $"QueueController Ball ({currentQuantity})"; // le cambiamos el nombre para diferenciarlas
         ball.SetQueueController(this);
-        var ballMovement = ball.GetComponent<BallMovement>();
-        ballMovement.Speed = speed;
-        ballMovement.GetPath(grafosManager.GetDijkstra(0));
-        ballMovement.CanMove = false;
-        ballMovement.StartingPoint = true;
+
+        var ballShowQueue = ball.GetComponent<BallShowQueue>();
+        ballShowQueue.InitializePath(path, false, ballSpeed);
         return ball; // devolvemos el clone creado
+    }
+
+    public void CreateAllQueue()
+    {
+        if (ballSpawnTimer >= (0.01))
+        {
+            if (queueDynamic.IsEmpty())
+            {
+                var ball = CreateBall();
+                queueDynamic.Initialize(ball);
+                var node = FindNode(ball);
+                ball.gameObject.GetComponent<BallMovement>().Node = node;
+            }
+            else
+            {
+                EnqueueTop();
+            }
+            ballSpawnTimer = 0;
+            currentQuantity++;
+        }
+    }
+
+    public void StartMovingQueue(int index)
+    {
+        int auxIndex = index; 
+        
+        var auxNodeSupp = GetRootNode();
+        while (auxNodeSupp.nextNode != null)
+        {
+            auxNodeSupp = auxNodeSupp.nextNode;
+        }
+
+        for (int i = 0; i < auxIndex; i++)
+        {
+            auxNodeSupp.element.ballSQ.CanMove = true;
+            auxNodeSupp = auxNodeSupp.previousNode; // guardamos el anterior en auxNode y repetimos
+        }
     }
 
     public void ShowQueue()
@@ -109,7 +138,9 @@ public class QueueDynamicController : MonoBehaviour
         var ball = CreateBall();
         queueDynamic.EnqueueTop(ball);
         var node = FindNode(ball);
-        ball.GetComponent<BallMovement>().Node = node;
+        //ball.GetComponent<BallMovement>().Node = node;
+        //ball.GetComponent<BallShowQueue>().AddNode(node);
+        ball.GetComponent<BallShowQueue>().Node = node;
     }
 
     public void EnqueueMiddleAfter(Ball newBall, Ball afterBall)
@@ -246,5 +277,23 @@ public class QueueDynamicController : MonoBehaviour
     {
         GameManager.instance.CurrentScore += (ballPointValue * ballsQuantity * checkColorsRecursivityRound);
         //print("Current Score: " + GameManager.instance.CurrentScore);
+    }
+
+    public int GetNumberOfBallsInQueue()
+    {
+        if (!IsEmpty())
+        {
+            int result = 1;
+            var auxNodeSupp = GetRootNode();
+            while (auxNodeSupp.nextNode != null)
+            {
+                auxNodeSupp = auxNodeSupp.nextNode;
+                result++;
+            }
+            return result;
+        } else
+        {
+            return 0;
+        }
     }
 }
