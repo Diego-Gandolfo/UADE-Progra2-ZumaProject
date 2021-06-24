@@ -16,6 +16,7 @@ public class QueueDynamicController : MonoBehaviour
     private int maxQuantity;
     private int currentQuantity;
     private int currentIndex = 1;
+    private int numberOfRecursivity = 1;
 
     //MOVEMENT AND TIMERS
     private bool canInitializeMoving = true;
@@ -336,11 +337,12 @@ public class QueueDynamicController : MonoBehaviour
 
         if (ballList.Count >= 3)
         {
-            //print("Cuantos Colores hay: " + ballList.Count);
             if (canInstantiatePowerUp) //Por cada vuelta de checkcolors que explota, sumamos uno al contador
             {
                 checkColorCount++;
             }
+            
+            numberOfRecursivity++;
 
             for (int i = 0; i < ballList.Count; i++)
             {
@@ -351,7 +353,7 @@ public class QueueDynamicController : MonoBehaviour
                 }
             }
 
-            CalculatePoints(ballList.Count); //TODO: Incorporar con checkRecursivity en branch Arbol
+            CalculatePoints(ballList.Count, numberOfRecursivity);
 
 
             if (nextNode != null)
@@ -369,12 +371,14 @@ public class QueueDynamicController : MonoBehaviour
             }
             else //Si no coinciden el color -> no hay recursividad
             {
+                numberOfRecursivity = 1;
                 if (checkColorCount >= checkColorCountToPowerUp) //chequeo si llega al powerup
                     InstantiatePowerUp(previousNode.element);
             }
         }
         else //Si una de las dos (o las dos) es nula...
         {
+            numberOfRecursivity = 1;
             if (checkColorCount >= checkColorCountToPowerUp) // Y si da para hacer un power up...
             {
                 if (previousNode != null) //Me fijo si esta es Nula.. si no lo es, Instancio desde acá
