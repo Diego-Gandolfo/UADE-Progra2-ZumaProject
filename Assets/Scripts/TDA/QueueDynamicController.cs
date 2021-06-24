@@ -36,7 +36,7 @@ public class QueueDynamicController : MonoBehaviour
         }
 
         movingCountdown += Time.deltaTime;
-        if (movingCountdown >= movingTimer && canInitializeMoving) //Esto es para inicializar el movimiento de la cola
+        if (movingCountdown >= (movingTimer/10) && canInitializeMoving) //Esto es para inicializar el movimiento de la cola
         {
             if(currentIndex != maxQuantity)
             {
@@ -260,8 +260,6 @@ public class QueueDynamicController : MonoBehaviour
                 //Destroy(aux.gameObject);
                 aux.gameObject.SetActive(false);
             }
-
-            print(ballList.Count);
 
             if (nextNode != null)
                 nextNode.element.BallSQ.Regroup(ballList.Count);

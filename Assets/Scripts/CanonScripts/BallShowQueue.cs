@@ -45,7 +45,6 @@ public class BallShowQueue : MonoBehaviour
 
     public void Regroup(int ballsDequeued)
     {
-        print($"Regroup - {gameObject.name}");
         CurrentPosition -= ballsDequeued;
         transform.position = Path[CurrentPosition].position;
 
