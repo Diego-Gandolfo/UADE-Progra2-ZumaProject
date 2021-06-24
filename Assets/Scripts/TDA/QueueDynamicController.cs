@@ -6,23 +6,20 @@ using UnityEngine;
 public class QueueDynamicController : MonoBehaviour
 {
     [SerializeField] private Ball ballPrefab = null;
-
-    private float ballSpeed;
-    private int maxQuantity;
-    private int currentQuantity;
-    private int ballPointValue; 
     private QueueDymamic queueDynamic = null;
     private IGrafosManager grafosManager;
     private Transform[] path;
 
+    private float ballSpeed;
+    private int ballPointValue;
+
+    private int maxQuantity;
+    private int currentQuantity;
+    private int currentIndex = 1;
+
     private float ballSpawnTimer = 0f;
     private float startingTimer;
     private float startingCountdown = 0f;
-
-    private float startMovingTimer;
-    private float startMovingTimerCountdown = 0f;
-    private int currentIndex = 1;
-
 
     private void Awake()
     {
@@ -53,7 +50,6 @@ public class QueueDynamicController : MonoBehaviour
     public void Initialize(float speed, int maxQuantity, IGrafosManager grafosManager, int ballPointValue, float delayStartingTimer)
     {
         ballSpeed = speed;
-        startMovingTimer = speed;
         this.maxQuantity = maxQuantity;
         this.grafosManager = grafosManager;
         this.ballPointValue = ballPointValue;

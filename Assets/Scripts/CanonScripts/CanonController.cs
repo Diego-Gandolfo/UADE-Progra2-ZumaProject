@@ -34,30 +34,32 @@ public class CanonController : MonoBehaviour
 
     void Update()
     {
-		actualPositionMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		direction = actualPositionMouse - (Vector2)raycastPoint.position;
-		var distance = Vector3.Distance(transform.position, actualPositionMouse);
-		if(distance >= 3f)
+        if (!GameManager.instance.IsGameFreeze)
         {
-			transform.up = direction.normalized;
-		}
-
-
-		CastLaser(); 
-
-        if (Input.GetKeyDown(KeyCode.Mouse0)) //SHOOT
-        {
-			Shoot();
-			SetColors();
-		}
-
-		if (Input.GetKeyDown(KeyCode.Mouse1)) //ABSORB
-		{
-			hit2D = Physics2D.Raycast(raycastPoint.position, direction);
-			if (hit2D)
+			actualPositionMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			direction = actualPositionMouse - (Vector2)raycastPoint.position;
+			var distance = Vector3.Distance(transform.position, actualPositionMouse);
+			if (distance >= 3f)
 			{
-				canonStack.Absorb(hit2D.collider.GetComponent<Ball>());
+				transform.up = direction.normalized;
+			}
+
+			CastLaser();
+
+			if (Input.GetKeyDown(KeyCode.Mouse0)) //SHOOT
+			{
+				Shoot();
 				SetColors();
+			}
+
+			if (Input.GetKeyDown(KeyCode.Mouse1)) //ABSORB
+			{
+				hit2D = Physics2D.Raycast(raycastPoint.position, direction);
+				if (hit2D)
+				{
+					canonStack.Absorb(hit2D.collider.GetComponent<Ball>());
+					SetColors();
+				}
 			}
 		}
 	}

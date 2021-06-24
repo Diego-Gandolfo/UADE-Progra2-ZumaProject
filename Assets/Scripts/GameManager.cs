@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     
+    public bool IsGameFreeze { get; set; }
     public int CurrentScore { get; set; }
 
     public int NumberLevel { get; set; }
@@ -24,6 +25,8 @@ public class GameManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
+
+        IsGameFreeze = false;
     }
 
     public void Victory()
