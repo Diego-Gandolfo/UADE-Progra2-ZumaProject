@@ -360,7 +360,7 @@ public class QueueDynamicController : MonoBehaviour
 
 
             if (nextNode != null)
-                nextNode.element.BallSQ.Regroup(ballList.Count);
+                nextNode.element.BallSQ.Regroup(ballList.Count); //TODO: ver que este puede ser el problema
         }
 
         Ball nextBall = nextNode != null ? nextNode.element as Ball : null;
