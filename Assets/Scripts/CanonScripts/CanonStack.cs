@@ -31,7 +31,7 @@ public class CanonStack : MonoBehaviour
             selected.gameObject.SetActive(false);
             //TODO: ANIMACION DE QUE LA PELOTA SE SALE DE LA PILA.
 
-            nextNode?.element.BallSQ.Regroup(1);
+            if (nextNode != null) nextNode.element.BallSQ.Regroup(1);
 
             if (nextNode != null && previousNode != null)
                 if (previousNode.element.Color == nextNode.element.Color)

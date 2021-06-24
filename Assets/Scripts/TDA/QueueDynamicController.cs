@@ -49,12 +49,13 @@ public class QueueDynamicController : MonoBehaviour
             }
         }
 
-        if (movingCountdown >= movingTimer && !canInitializeMoving)
+        var currentballs = GetNumberOfCurrentBalls();
+
+        if (movingCountdown >= movingTimer && !canInitializeMoving && currentballs > 0)
         {
-            ShowQueue(GetNumberOfCurrentBalls());
+            ShowQueue(currentballs);
             movingCountdown = 0f;
         }
-
     }
 
     public void Initialize(float timer, int maxQuantity, IGrafosManager grafosManager, int ballPointValue)
@@ -253,7 +254,7 @@ public class QueueDynamicController : MonoBehaviour
         {
             CalculatePoints(ballList.Count); //TODO: Incorporar con checkRecursivity en branch Arbol
 
-            ballList[0].GetComponent<BallMovement>()?.SetNextNodesCanMove(false);
+            if (nextNode != null) nextNode.element.BallSQ.Regroup(ballList.Count);
 
             for (int i = 0; i < ballList.Count; i++)
             {
