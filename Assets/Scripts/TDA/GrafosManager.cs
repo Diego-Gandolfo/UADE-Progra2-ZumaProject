@@ -12,8 +12,26 @@ public interface IGrafosManager
 public class GrafosManager : MonoBehaviour, IGrafosManager
 {
     [SerializeField] private Transform[] pointsArray = new Transform[0];
+    [SerializeField] private Transform[] pointsTry;
+    [SerializeField] private GameObject points = null;
     private TDA_GrafoTransform pointsGraph = new TDA_GrafoTransform();
     private int endingIndex;
+
+    void Awake()
+    {
+        if (points != null)
+        {
+            pointsArray = new Transform[points.transform.childCount];
+            for (int i = 0; i < points.transform.childCount; i++)
+            {
+                pointsArray[i] = points.transform.GetChild(i).GetComponent<Transform>();
+            }
+        }
+        else
+        {
+            print("error con grafos");
+        }
+    }
 
     void Start()
     {
