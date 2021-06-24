@@ -17,22 +17,22 @@ public class BallShowQueue : MonoBehaviour
 
     void Update()
     {
-        timerCountdown += Time.deltaTime;
-        if (CanMove)
-        {
-            if (timerCountdown >= Timer)
-            {
-                Move();
-            }
+        //timerCountdown += Time.deltaTime;
+        //if (CanMove)
+        //{
+        //    if (timerCountdown >= Timer)
+        //    {
+        //        Move();
+        //    }
 
-        } else
-        {
-            if (timerCountdown >= Timer*2)
-            {
-                Move();
-                CanMove = true;
-            }
-        }
+        //} else
+        //{
+        //    if (timerCountdown >= Timer*2)
+        //    {
+        //        Move();
+        //        CanMove = true;
+        //    }
+        //}
     }
 
     public void GetTargetBallInfo(NodeBall targetNode) //SI o si paso la que se va a correr a la derecha
@@ -47,19 +47,12 @@ public class BallShowQueue : MonoBehaviour
             targetBallMovement.WaitASecondLeft(); //Le digo a la izquierda que espere
     }
 
-    public void InitializePath(Transform[] recorrido, bool value, float timer)
+    public void InitializePath(Transform[] recorrido, bool value)
     {
         Path = recorrido;
         CurrentPosition = 0;
         CanMove = value;
-        Timer = timer;
         transform.position = Path[CurrentPosition].position;
-    }
-
-    public void AddNode(NodeBall node)
-    {
-        Node = node;
-        print("Node added to: " + Node.element.name);
     }
 
     public void MoveRight() //Me muevo un lugar y le aviso a la siguiente (si hay) que tambien se corra un lugar
@@ -84,14 +77,14 @@ public class BallShowQueue : MonoBehaviour
         CanMove = false;
         print("wait");
         if (Node.previousNode != null)
-            Node.previousNode.element.GetComponent<BallShowQueue>().WaitASecondLeft();
+            Node.previousNode.element.ballSQ.WaitASecondLeft();
     }
 
     public void WaitASecondRight()
     {
         CanMove = false;
         if (Node.nextNode != null)
-            Node.nextNode.element.GetComponent<BallShowQueue>().WaitASecondRight();
+            Node.nextNode.element.ballSQ.WaitASecondRight();
     }
 
     public void MoveOneBack()
@@ -102,7 +95,7 @@ public class BallShowQueue : MonoBehaviour
             transform.position = Path[CurrentPosition].position;
             if (Node != null)
                 if (Node.nextNode != null)
-                    Node.nextNode.element.GetComponent<BallShowQueue>().MoveOneBack();
+                    Node.nextNode.element.ballSQ.MoveOneBack();
         }
     }
 
@@ -110,18 +103,21 @@ public class BallShowQueue : MonoBehaviour
     {
         if(CurrentPosition < Path.Length - 1)
         {
-            if (Node.nextNode.element.GetComponent<BallShowQueue>().CurrentPosition != CurrentPosition + 1)
-            {
-                CurrentPosition++;
-                transform.position = Path[CurrentPosition].position;
-                timerCountdown = 0;
-                print("move");
-            }
-            else
-            {
-                timerCountdown = 0;
-                print("wait");
-            }
+            //if (Node.nextNode.element.ballSQ.CurrentPosition != CurrentPosition + 1)
+            //{
+            //    CurrentPosition++;
+            //    transform.position = Path[CurrentPosition].position;
+            //    timerCountdown = 0;
+            //    print("move");
+            //}
+            //else
+            //{
+            //    timerCountdown = 0;
+            //    print("wait");
+            //}
+
+            CurrentPosition++;
+            transform.position = Path[CurrentPosition].position;
         }
     }
 }

@@ -10,16 +10,17 @@ public class QueueDynamicController : MonoBehaviour
     private IGrafosManager grafosManager;
     private Transform[] path;
 
-    private float ballSpeed;
     private int ballPointValue;
 
     private int maxQuantity;
     private int currentQuantity;
     private int currentIndex = 1;
 
+    private bool canInitializeMoving = true;
+
     private float ballSpawnTimer = 0f;
-    private float startingTimer;
-    private float startingCountdown = 0f;
+    private float movingTimer;
+    private float movingCountdown = 0f;
 
     private void Awake()
     {
@@ -34,26 +35,34 @@ public class QueueDynamicController : MonoBehaviour
             CreateAllQueue();
         }
 
-        startingCountdown += Time.deltaTime;
-        if (startingCountdown >= startingTimer) //Esto es para inicializar el movimiento de la cola
+        movingCountdown += Time.deltaTime;
+        if (movingCountdown >= movingTimer && canInitializeMoving) //Esto es para inicializar el movimiento de la cola
         {
-            StartMovingQueue(currentIndex);
+            if(currentIndex != maxQuantity)
+            {
+                StartMovingQueue(currentIndex);
+                currentIndex++;
+                movingCountdown = 0f;
+            } else
+            {
+                canInitializeMoving = false;
+            }
+        }
 
-            //if (currentIndex != maxQuantity)
-            //    currentIndex++;
-            //currentIndex = GetNumberOfBallsInQueue();
-
+        if (movingCountdown >= movingTimer && !canInitializeMoving)
+        {
+            StartMovingQueue(GetNumberOfBallsInQueue());
+            movingCountdown = 0f;
         }
 
     }
 
-    public void Initialize(float speed, int maxQuantity, IGrafosManager grafosManager, int ballPointValue, float delayStartingTimer)
+    public void Initialize(float timer, int maxQuantity, IGrafosManager grafosManager, int ballPointValue)
     {
-        ballSpeed = speed;
         this.maxQuantity = maxQuantity;
         this.grafosManager = grafosManager;
         this.ballPointValue = ballPointValue;
-        this.startingTimer = delayStartingTimer;
+        this.movingTimer = timer;
         path = grafosManager.GetDijkstra(0);
     }
 
@@ -64,7 +73,7 @@ public class QueueDynamicController : MonoBehaviour
         ball.SetQueueController(this);
 
         var ballShowQueue = ball.GetComponent<BallShowQueue>();
-        ballShowQueue.InitializePath(path, false, ballSpeed);
+        ballShowQueue.InitializePath(path, false);
         return ball; // devolvemos el clone creado
     }
 
@@ -77,7 +86,7 @@ public class QueueDynamicController : MonoBehaviour
                 var ball = CreateBall();
                 queueDynamic.Initialize(ball);
                 var node = FindNode(ball);
-                ball.gameObject.GetComponent<BallMovement>().Node = node;
+                ball.ballSQ.Node = node;
             }
             else
             {
@@ -93,14 +102,14 @@ public class QueueDynamicController : MonoBehaviour
         int auxIndex = index; 
         
         var auxNodeSupp = GetRootNode();
-        while (auxNodeSupp.nextNode != null)
+        while (auxNodeSupp.nextNode != null) //esto es para obtener el primero de la cola dinamica. 
         {
             auxNodeSupp = auxNodeSupp.nextNode;
         }
 
         for (int i = 0; i < auxIndex; i++)
         {
-            auxNodeSupp.element.ballSQ.CanMove = true;
+            auxNodeSupp.element.ballSQ.Move();
             auxNodeSupp = auxNodeSupp.previousNode; // guardamos el anterior en auxNode y repetimos
         }
     }

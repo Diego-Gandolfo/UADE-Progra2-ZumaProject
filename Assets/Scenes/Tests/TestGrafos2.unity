@@ -772,7 +772,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &715231141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7169,7 +7169,7 @@ MonoBehaviour:
   queueController: {fileID: 1436222814}
   quantityBallsLevel: 5
   ballPointValue: 10
-  speed: 1
+  movingTime: 1
   delayStartingTimer: 1
   gameDuration: 25
   textTimeCounter: {fileID: 0}
