@@ -36,9 +36,21 @@ public class BallShowQueue : MonoBehaviour
     public void MakeSpaceToRight()
     {
         Move();
+
         if (Node !=  null && Node.nextNode != null)
         {
             Node.nextNode.element.BallSQ.MakeSpaceToRight();
+        }
+    }
+
+    public void Regroup(int ballsDequeued)
+    {
+        CurrentPosition -= ballsDequeued;
+        transform.position = Path[CurrentPosition].position;
+
+        if (Node != null && Node.nextNode != null)
+        {
+            Node.nextNode.element.BallSQ.Regroup(ballsDequeued);
         }
     }
 }

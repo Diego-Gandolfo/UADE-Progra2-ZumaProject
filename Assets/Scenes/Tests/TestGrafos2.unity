@@ -7913,7 +7913,7 @@ MonoBehaviour:
   queueController: {fileID: 1436222814}
   quantityBallsLevel: 5
   ballPointValue: 10
-  movingTime: 0.5
+  movingTime: 1
   delayStartingTimer: 1
   gameDuration: 25
   textTimeCounter: {fileID: 0}

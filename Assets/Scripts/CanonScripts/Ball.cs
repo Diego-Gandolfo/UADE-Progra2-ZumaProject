@@ -54,13 +54,11 @@ public class Ball : MonoBehaviour
 
             if (contactOnCollision.x > 0)
             {
-                print($"<<<<< Derecha - {collisionBall.name}-{this.name}");
                 QueueController.EnqueueMiddleAfter(this, collisionBall);
                 ResetOnCollision();
             }
             else if (contactOnCollision.x <= 0)
             {
-                print($"Izquierda >>> - {this.name}-{collisionBall.name}");
                 QueueController.EnqueueMiddleBefore(this, collisionBall);
                 ResetOnCollision();
             }
