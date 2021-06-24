@@ -71,9 +71,8 @@ public class ScoreManager : MonoBehaviour
     {
         var rankings = database.GetAllRankingsFromLevel(level);
         QuickSort(rankings, 0, rankings.Count - 1);
-        UpdateRankingList(rankings);
         List<Player> playersNew = ReOrderQuickSort(rankings);
-
+        UpdateRankingList(playersNew);
         CheckCurrentPlayerInRanking(playersNew, PlayerGlobal.Instance.RankingId);
     }
 

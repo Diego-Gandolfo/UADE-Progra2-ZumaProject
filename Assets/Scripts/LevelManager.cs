@@ -62,6 +62,9 @@ public class LevelManager : MonoBehaviour
         {
             Victory();
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            Victory();
     }
 
     private void Victory()
@@ -70,7 +73,7 @@ public class LevelManager : MonoBehaviour
         {
             PlayerGlobal.Instance.Id = 1;
             PlayerGlobal.Instance.Name = "Esteban";
-            PlayerGlobal.Instance.Score = 1000;
+            GameManager.instance.CurrentScore = 1000;
         }
 
         InsertPlayerInRanking(GameManager.instance.CurrentScore, numberLevel, timeInSeconds); //Lo insertamos en el ranking -  TEMPORALMENTE COMENTADO
