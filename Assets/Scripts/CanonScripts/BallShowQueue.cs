@@ -7,7 +7,7 @@ public class BallShowQueue : MonoBehaviour
 {
     public Transform[] Path { get; private set; }
     public NodeBall Node { get; set; }
-    public int CurrentPosition { get; private set; }
+    public int CurrentPosition { get; set; }
     public bool CanMove { get; set; }
 
     public void GetTargetBallInfo(IBall targetBall) //SI o si paso la que se va a correr a la derecha
@@ -52,5 +52,11 @@ public class BallShowQueue : MonoBehaviour
         {
             Node.nextNode.element.BallSQ.Regroup(ballsDequeued);
         }
+    }
+
+    public void SetNewCurrentPosition(int position)
+    {
+        CurrentPosition = position;
+        transform.position = Path[CurrentPosition].position;
     }
 }

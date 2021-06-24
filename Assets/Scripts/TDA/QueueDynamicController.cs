@@ -157,23 +157,23 @@ public class QueueDynamicController : MonoBehaviour
     public void EnqueueMiddleAfter(IBall newBall, IBall afterBall, bool hasToCheckColors = true)
     {
         queueDynamic.EnqueueMiddleAfter(newBall, afterBall);
-        newBall.BallSQ.GetTargetBallInfo(afterBall);
+        if (hasToCheckColors) newBall.BallSQ.GetTargetBallInfo(afterBall);
         EnqueueMiddleMain(newBall, hasToCheckColors);
-        newBall.BallSQ.MakeSpaceToRight();
+        if (hasToCheckColors) newBall.BallSQ.MakeSpaceToRight();
     }
 
-    public void EnqueueMiddleBefore(IBall newBall, IBall beforeBall)
+    public void EnqueueMiddleBefore(IBall newBall, IBall beforeBall, bool hasToCheckColors = true)
     {
         if (newBall is PowerUp) print($"{newBall.GetGameObject().name}");
         queueDynamic.EnqueueMiddleBefore(newBall, beforeBall);
-        newBall.BallSQ.GetTargetBallInfo(beforeBall);
-        EnqueueMiddleMain(newBall);
-        beforeBall.BallSQ.MakeSpaceToRight();
+        if (hasToCheckColors) newBall.BallSQ.GetTargetBallInfo(beforeBall);
+        EnqueueMiddleMain(newBall, hasToCheckColors);
+        if (hasToCheckColors) beforeBall.BallSQ.MakeSpaceToRight();
     }
 
     public void EnqueueMiddleMain(IBall newBall, bool hasToCheckColors = true) // son cosas que hacen ambos EnqueueMiddle, para no repetir codigo
     {
-        ShowQueue(GetNumberOfCurrentBalls());
+        if (hasToCheckColors) ShowQueue(GetNumberOfCurrentBalls());
         var node = FindNode(newBall);
         newBall.BallSQ.Node = node;
         if (hasToCheckColors) CheckColors(node);

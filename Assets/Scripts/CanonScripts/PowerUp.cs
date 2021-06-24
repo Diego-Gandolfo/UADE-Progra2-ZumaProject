@@ -53,15 +53,25 @@ public class PowerUp : MonoBehaviour, IBall
     {
         var resortList = queueDynamic.DequeueList(ball, ballToOrder); //Se trae las pelotas en una lista.
 
+        var initialPosition = resortList[resortList.Count - 1].BallSQ.CurrentPosition;
+
         foreach (var item in resortList) //recorre la lista y las agrega una por una al arbol
         {
             if (item is Ball)
             {
                 print($"item: {item.GetGameObject().name}");
                 ballTree.AgregarElem(ref ballTree.raiz, item as Ball);
+                item.BallSQ.SetNewCurrentPosition(initialPosition);
+                initialPosition++;
             }
         }
 
         ballTree.inOrder(ballTree.raiz, queueDynamic, ball); //acá las ordeno por color
+
+        //for (int i = 0; i < resortList.Count; i++)
+        //{
+        //    resortList[i].BallSQ.SetNewCurrentPosition(initialPosition);
+        //    initialPosition++;
+        //}
     }
 }
