@@ -8,7 +8,7 @@ public class QueueDynamicController : MonoBehaviour
 {
     private QueueDymamic queueDynamic = null;
     private IGrafosManager grafosManager;
-    private Transform[] path;
+    private Transform[] path = new Transform[0];
     private Ball ballPrefab = null;
     private int ballPointValue;
 
@@ -74,8 +74,6 @@ public class QueueDynamicController : MonoBehaviour
         this.grafosManager = grafosManager;
         this.ballPointValue = ballPointValue;
         this.movingTimer = timer;
-
-        path = grafosManager.GetDijkstra(0);
     }
 
     public void PowerUpSettings(PowerUp powerUpPrefab, bool playWithPowerUp, int ballsToOrder, int checkColorCountToPowerUp)
@@ -98,6 +96,11 @@ public class QueueDynamicController : MonoBehaviour
 
     public void CreateAllQueue()
     {
+        if (path.Length == 0)
+        {
+            path = grafosManager.GetDijkstra(0);
+        }
+
         if (ballSpawnTimer >= (0.01))
         {
             if (queueDynamic.IsEmpty())

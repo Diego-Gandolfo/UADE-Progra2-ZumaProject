@@ -29,7 +29,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private string currentLevel;
     [SerializeField] private string nextLevel;
 
-    //private float timeCounter = 0f;
+    private float timeCounter = 0f;
     private TimeSpan timeInSeconds;
 	
 	private DBController database;
@@ -40,7 +40,6 @@ public class LevelManager : MonoBehaviour
         GameManager.instance.CurrentLevel = currentLevel;
         GameManager.instance.NextLevel = nextLevel;
         GameManager.instance.NumberLevel = numberLevel;
-        //timeCounter = gameDuration;
 
         grafosManager = gameObject.GetComponent<IGrafosManager>();
         queueController.Initialize(ballPrefab, movingTime, quantityBallsLevel, grafosManager, ballPointValue);
@@ -51,7 +50,7 @@ public class LevelManager : MonoBehaviour
 
     private void Update()
     {
-        //timeCounter -= Time.deltaTime;
+        timeCounter += Time.deltaTime;
         timeInSeconds += TimeSpan.FromSeconds(Time.deltaTime); ;
 
         //ACTUALIZACION DEL HUD
@@ -59,8 +58,7 @@ public class LevelManager : MonoBehaviour
         hudManager.SetScore(GameManager.instance.CurrentScore);
         hudManager.SetTimer(timeInSeconds);
 
-
-        if (queueController.IsEmpty()) //Condicion Victoria: si la cola queda vacia
+        if (queueController.IsEmpty() && timeCounter > 1f ) //Condicion Victoria: si la cola queda vacia
         {
             Victory();
         }
