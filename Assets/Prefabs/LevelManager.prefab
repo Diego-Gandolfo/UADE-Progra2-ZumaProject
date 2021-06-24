@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6856503079738691422}
   - component: {fileID: 651114151}
   - component: {fileID: 651114152}
+  - component: {fileID: 938077758}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -57,8 +58,8 @@ MonoBehaviour:
     type: 3}
   checkColorCountToPowerUp: 1
   ballsToOrder: 3
-  gameDuration: 60
-  textTimeCounter: {fileID: 0}
+  hudManager: {fileID: 0}
+  canonStack: {fileID: 0}
   numberLevel: 1
   currentLevel: Level01
   nextLevel: Level02
@@ -103,3 +104,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4485758a1f3f50441b63990a3e4d8974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &938077758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6247410222405867780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d64ee176d89cd1749bf35a65f0d4518f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointsArray: []
+  pointsTry: []
+  points: {fileID: 0}

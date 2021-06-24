@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,25 +20,26 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private int ballsToOrder = 1;
 
     [Header("HUD Settings")]
-    [SerializeField] private float gameDuration = 0f;
-    [SerializeField] private Text textTimeCounter = null;
+    //[SerializeField] private float gameDuration = 0f;
+    [SerializeField] private HUDManager hudManager = null;
+    [SerializeField] private CanonStack canonStack = null;
 
     [Header("Level Settings")]
     [SerializeField] private int numberLevel = 1;
     [SerializeField] private string currentLevel;
     [SerializeField] private string nextLevel;
 
-    private float timeCounter = 0f;
-	private float currentTimer = 0f;
+    //private float timeCounter = 0f;
+    private TimeSpan timeInSeconds;
 	
 	private DBController database;
     private IGrafosManager grafosManager;
 
     private void Start()
     {
-		//GameManager.instance.CurrentLevel = currentLevel;
-        //GameManager.instance.NextLevel = nextLevel;
-        //GameManager.instance.NumberLevel = numberLevel;
+        GameManager.instance.CurrentLevel = currentLevel;
+        GameManager.instance.NextLevel = nextLevel;
+        GameManager.instance.NumberLevel = numberLevel;
         //timeCounter = gameDuration;
 
         grafosManager = gameObject.GetComponent<IGrafosManager>();
@@ -47,41 +49,34 @@ public class LevelManager : MonoBehaviour
 		database = DBController.Instance;
     }
 
-    private void Update() //TEMPORALMENTE COMENTADO PARA TEST GRAFOS
+    private void Update()
     {
         //timeCounter -= Time.deltaTime;
-        //currentTimer += Time.deltaTime;
-        //string msg = string.Format("{0:00.00}", timeCounter);
-        //textTimeCounter.text = msg;
+        timeInSeconds += TimeSpan.FromSeconds(Time.deltaTime); ;
 
-        //if (timeCounter <= 0)  
-        //{
-        //    Victory();
-        //}
+        //ACTUALIZACION DEL HUD
+        hudManager.SetCurrentStack(canonStack.GetIndex());
+        hudManager.SetScore(GameManager.instance.CurrentScore);
+        hudManager.SetTimer(timeInSeconds);
 
-        //if (Input.GetKeyDown(KeyCode.Space)) //ESTO ES TEMPORAL
-        //{
-        //    PlayerGlobal.Instance.Id = 1;
-        //    currentTimer = 100f; 
-        //    GameManager.instance.CurrentScore = 7143;
-        //    numberLevel = 1;
-        //    Victory();
-        //}
+
+        if (queueController.IsEmpty()) //Condicion Victoria: si la cola queda vacia
+        {
+            Victory();
+        }
     }
 
     private void Victory()
     {
-        //InsertPlayerInRanking(GameManager.instance.CurrentScore, numberLevel, currentTimer); //Lo insertamos en el ranking -  TEMPORALMENTE COMENTADO
-
-        PlayerGlobal.Instance.RankingId = 39; //TODO: Para temporal con lo que ya esta en la base de datos...
+        InsertPlayerInRanking(GameManager.instance.CurrentScore, numberLevel, timeInSeconds); //Lo insertamos en el ranking -  TEMPORALMENTE COMENTADO
         GameManager.instance.Victory();
     }
 
-    public void InsertPlayerInRanking(int score, int level, float time) //Esto se haria cuando se termina un nivel
+    public void InsertPlayerInRanking(int score, int level, TimeSpan ts) //Esto se haria cuando se termina un nivel
     {
         PlayerGlobal.Instance.Level = level;
         PlayerGlobal.Instance.Score = score;
-        PlayerGlobal.Instance.Time = time.ToString();
+        PlayerGlobal.Instance.Time = string.Format("{0:00}:{1:00}", (int)ts.TotalMinutes, (int)ts.Seconds);
 
         var player = new Player(PlayerGlobal.Instance.Name, PlayerGlobal.Instance.Level, PlayerGlobal.Instance.Score);
         player.Time = PlayerGlobal.Instance.Time;
