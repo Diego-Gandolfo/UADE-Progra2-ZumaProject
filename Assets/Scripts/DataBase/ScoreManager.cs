@@ -73,7 +73,7 @@ public class ScoreManager : MonoBehaviour
         QuickSort(rankings, 0, rankings.Count - 1);
         List<Player> playersNew = ReOrderQuickSort(rankings);
         UpdateRankingList(playersNew);
-        CheckCurrentPlayerInRanking(playersNew, PlayerGlobal.Instance.RankingId);
+       // CheckCurrentPlayerInRanking(playersNew, PlayerGlobal.Instance.RankingId);
     }
 
     private void GetAllRanking()
