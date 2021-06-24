@@ -51,7 +51,7 @@ public class LevelManager : MonoBehaviour
     private void Update()
     {
         timeCounter += Time.deltaTime;
-        timeInSeconds += TimeSpan.FromSeconds(Time.deltaTime); ;
+        timeInSeconds += TimeSpan.FromSeconds(Time.deltaTime);
 
         //ACTUALIZACION DEL HUD
         hudManager.SetCurrentStack(canonStack.GetIndex());

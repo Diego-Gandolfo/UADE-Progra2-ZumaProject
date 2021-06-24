@@ -18,7 +18,7 @@ public class MainMenuController : MonoBehaviour
 
 
     [Header("Name Settings")]
-    [SerializeField] private ScoreManager scoreManager = null;
+    [SerializeField] private InsertPlayerManager dbManager = null;
     [SerializeField] private Button confirmButton = null;
     [SerializeField] private GameObject inputBox = null;
     [SerializeField] private InputField inputField = null;
@@ -26,7 +26,7 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private Text nameText = null;
 
     private bool mainMenuCheck;
-    private string level01 = "Level01";
+   [SerializeField] private int level01 = 1;
     private DBController database;
 
     [Header("Credits Settings")]
@@ -88,7 +88,7 @@ public class MainMenuController : MonoBehaviour
     {
         if(inputField.text != null)
         {
-            scoreManager.InsertPlayer(inputField.text);
+            dbManager.InsertPlayer(inputField.text);
             CheckPlayerName(); //Nos fijamos si tenemos que desaparecer la caja de nombres
         }
     }
