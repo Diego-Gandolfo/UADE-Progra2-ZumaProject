@@ -16479,7 +16479,7 @@ MonoBehaviour:
   quantityBallsLevel: 32
   ballPointValue: 10
   movingTime: 1
-  delayStartingTimer: 1
+  playWithPowerUp: 0
   gameDuration: 25
   textTimeCounter: {fileID: 0}
   numberLevel: 1
