@@ -66,6 +66,13 @@ public class LevelManager : MonoBehaviour
 
     private void Victory()
     {
+        if(PlayerGlobal.Instance.Id == 0)
+        {
+            PlayerGlobal.Instance.Id = 1;
+            PlayerGlobal.Instance.Name = "Esteban";
+            PlayerGlobal.Instance.Score = 1000;
+        }
+
         InsertPlayerInRanking(GameManager.instance.CurrentScore, numberLevel, timeInSeconds); //Lo insertamos en el ranking -  TEMPORALMENTE COMENTADO
         GameManager.instance.Victory();
     }

@@ -24,7 +24,7 @@ public class CanonStack : MonoBehaviour
             if(selected.QueueController.GetNumberOfCurrentBalls() > maxStack)
             {
                 canonStack.Push(selected);
-                var node = selected.QueueController.FindNode(selected);
+                var node = selected.BallSQ.Node;
                 var nextNode = node.nextNode;
                 var previousNode = node.previousNode;
 
@@ -33,8 +33,8 @@ public class CanonStack : MonoBehaviour
                 selected.gameObject.SetActive(false);
                 //TODO: ANIMACION DE QUE LA PELOTA SE SALE DE LA PILA.
 
-                Ball nextBall = nextNode.element as Ball;
-                Ball previousBall = previousNode.element as Ball;
+                Ball nextBall = nextNode != null ? nextNode.element as Ball : null;
+                Ball previousBall = previousNode != null ? previousNode.element as Ball : null;
 
                 if (nextNode != null) nextNode.element.BallSQ.Regroup(1);
 

@@ -8,8 +8,8 @@ public class PlayerGlobal : MonoBehaviour
     static public PlayerGlobal Instance => instance;
 
     public int RankingId { get; set; }
-    public string Name { get; set; } = "Esteban";
-    public int Id { get; set; } = 1;
+    public string Name { get; set; }
+    public int Id { get; set; }
     public int Level { get; set; }
     public int Score { get; set; }
     public string Time { get; set; }
