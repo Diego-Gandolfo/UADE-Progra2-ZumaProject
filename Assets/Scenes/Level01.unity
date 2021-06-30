@@ -19066,6 +19066,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1549704102110792741, guid: 960c6c9ed71db204bbc2e542820b7dbb,
         type: 3}
+      propertyPath: queueControllers.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1549704102110792741, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
       propertyPath: queueController
       value: 
       objectReference: {fileID: 255167968}
@@ -19079,6 +19084,16 @@ PrefabInstance:
       propertyPath: canonStack
       value: 
       objectReference: {fileID: 2119959056}
+    - target: {fileID: 1549704102110792741, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: queueControllers.Array.data[1]
+      value: 
+      objectReference: {fileID: 255167968}
+    - target: {fileID: 1549704102110792741, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: queueControllers.Array.data[0]
+      value: 
+      objectReference: {fileID: 255167968}
     - target: {fileID: 2023757724441942649, guid: 960c6c9ed71db204bbc2e542820b7dbb,
         type: 3}
       propertyPath: pauseMenu
@@ -19107,6 +19122,11 @@ PrefabInstance:
     - target: {fileID: 7323469058803079072, guid: 960c6c9ed71db204bbc2e542820b7dbb,
         type: 3}
       propertyPath: points
+      value: 
+      objectReference: {fileID: 1708373510}
+    - target: {fileID: 7323469058803079072, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: path_1
       value: 
       objectReference: {fileID: 1708373510}
     m_RemovedComponents: []

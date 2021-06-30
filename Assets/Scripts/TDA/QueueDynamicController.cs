@@ -11,6 +11,7 @@ public class QueueDynamicController : MonoBehaviour
     private Transform[] path = new Transform[0];
     private Ball ballPrefab = null;
     private int ballPointValue;
+    private int pathNumber = 1;
 
     //QUANTITY
     private int maxQuantity;
@@ -67,13 +68,15 @@ public class QueueDynamicController : MonoBehaviour
         }
     }
 
-    public void Initialize(Ball ballPrefab, float timer, int maxQuantity, IGrafosManager grafosManager, int ballPointValue)
+    public void Initialize(Ball ballPrefab, float timer, int maxQuantity, IGrafosManager grafosManager, int pathNumber, int ballPointValue)
     {
         this.ballPrefab = ballPrefab;
         this.maxQuantity = maxQuantity;
         this.grafosManager = grafosManager;
         this.ballPointValue = ballPointValue;
         this.movingTimer = timer;
+        this.pathNumber = pathNumber;
+        print("cola: " + pathNumber);
     }
 
     public void PowerUpSettings(PowerUp powerUpPrefab, bool playWithPowerUp, int ballsToOrder, int checkColorCountToPowerUp)
@@ -98,7 +101,7 @@ public class QueueDynamicController : MonoBehaviour
     {
         if (path.Length == 0)
         {
-            path = grafosManager.GetDijkstra(0);
+            path = grafosManager.GetDijkstra(0, pathNumber);
         }
 
         if (ballSpawnTimer >= (0.01))

@@ -7,11 +7,12 @@ using UnityEngine.UI;
 public class LevelManager : MonoBehaviour
 {
     [Header("Queue Settings")]
-    [SerializeField] private QueueDynamicController queueController;
+    [SerializeField] private QueueDynamicController[] queueControllers = new QueueDynamicController[0];
     [SerializeField] private Ball ballPrefab = null;
     [SerializeField] private int quantityBallsLevel;
     [SerializeField] private int ballPointValue = 10;
     [SerializeField] private float movingTime;
+    int currentNumber = 1;
 
     [Header("PowerUp Settings")]
     [SerializeField] private bool playWithPowerUp = false;
@@ -42,8 +43,13 @@ public class LevelManager : MonoBehaviour
         GameManager.instance.NumberLevel = numberLevel;
 
         grafosManager = gameObject.GetComponent<IGrafosManager>();
-        queueController.Initialize(ballPrefab, movingTime, quantityBallsLevel, grafosManager, ballPointValue);
-        queueController.PowerUpSettings(powerUpPrefab, playWithPowerUp, ballsToOrder, checkColorCountToPowerUp);
+        foreach (var queueController in queueControllers)
+        {
+            print(currentNumber);
+            queueController.Initialize(ballPrefab, movingTime, quantityBallsLevel, grafosManager, currentNumber, ballPointValue);
+            queueController.PowerUpSettings(powerUpPrefab, playWithPowerUp, ballsToOrder, checkColorCountToPowerUp);
+            currentNumber++;
+        }
 
 		database = DBController.Instance;
     }
@@ -58,13 +64,13 @@ public class LevelManager : MonoBehaviour
         hudManager.SetScore(GameManager.instance.CurrentScore);
         hudManager.SetTimer(timeInSeconds);
 
-        if (queueController.IsEmpty() && timeCounter > 1f ) //Condicion Victoria: si la cola queda vacia
-        {
-            Victory();
-        }
+        //if (queueController.IsEmpty() && timeCounter > 1f ) //Condicion Victoria: si la cola queda vacia
+        //{
+        //    Victory();
+        //}
 
-        if (Input.GetKeyDown(KeyCode.Space))
-            Victory();
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //    Victory();
     }
 
     private void Victory()
