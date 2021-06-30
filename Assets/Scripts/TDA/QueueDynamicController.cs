@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class QueueDynamicController : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class QueueDynamicController : MonoBehaviour
     private int currentQuantity;
     private int currentIndex = 1;
     private int numberOfRecursivity = 1;
+    private bool isStartupFinished = false;
 
     //MOVEMENT AND TIMERS
     private bool canInitializeMoving = true;
@@ -32,6 +34,9 @@ public class QueueDynamicController : MonoBehaviour
     private int checkColorCountToPowerUp = 1;
     private int ballsToOrder = 1;
 
+    private bool canCheckIfEmpty = false;
+    public UnityEvent OnEmpty = new UnityEvent();
+
     private void Awake()
     {
         queueDynamic = gameObject.GetComponent<QueueDymamic>();
@@ -43,6 +48,9 @@ public class QueueDynamicController : MonoBehaviour
         {
             ballSpawnTimer += Time.deltaTime;
             CreateAllQueue();
+        } else if (!canCheckIfEmpty)
+        {
+            canCheckIfEmpty = true;
         }
 
         movingCountdown += Time.deltaTime;
@@ -66,6 +74,13 @@ public class QueueDynamicController : MonoBehaviour
             ShowQueue(currentballs);
             movingCountdown = 0f;
         }
+
+        if (IsEmpty() && canCheckIfEmpty)
+        {
+            print("Queue" + pathNumber + " is empty");
+            OnEmpty?.Invoke();
+        }
+
     }
 
     public void Initialize(Ball ballPrefab, float timer, int maxQuantity, IGrafosManager grafosManager, int pathNumber, int ballPointValue)

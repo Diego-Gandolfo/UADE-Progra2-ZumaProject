@@ -13,6 +13,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private int ballPointValue = 10;
     [SerializeField] private float movingTime;
     int currentNumber = 1;
+    int numberOfEmptyQueues = 0;
 
     [Header("PowerUp Settings")]
     [SerializeField] private bool playWithPowerUp = false;
@@ -43,10 +44,13 @@ public class LevelManager : MonoBehaviour
         GameManager.instance.NumberLevel = numberLevel;
 
         grafosManager = gameObject.GetComponent<IGrafosManager>();
+
         foreach (var queueController in queueControllers)
         {
+
             queueController.Initialize(ballPrefab, movingTime, quantityBallsLevel, grafosManager, currentNumber, ballPointValue);
             queueController.PowerUpSettings(powerUpPrefab, playWithPowerUp, ballsToOrder, checkColorCountToPowerUp);
+            queueController.OnEmpty.AddListener(OnEmptyCheckVictory);
             currentNumber++;
         }
 
@@ -63,10 +67,6 @@ public class LevelManager : MonoBehaviour
         hudManager.SetScore(GameManager.instance.CurrentScore);
         hudManager.SetTimer(timeInSeconds);
 
-        //if (queueController.IsEmpty() && timeCounter > 1f ) //Condicion Victoria: si la cola queda vacia
-        //{
-        //    Victory();
-        //}
 
         //if (Input.GetKeyDown(KeyCode.Space))
         //    Victory();
@@ -95,5 +95,13 @@ public class LevelManager : MonoBehaviour
         player.Time = PlayerGlobal.Instance.Time;
         database.InsertRanking(player);
         PlayerGlobal.Instance.RankingId = database.GetLatestRanking().RankingId; //Nos guardamos el ID de esa tabla para buscar más facil
+    }
+
+    private void OnEmptyCheckVictory()
+    {
+        numberOfEmptyQueues++;
+        print("number of emptys: " + numberOfEmptyQueues + " queue controllers: " + queueControllers.Length);
+        if (numberOfEmptyQueues == queueControllers.Length)
+            Victory();
     }
 }
