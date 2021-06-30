@@ -19,7 +19,6 @@ public class QueueDynamicController : MonoBehaviour
     private int currentQuantity;
     private int currentIndex = 1;
     private int numberOfRecursivity = 1;
-    private bool isStartupFinished = false;
 
     //MOVEMENT AND TIMERS
     private bool canInitializeMoving = true;
@@ -34,7 +33,6 @@ public class QueueDynamicController : MonoBehaviour
     private int checkColorCountToPowerUp = 1;
     private int ballsToOrder = 1;
 
-    private bool canCheckIfEmpty = false;
     public UnityEvent OnEmpty = new UnityEvent();
 
     private void Awake()
@@ -48,9 +46,6 @@ public class QueueDynamicController : MonoBehaviour
         {
             ballSpawnTimer += Time.deltaTime;
             CreateAllQueue();
-        } else if (!canCheckIfEmpty)
-        {
-            canCheckIfEmpty = true;
         }
 
         movingCountdown += Time.deltaTime;
@@ -74,13 +69,6 @@ public class QueueDynamicController : MonoBehaviour
             ShowQueue(currentballs);
             movingCountdown = 0f;
         }
-
-        if (IsEmpty() && canCheckIfEmpty)
-        {
-            print("Queue" + pathNumber + " is empty");
-            OnEmpty?.Invoke();
-        }
-
     }
 
     public void Initialize(Ball ballPrefab, float timer, int maxQuantity, IGrafosManager grafosManager, int pathNumber, int ballPointValue)
@@ -378,6 +366,9 @@ public class QueueDynamicController : MonoBehaviour
 
             if (nextNode != null)
                 nextNode.element.BallSQ.Regroup(ballList.Count);
+
+            if(IsEmpty()) //Chequea si la cola esta vacia.... Si esta avisale al resto
+                OnEmpty?.Invoke();
         }
 
         Ball nextBall = nextNode != null ? nextNode.element as Ball : null;
@@ -436,7 +427,6 @@ public class QueueDynamicController : MonoBehaviour
     public void CalculatePoints(int ballsQuantity, int checkColorsRecursivityRound = 1)
     {
         GameManager.instance.CurrentScore += (ballPointValue * ballsQuantity * checkColorsRecursivityRound);
-        //print("Current Score: " + GameManager.instance.CurrentScore);
     }
 
     public void SetCanInstantiatePowerUp(bool value)
