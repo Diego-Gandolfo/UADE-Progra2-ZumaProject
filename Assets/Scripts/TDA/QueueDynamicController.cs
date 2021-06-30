@@ -76,7 +76,6 @@ public class QueueDynamicController : MonoBehaviour
         this.ballPointValue = ballPointValue;
         this.movingTimer = timer;
         this.pathNumber = pathNumber;
-        print("cola: " + pathNumber);
     }
 
     public void PowerUpSettings(PowerUp powerUpPrefab, bool playWithPowerUp, int ballsToOrder, int checkColorCountToPowerUp)
@@ -90,7 +89,7 @@ public class QueueDynamicController : MonoBehaviour
     public Ball CreateBall() // Creamos una nueva instancia y nodo
     {
         var ball = Instantiate(this.ballPrefab); // instanciamos una nueva Sphere
-        ball.name = $"QueueController Ball ({currentQuantity})"; // le cambiamos el nombre para diferenciarlas
+        ball.name = $"QueueController{pathNumber} - Ball ({currentQuantity})"; // le cambiamos el nombre para diferenciarlas
         ball.SetQueueController(this);
 
         ball.BallSQ.InitializePath(path, false);

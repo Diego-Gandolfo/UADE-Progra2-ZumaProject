@@ -45,7 +45,6 @@ public class LevelManager : MonoBehaviour
         grafosManager = gameObject.GetComponent<IGrafosManager>();
         foreach (var queueController in queueControllers)
         {
-            print(currentNumber);
             queueController.Initialize(ballPrefab, movingTime, quantityBallsLevel, grafosManager, currentNumber, ballPointValue);
             queueController.PowerUpSettings(powerUpPrefab, playWithPowerUp, ballsToOrder, checkColorCountToPowerUp);
             currentNumber++;

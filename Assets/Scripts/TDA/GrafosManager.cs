@@ -38,22 +38,23 @@ public class GrafosManager : MonoBehaviour, IGrafosManager
 
     public Transform[] GetDijkstra(int startingIndex, int pathNumber) //TODO: Ver si se puede mejorar esta parte
     {
-        int index;
-        print("dijkstra: " + pathNumber);
-        if (pathNumber == 1 && path_1 != null)
+        int index = 0;
+        Transform[] currentArray = null;
+        switch (pathNumber)
         {
-            DijkstraTransform.Dijkstra(pointsGraphOne, startingIndex);
-            index = pointsGraphOne.Vert2Indice(arrayPathOne.Length - 1);
-        }
-        else if(pathNumber == 2 && path_2 != null)
-        {
-            DijkstraTransform.Dijkstra(pointsGraphTwo, startingIndex);
-            index = pointsGraphTwo.Vert2Indice(arrayPathTwo.Length - 1);
-        }
-        else
-        {
-            print("Huston, tenemos un problema");
-            return null;
+            case 1:
+                DijkstraTransform.Dijkstra(pointsGraphOne, startingIndex);
+                index = pointsGraphOne.Vert2Indice(arrayPathOne.Length - 1);
+                currentArray = arrayPathOne;
+                break;
+            case 2:
+                DijkstraTransform.Dijkstra(pointsGraphTwo, startingIndex);
+                index = pointsGraphTwo.Vert2Indice(arrayPathTwo.Length - 1);
+                currentArray = arrayPathTwo;
+                break;
+            default:
+                print("Huston, tenemos un problema"); //O no es un caso posible y te pasaste de opciones o se nos olvido algo
+                break;
         }
 
         var resultado = DijkstraTransform.nodos[index];
@@ -65,7 +66,7 @@ public class GrafosManager : MonoBehaviour, IGrafosManager
 
         for (int i = 0; i < splitString.Length; i++)
         {
-            recorrido[i] = arrayPathOne[Convert.ToInt32(splitString[i])];
+                recorrido[i] = currentArray[Convert.ToInt32(splitString[i])];
         }
 
         return recorrido;
@@ -83,7 +84,6 @@ public class GrafosManager : MonoBehaviour, IGrafosManager
 
     private void InitializeGraph(TDA_GrafoTransform graph, Transform[] arrayTransform) //Convierte el array de transform en un tda de grafos. 
     {
-        print("inicializo grafos, array: " + arrayTransform.Length);
         graph.InicializarGrafo(arrayTransform.Length);
 
         for (int i = 0; i < arrayTransform.Length; i++)
