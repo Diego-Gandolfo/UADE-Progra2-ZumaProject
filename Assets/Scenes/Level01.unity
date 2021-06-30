@@ -283,21 +283,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &17590034
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8080469167004613777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d64ee176d89cd1749bf35a65f0d4518f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pointsArray: []
-  pointsTry: []
-  points: {fileID: 1708373510}
 --- !u!1 &64557478
 GameObject:
   m_ObjectHideFlags: 0
@@ -19012,67 +18997,126 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 724d72f3355f6cc4bb59f1af3e7144c6, type: 3}
---- !u!1 &8080469167004613777
-GameObject:
+--- !u!1001 &7323469058786586802
+PrefabInstance:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8080469167004613782}
-  - component: {fileID: 8080469167004613783}
-  - component: {fileID: 8770730188735081163}
-  - component: {fileID: 17590034}
-  m_Layer: 0
-  m_Name: LevelManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8080469167004613782
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 874606974}
+    m_Modifications:
+    - target: {fileID: 1549704102110792739, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: m_Name
+      value: LevelManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 1549704102110792740, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.970944
+      objectReference: {fileID: 0}
+    - target: {fileID: 1549704102110792740, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.2692025
+      objectReference: {fileID: 0}
+    - target: {fileID: 1549704102110792740, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5.2334146
+      objectReference: {fileID: 0}
+    - target: {fileID: 1549704102110792740, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1549704102110792740, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1549704102110792740, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1549704102110792740, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1549704102110792740, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1549704102110792740, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1549704102110792740, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1549704102110792740, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1549704102110792741, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: queueController
+      value: 
+      objectReference: {fileID: 255167968}
+    - target: {fileID: 1549704102110792741, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: hudManager
+      value: 
+      objectReference: {fileID: 8584404928211841756}
+    - target: {fileID: 1549704102110792741, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: canonStack
+      value: 
+      objectReference: {fileID: 2119959056}
+    - target: {fileID: 2023757724441942649, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: pauseMenu
+      value: 
+      objectReference: {fileID: 1514977482}
+    - target: {fileID: 2023757724441942649, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: resumeButton
+      value: 
+      objectReference: {fileID: 1979757837}
+    - target: {fileID: 2023757724441942649, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: restartButton
+      value: 
+      objectReference: {fileID: 2014752493}
+    - target: {fileID: 2023757724441942649, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: mainMenuButton
+      value: 
+      objectReference: {fileID: 132980364}
+    - target: {fileID: 2023757724441942649, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: quitButton
+      value: 
+      objectReference: {fileID: 1606509296}
+    - target: {fileID: 7323469058803079072, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: points
+      value: 
+      objectReference: {fileID: 1708373510}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 960c6c9ed71db204bbc2e542820b7dbb, type: 3}
+--- !u!4 &8080469167004613782 stripped
 Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8080469167004613777}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.970944, y: -1.2692025, z: 5.2334146}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 874606974}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8080469167004613783
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8080469167004613777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cc2436120c202a49bed753e141c0e17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  queueController: {fileID: 255167968}
-  ballPrefab: {fileID: 7535913483028634844, guid: 2601f13924c22624a892517a8c6a1de2,
+  m_CorrespondingSourceObject: {fileID: 1549704102110792740, guid: 960c6c9ed71db204bbc2e542820b7dbb,
     type: 3}
-  quantityBallsLevel: 32
-  ballPointValue: 10
-  movingTime: 1
-  playWithPowerUp: 0
-  powerUpPrefab: {fileID: 5230431254757149322, guid: c1a9b9f0fab086a47be8c4fcd8b7eab9,
-    type: 3}
-  checkColorCountToPowerUp: 1
-  ballsToOrder: 3
-  hudManager: {fileID: 8584404928211841756}
-  canonStack: {fileID: 2119959056}
-  numberLevel: 1
-  currentLevel: Level01
-  nextLevel: Level02
+  m_PrefabInstance: {fileID: 7323469058786586802}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8584404928211841754
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19305,20 +19349,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771ecd62f202a914a951c6824ce8ca31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8770730188735081163
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8080469167004613777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6e1fec54c223864796195b16f8c9dcb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pauseMenu: {fileID: 1514977482}
-  resumeButton: {fileID: 1979757837}
-  restartButton: {fileID: 2014752493}
-  mainMenuButton: {fileID: 132980364}
-  quitButton: {fileID: 1606509296}
