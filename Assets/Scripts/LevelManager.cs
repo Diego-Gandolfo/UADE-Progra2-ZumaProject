@@ -68,8 +68,8 @@ public class LevelManager : MonoBehaviour
         hudManager.SetTimer(timeInSeconds);
 
 
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //    Victory();
+        if (Input.GetKeyDown(KeyCode.Space))
+            Victory();
     }
 
     private void Victory()

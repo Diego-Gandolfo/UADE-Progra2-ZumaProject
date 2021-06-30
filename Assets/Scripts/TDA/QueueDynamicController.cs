@@ -141,30 +141,6 @@ public class QueueDynamicController : MonoBehaviour
         }
     }
 
-    public void ShowQueueOLD()
-    {
-        //if (!queueDynamic.IsEmpty())
-        //{
-        //    NodeBall auxNode = queueDynamic.rootNode; // creamos un nodo auxiliar y le asignamos la referencia del rootNode
-        //    int index = 0; // iniciamos el index
-
-        //    // Para mostrar el Nodo Raíz
-        //    if (auxNode != null) // si el auxNode es distinto de null
-        //    {
-        //        auxNode.element.transform.position = (transform.right * index) + transform.position; // lo movemos en x según el valor del index
-        //        index++; // aumentamos el index
-        //    }
-
-        //    // Para mostrar el resto de los Nodos
-        //    while (auxNode.nextNode != null) // nos fijamos si es el ultimo
-        //    {
-        //        auxNode = auxNode.nextNode; // sino guardamos el siguiente en auxNode y repetimos
-        //        auxNode.element.transform.position = (transform.right * index) + transform.position; // lo movemos en x según el valor del index
-        //        index++; // aumentamos el index
-        //    }
-        //}
-    }
-
     public void EnqueueTop()
     {
         var ball = CreateBall();
@@ -258,12 +234,11 @@ public class QueueDynamicController : MonoBehaviour
             }
         }
 
-        //ShowQueue();
         return ballsToDequeue;
     }
 
     // TODO: llevar a QueueDynamic
-    public NodeBall FindNode(IBall ball) //RECIBE PELOTA Y BUSCA EL NODO
+    public NodeBall FindNode(IBall ball) //Recibe una pelota y le busca el nodo
     {
         var auxNode = queueDynamic.rootNode;
 
@@ -271,7 +246,7 @@ public class QueueDynamicController : MonoBehaviour
         {
             auxNode = auxNode.nextNode;
         }
-        if (auxNode.element == ball) //SI LO ENCUENTRA, COMPRUEBA COLOR
+        if (auxNode.element == ball)
             return auxNode;
         else
             return null;

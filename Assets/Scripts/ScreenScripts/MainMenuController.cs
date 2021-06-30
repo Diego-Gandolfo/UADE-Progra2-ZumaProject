@@ -26,7 +26,7 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private Text nameText = null;
 
     private bool mainMenuCheck;
-   [SerializeField] private int level01 = 1;
+    [SerializeField] private int level01 = 1;
     private DBController database;
 
     [Header("Credits Settings")]
@@ -47,9 +47,7 @@ public class MainMenuController : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !mainMenuCheck) //Esto es porque si no estan en uno de los sub menus, pueden volver para atras con Escape
-        {
             OnGoBackHandler();
-        }
     }
 
     private void OnEnable()

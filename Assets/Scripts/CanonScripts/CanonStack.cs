@@ -19,8 +19,9 @@ public class CanonStack : MonoBehaviour
 
     public void Absorb(Ball selected)
     {
-        if (!IsStackFull()) //TODO: que no pueda absorber las ultimas pelotas (tamaño de la pila)
+        if (!IsStackFull()) 
         {
+            print(selected.QueueController.name);
             if(selected.QueueController.GetNumberOfCurrentBalls() > maxStack)
             {
                 canonStack.Push(selected);
@@ -31,7 +32,7 @@ public class CanonStack : MonoBehaviour
                 selected.QueueController.DesqueueMiddle(selected);
                 selected.transform.position = new Vector3(0f, 0f, 0f);
                 selected.gameObject.SetActive(false);
-                //TODO: ANIMACION DE QUE LA PELOTA SE SALE DE LA PILA.
+                //TODO: animacion de la pelota, al salirse de la pila (?)
 
                 Ball nextBall = nextNode != null ? nextNode.element as Ball : null;
                 Ball previousBall = previousNode != null ? previousNode.element as Ball : null;

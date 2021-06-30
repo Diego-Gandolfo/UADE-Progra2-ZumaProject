@@ -30,6 +30,11 @@ public class EndScreenController : MonoBehaviour
 
         if (screen == ScreenType.Victory)
             nextLevelButton.onClick.AddListener(OnNextLevelHandler);
+
+        if(GameManager.instance.NextLevel == string.Empty)
+        {
+            nextLevelButton.interactable = false;
+        }
     }
 
     private void OnPlayAgainHandler()
