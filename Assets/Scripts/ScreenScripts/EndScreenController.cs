@@ -29,12 +29,15 @@ public class EndScreenController : MonoBehaviour
         exitButton.onClick.AddListener(OnQuitHandler);
 
         if (screen == ScreenType.Victory)
+        {
             nextLevelButton.onClick.AddListener(OnNextLevelHandler);
 
-        if(GameManager.instance.NextLevel == string.Empty)
-        {
-            nextLevelButton.interactable = false;
+            if (GameManager.instance.NextLevel == string.Empty)
+            {
+                nextLevelButton.interactable = false;
+            }
         }
+
     }
 
     private void OnPlayAgainHandler()

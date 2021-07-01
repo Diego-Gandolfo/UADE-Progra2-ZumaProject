@@ -68,7 +68,7 @@ public class LevelManager : MonoBehaviour
         hudManager.SetTimer(timeInSeconds);
 
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.F12))
             Victory();
     }
 
