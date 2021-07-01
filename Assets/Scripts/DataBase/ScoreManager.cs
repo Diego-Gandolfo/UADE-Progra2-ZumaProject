@@ -154,12 +154,20 @@ public class ScoreManager : MonoBehaviour
             {
                 if(players[i].RankingId == id)
                 {
-                    extraRanking.SetActive(true); //Activamos la caja extra
-                    extraRankingScript.SetPosition(i+1);
-                    extraRankingScript.SetNickname(players[i+1].Name);
-                    extraRankingScript.SetScore(players[i].Score);
-                    extraRankingScript.SetTime(players[i].Time);
-                    extraRankingScript.ChangeBackground();
+                    if(players[i].Name != null)
+                    {
+                        extraRanking.SetActive(true); //Activamos la caja extra
+                        extraRankingScript.SetPosition(i + 1);
+                        extraRankingScript.SetNickname(players[i].Name);
+                        extraRankingScript.SetScore(players[i].Score);
+                        extraRankingScript.SetTime(players[i].Time);
+                        extraRankingScript.ChangeBackground();
+                    }
+                    else
+                    {
+                        print(players[i].Name + " error");
+                    }
+                    
                     break;
                 }
             }

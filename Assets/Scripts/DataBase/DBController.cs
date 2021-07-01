@@ -178,12 +178,16 @@ public class DBController : MonoBehaviour
     //    SetQueries(query);
     //}
 
-    public void DropTables()
+    public void DropTablesPlayer()
     {
         string query = "DROP TABLE Player";
         SetQueries(query);
     }
-
+    public void DropTablesRanking()
+    {
+        string query = "DROP TABLE Ranking";
+        SetQueries(query);
+    }
     #endregion
 
     #region GET_TYPE_QUERIES

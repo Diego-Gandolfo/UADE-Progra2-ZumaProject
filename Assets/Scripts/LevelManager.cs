@@ -76,8 +76,9 @@ public class LevelManager : MonoBehaviour
     {
         if(PlayerGlobal.Instance.Id == 0)
         {
-            PlayerGlobal.Instance.Id = 1;
-            GameManager.instance.CurrentScore = UnityEngine.Random.Range(0, 1000);
+            PlayerGlobal.Instance.Id = UnityEngine.Random.Range(1, 20);
+            GameManager.instance.CurrentScore = UnityEngine.Random.Range(200, 500);
+            timeInSeconds = TimeSpan.FromSeconds(UnityEngine.Random.Range(1, 120));
         }
 
         InsertPlayerInRanking(GameManager.instance.CurrentScore, numberLevel, timeInSeconds); //Lo insertamos en el ranking -  TEMPORALMENTE COMENTADO
@@ -93,18 +94,11 @@ public class LevelManager : MonoBehaviour
         player.Time = PlayerGlobal.Instance.Time;
         player.Id = PlayerGlobal.Instance.Id;
 
-        print($"ID: {player.Id}, {player.Name}, time {player.Time}, score {player.Score}, level {player.Level} ");
+        //print($"ID: {player.Id}, {player.Name}, time {player.Time}, score {player.Score}, level {player.Level} ");
 
-        if(player == null)
-        {
-            database.InsertRanking(player);
-            PlayerGlobal.Instance.RankingId = database.GetLatestRanking().RankingId; //Nos guardamos el ID de esa tabla para buscar más facil
-            print("Ranking Id: " + PlayerGlobal.Instance.RankingId);
-        }
-        else
-        {
-            print("something's wrong");
-        }
+        database.InsertRanking(player);
+        PlayerGlobal.Instance.RankingId = database.GetLatestRanking().RankingId; //Nos guardamos el ID de esa tabla para buscar más facil
+        print("Ranking Id: " + PlayerGlobal.Instance.RankingId);
     }
 
     private void OnEmptyCheckVictory()
