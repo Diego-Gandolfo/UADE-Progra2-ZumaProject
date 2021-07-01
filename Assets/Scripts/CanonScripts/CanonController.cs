@@ -56,9 +56,14 @@ public class CanonController : MonoBehaviour
 			if (Input.GetKeyDown(KeyCode.Mouse1)) //ABSORB
 			{
 				hit2D = Physics2D.Raycast(raycastPoint.position, direction);
+				Ball ball = null;
+
 				if (hit2D)
+					ball = hit2D.collider.GetComponent<Ball>();
+
+				if (ball != null)
 				{
-					canonStack.Absorb(hit2D.collider.GetComponent<Ball>());
+					canonStack.Absorb(ball);
 					SetColors();
 				}
 			}

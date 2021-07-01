@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public int Id { get; set; }
-
-    public int RankingId { get; set; }
     public string Name { get; set; }
+    public int Id { get; set; }
+    public int RankingId { get; set; }
     public int Level { get; set; }
     public int Score { get; set; }
     public string Time { get; set; }

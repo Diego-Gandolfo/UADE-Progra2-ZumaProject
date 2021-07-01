@@ -5,15 +5,15 @@ using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
-    [SerializeField] private int level;
+    [SerializeField] private int level = 1;
     [SerializeField] private RankingLineScript[] rankingLine;
     [SerializeField] private GameObject extraRanking;
     private RankingLineScript extraRankingScript;
-
     private DBController database;
 
     private void Awake()
     {
+        level = PlayerGlobal.Instance.Level;
         database = DBController.Instance;
         extraRanking.SetActive(false);
         extraRankingScript = extraRanking.GetComponent<RankingLineScript>();
@@ -22,30 +22,6 @@ public class ScoreManager : MonoBehaviour
     void Start()
     {
         GetLevelRanking(level);
-    }
-
-    public void InsertPlayer(string name) //Inserta un player en tabla Player (solo usar en Main Menu) 
-    {
-        PlayerGlobal.Instance.Name = name; //Seteamos el name del PlayerGlobal 
-        Player player = new Player();
-        player.Name = name;
-
-        ////TODO: DESCOMENTAR EL AGREGADO A DATABASE (cuando se solucione el tema del score en general para no generar 20mil entradas de Players y nada en ranking)
-        database.InsertPlayer(player); //lo insertamos en la base
-        PlayerGlobal.Instance.Id = database.GetLastPlayerId(); //Obtenemos el id del ultimo player insertado 
-        print(PlayerGlobal.Instance.Name + " " + PlayerGlobal.Instance.Id);
-    }
-
-    public void InsertPlayerInRanking(int score, int level, float time) //Esto se haria cuando se termina un nivel
-    {
-        //PlayerGlobal.Instance.Level = level;
-        //PlayerGlobal.Instance.Score = score;
-        //PlayerGlobal.Instance.Time = time.ToString();
-
-        var player = new Player(PlayerGlobal.Instance.Name, PlayerGlobal.Instance.Level, PlayerGlobal.Instance.Score);
-        player.Id = PlayerGlobal.Instance.Id;
-        player.Time = PlayerGlobal.Instance.Time;
-        database.InsertRanking(player);
     }
 
     public void InsertRandomPlayerInRanking() //Genera un player random, lo inserta en player y luego en ranking
@@ -61,19 +37,13 @@ public class ScoreManager : MonoBehaviour
         print($"Ranking {ranking.Name}, Nivel: {ranking.Level} Score: {ranking.Score} Time: {ranking.Time}");
     }
 
-    private void GetLastPlayerRanking()
-    {
-        var ranking = database.GetLatestRanking();
-        print($"Ranking {ranking.Name}, Nivel: {ranking.Level} Score: {ranking.Score} Time: {ranking.Time}");
-    }
-
     public void GetLevelRanking(int level)
     {
         var rankings = database.GetAllRankingsFromLevel(level);
         QuickSort(rankings, 0, rankings.Count - 1);
         List<Player> playersNew = ReOrderQuickSort(rankings);
         UpdateRankingList(playersNew);
-       // CheckCurrentPlayerInRanking(playersNew, PlayerGlobal.Instance.RankingId);
+        CheckCurrentPlayerInRanking(playersNew, PlayerGlobal.Instance.RankingId);
     }
 
     private void GetAllRanking()
@@ -167,6 +137,7 @@ public class ScoreManager : MonoBehaviour
 
     private void CheckCurrentPlayerInRanking(List<Player> players, int id)
     {
+        print(id);
         bool isPlayerThere = false;
         for (int i = 0; i < rankingLine.Length; i++) //El largo del ranking
         {
@@ -183,18 +154,23 @@ public class ScoreManager : MonoBehaviour
             {
                 if(players[i].RankingId == id)
                 {
-                    extraRanking.SetActive(true); //Activamos la caja extra
-                    extraRankingScript.SetPosition(i+1);
-                    extraRankingScript.SetNickname(players[i+1].Name);
-                    extraRankingScript.SetScore(players[i].Score);
-                    extraRankingScript.SetTime(players[i].Time);
-                    extraRankingScript.ChangeBackground();
-
-                    i = players.Count;//Frenamos el for
+                    if(players[i].Name != null)
+                    {
+                        extraRanking.SetActive(true); //Activamos la caja extra
+                        extraRankingScript.SetPosition(i + 1);
+                        extraRankingScript.SetNickname(players[i].Name);
+                        extraRankingScript.SetScore(players[i].Score);
+                        extraRankingScript.SetTime(players[i].Time);
+                        extraRankingScript.ChangeBackground();
+                    }
+                    else
+                    {
+                        print(players[i].Name + " error");
+                    }
+                    
+                    break;
                 }
             }
         }
-
-
     }
 }

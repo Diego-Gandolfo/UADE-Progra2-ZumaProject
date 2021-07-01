@@ -23,12 +23,21 @@ public class EndScreenController : MonoBehaviour
 
     void Start()
     {
+        PlayerGlobal.Instance.Score = 0; //Sea lo que sea reseteemos el puntaje del player.
         playAgainButton.onClick.AddListener(OnPlayAgainHandler);
         menuButton.onClick.AddListener(OnMenuHandler);
         exitButton.onClick.AddListener(OnQuitHandler);
 
         if (screen == ScreenType.Victory)
+        {
             nextLevelButton.onClick.AddListener(OnNextLevelHandler);
+
+            if (GameManager.instance.NextLevel == string.Empty)
+            {
+                nextLevelButton.interactable = false;
+            }
+        }
+
     }
 
     private void OnPlayAgainHandler()
