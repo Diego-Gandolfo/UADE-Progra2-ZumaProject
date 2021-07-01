@@ -77,8 +77,7 @@ public class LevelManager : MonoBehaviour
         if(PlayerGlobal.Instance.Id == 0)
         {
             PlayerGlobal.Instance.Id = 1;
-            PlayerGlobal.Instance.Name = "Esteban";
-            GameManager.instance.CurrentScore = 1000;
+            GameManager.instance.CurrentScore = UnityEngine.Random.Range(0, 1000);
         }
 
         InsertPlayerInRanking(GameManager.instance.CurrentScore, numberLevel, timeInSeconds); //Lo insertamos en el ranking -  TEMPORALMENTE COMENTADO
@@ -90,17 +89,27 @@ public class LevelManager : MonoBehaviour
         PlayerGlobal.Instance.Level = level;
         PlayerGlobal.Instance.Score = score;
         PlayerGlobal.Instance.Time = string.Format("{0:00}:{1:00}", (int)ts.TotalMinutes, (int)ts.Seconds);
-
-        var player = new Player(PlayerGlobal.Instance.Name, PlayerGlobal.Instance.Level, PlayerGlobal.Instance.Score);
+        Player player = new Player(PlayerGlobal.Instance.Name, PlayerGlobal.Instance.Level, PlayerGlobal.Instance.Score);
         player.Time = PlayerGlobal.Instance.Time;
-        database.InsertRanking(player);
-        PlayerGlobal.Instance.RankingId = database.GetLatestRanking().RankingId; //Nos guardamos el ID de esa tabla para buscar más facil
+        player.Id = PlayerGlobal.Instance.Id;
+
+        print($"ID: {player.Id}, {player.Name}, time {player.Time}, score {player.Score}, level {player.Level} ");
+
+        if(player == null)
+        {
+            database.InsertRanking(player);
+            PlayerGlobal.Instance.RankingId = database.GetLatestRanking().RankingId; //Nos guardamos el ID de esa tabla para buscar más facil
+            print("Ranking Id: " + PlayerGlobal.Instance.RankingId);
+        }
+        else
+        {
+            print("something's wrong");
+        }
     }
 
     private void OnEmptyCheckVictory()
     {
         numberOfEmptyQueues++;
-        print("number of emptys: " + numberOfEmptyQueues + " queue controllers: " + queueControllers.Length);
         if (numberOfEmptyQueues == queueControllers.Length)
             Victory();
     }
