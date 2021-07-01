@@ -7,11 +7,13 @@ using UnityEngine.UI;
 public class LevelManager : MonoBehaviour
 {
     [Header("Queue Settings")]
-    [SerializeField] private QueueDynamicController queueController;
+    [SerializeField] private QueueDynamicController[] queueControllers = new QueueDynamicController[0];
     [SerializeField] private Ball ballPrefab = null;
     [SerializeField] private int quantityBallsLevel;
     [SerializeField] private int ballPointValue = 10;
     [SerializeField] private float movingTime;
+    int currentNumber = 1;
+    int numberOfEmptyQueues = 0;
 
     [Header("PowerUp Settings")]
     [SerializeField] private bool playWithPowerUp = false;
@@ -42,8 +44,15 @@ public class LevelManager : MonoBehaviour
         GameManager.instance.NumberLevel = numberLevel;
 
         grafosManager = gameObject.GetComponent<IGrafosManager>();
-        queueController.Initialize(ballPrefab, movingTime, quantityBallsLevel, grafosManager, ballPointValue);
-        queueController.PowerUpSettings(powerUpPrefab, playWithPowerUp, ballsToOrder, checkColorCountToPowerUp);
+
+        foreach (var queueController in queueControllers)
+        {
+
+            queueController.Initialize(ballPrefab, movingTime, quantityBallsLevel, grafosManager, currentNumber, ballPointValue);
+            queueController.PowerUpSettings(powerUpPrefab, playWithPowerUp, ballsToOrder, checkColorCountToPowerUp);
+            queueController.OnEmpty.AddListener(OnEmptyCheckVictory);
+            currentNumber++;
+        }
 
 		database = DBController.Instance;
     }
@@ -58,12 +67,8 @@ public class LevelManager : MonoBehaviour
         hudManager.SetScore(GameManager.instance.CurrentScore);
         hudManager.SetTimer(timeInSeconds);
 
-        if (queueController.IsEmpty() && timeCounter > 1f ) //Condicion Victoria: si la cola queda vacia
-        {
-            Victory();
-        }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.F12))
             Victory();
     }
 
@@ -71,9 +76,9 @@ public class LevelManager : MonoBehaviour
     {
         if(PlayerGlobal.Instance.Id == 0)
         {
-            PlayerGlobal.Instance.Id = 1;
-            PlayerGlobal.Instance.Name = "Esteban";
-            GameManager.instance.CurrentScore = 1000;
+            PlayerGlobal.Instance.Id = UnityEngine.Random.Range(1, 20);
+            GameManager.instance.CurrentScore = UnityEngine.Random.Range(200, 500);
+            timeInSeconds = TimeSpan.FromSeconds(UnityEngine.Random.Range(1, 120));
         }
 
         InsertPlayerInRanking(GameManager.instance.CurrentScore, numberLevel, timeInSeconds); //Lo insertamos en el ranking -  TEMPORALMENTE COMENTADO
@@ -85,10 +90,21 @@ public class LevelManager : MonoBehaviour
         PlayerGlobal.Instance.Level = level;
         PlayerGlobal.Instance.Score = score;
         PlayerGlobal.Instance.Time = string.Format("{0:00}:{1:00}", (int)ts.TotalMinutes, (int)ts.Seconds);
-
-        var player = new Player(PlayerGlobal.Instance.Name, PlayerGlobal.Instance.Level, PlayerGlobal.Instance.Score);
+        Player player = new Player(PlayerGlobal.Instance.Name, PlayerGlobal.Instance.Level, PlayerGlobal.Instance.Score);
         player.Time = PlayerGlobal.Instance.Time;
+        player.Id = PlayerGlobal.Instance.Id;
+
+        //print($"ID: {player.Id}, {player.Name}, time {player.Time}, score {player.Score}, level {player.Level} ");
+
         database.InsertRanking(player);
         PlayerGlobal.Instance.RankingId = database.GetLatestRanking().RankingId; //Nos guardamos el ID de esa tabla para buscar más facil
+        print("Ranking Id: " + PlayerGlobal.Instance.RankingId);
+    }
+
+    private void OnEmptyCheckVictory()
+    {
+        numberOfEmptyQueues++;
+        if (numberOfEmptyQueues == queueControllers.Length)
+            Victory();
     }
 }
