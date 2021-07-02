@@ -10,6 +10,7 @@ namespace Assets.Scripts.Interface
     public interface IBall
     {
         BallShowQueue BallSQ { get; }
+        int IndexValue { get; }
 
         GameObject GetGameObject();
     }

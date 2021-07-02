@@ -23479,6 +23479,11 @@ PrefabInstance:
       propertyPath: nextLevel
       value: Level03
       objectReference: {fileID: 0}
+    - target: {fileID: 1549704102110792741, guid: 960c6c9ed71db204bbc2e542820b7dbb,
+        type: 3}
+      propertyPath: playWithPowerUp
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2023757724441942649, guid: 960c6c9ed71db204bbc2e542820b7dbb,
         type: 3}
       propertyPath: pauseMenu

@@ -9,12 +9,14 @@ public class PowerUp : MonoBehaviour, IBall
     private int ballToOrder;
     private TDA_ABB ballTree;
     public BallShowQueue BallSQ { get; private set; }
+    public int IndexValue { get; private set; }
 
     private void Awake()
     {
         ballTree = GetComponent<TDA_ABB>();
         ballTree.InicializarArbol();
         BallSQ = GetComponent<BallShowQueue>();
+        IndexValue = 99;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -25,6 +27,7 @@ public class PowerUp : MonoBehaviour, IBall
         {
             if (ball.IsProjectile)
             {
+                this.BallSQ.Regroup(1);
                 ReSortBalls(this); //Reordenamos las pelotas
                 queueDynamic.DesqueueMiddle(this); //Sacamos el powerup del queue
                 Destroy(collision.gameObject); //Destruimos el proyectil
@@ -59,19 +62,17 @@ public class PowerUp : MonoBehaviour, IBall
         {
             if (item is Ball)
             {
-                print($"item: {item.GetGameObject().name}");
                 ballTree.AgregarElem(ref ballTree.raiz, item as Ball);
-                item.BallSQ.SetNewCurrentPosition(initialPosition);
-                initialPosition++;
             }
         }
 
         ballTree.inOrder(ballTree.raiz, queueDynamic, ball); //acá las ordeno por color
 
-        //for (int i = 0; i < resortList.Count; i++)
-        //{
-        //    resortList[i].BallSQ.SetNewCurrentPosition(initialPosition);
-        //    initialPosition++;
-        //}
+        for (int i = 0; i < resortList.Count; i++)
+        {
+            resortList[i].BallSQ.SetNewCurrentPosition(initialPosition);
+            initialPosition++;
+            print($"Resort[{i}]: {resortList[i].GetGameObject().name} - {resortList[i].BallSQ.CurrentPosition} - {resortList[i].IndexValue}");
+        }
     }
 }

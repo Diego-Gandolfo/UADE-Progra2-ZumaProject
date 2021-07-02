@@ -210,13 +210,14 @@ public class QueueDynamicController : MonoBehaviour
         {
             for (int i = 0; i < ballsToOrder; i++) 
             {
-                    if (auxNodeRight != null)
-                    {
-                        IBall aux = queueDynamic.DesqueueMiddle(auxNodeRight.element);
-                        auxNodeRight = auxNodeRight.nextNode;
-                        ballsToDequeue.Add(aux);
-                    }
-                    else break;
+                if (auxNodeRight != null)
+                {
+                    IBall aux = queueDynamic.DesqueueMiddle(auxNodeRight.element);
+                    auxNodeRight = auxNodeRight.nextNode;
+                    ballsToDequeue.Add(aux);
+                    print($"Dequeue List[{ballsToDequeue.Count - 1}]: {aux.GetGameObject().name} - {aux.BallSQ.CurrentPosition} - {aux.IndexValue}");
+                }
+                else break;
             }
         }
 
@@ -229,6 +230,7 @@ public class QueueDynamicController : MonoBehaviour
                     IBall aux = queueDynamic.DesqueueMiddle(auxNodeLeft.element);
                     auxNodeLeft = auxNodeLeft.previousNode;
                     ballsToDequeue.Add(aux);
+                    print($"Dequeue List[{ballsToDequeue.Count - 1}]: {aux.GetGameObject().name} - {aux.BallSQ.CurrentPosition} - {aux.IndexValue}");
                 }
                 else break;
             }
@@ -269,8 +271,6 @@ public class QueueDynamicController : MonoBehaviour
                 Ball auxBall = (Ball) auxNode.element;
                 Ball auxBallSupp = (Ball) auxNodeSupp.element;
 
-                //print($"auxBall.Color: {auxBall.IndexValue} - auxBallSupp.Color: {auxBallSupp.IndexValue}");
-
                 while (auxBall.Color == auxBallSupp.Color && auxNodeSupp.nextNode != null)
                 {
                     ballList.Add(auxNodeSupp.element);
@@ -297,8 +297,6 @@ public class QueueDynamicController : MonoBehaviour
             {
                 Ball auxBall = (Ball)auxNode.element;
                 Ball auxBallSupp = (Ball)auxNodeSupp.element;
-
-                //print($"auxBall.Color: {auxBall.IndexValue} - auxBallSupp.Color: {auxBallSupp.IndexValue}");
 
                 while (auxBall.Color == auxBallSupp.Color && auxNodeSupp.previousNode != null)
                 {
@@ -383,6 +381,7 @@ public class QueueDynamicController : MonoBehaviour
             var newPowerUp = Instantiate(this.powerUpPrefab); // instanciamos una nueva Sphere
             newPowerUp.SetQueueController(this); //Le seteamos el controller
             newPowerUp.SetBallsToOrder(ballsToOrder);
+            newPowerUp.BallSQ.InitializePath(path, false);
             EnqueueMiddleAfter(newPowerUp, ball); //Lo encolamos
             checkColorCount = 0; //Reseteamos el contador
         }

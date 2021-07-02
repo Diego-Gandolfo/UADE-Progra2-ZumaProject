@@ -21,7 +21,7 @@ public class CanonStack : MonoBehaviour
     {
         if (!IsStackFull()) 
         {
-            print(selected.QueueController.name);
+            //print(selected.QueueController.name);
             if(selected.QueueController.GetNumberOfCurrentBalls() > maxStack)
             {
                 canonStack.Push(selected);
