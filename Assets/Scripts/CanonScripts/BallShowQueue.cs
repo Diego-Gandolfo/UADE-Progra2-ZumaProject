@@ -29,7 +29,7 @@ public class BallShowQueue : MonoBehaviour
         if(CurrentPosition < Path.Length - 1)
         {
             CurrentPosition++;
-            if (transform != null) transform.position = Path[CurrentPosition].position;
+            transform.position = Path[CurrentPosition].position;
         }
     }
 
