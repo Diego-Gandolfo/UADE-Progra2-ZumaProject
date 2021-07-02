@@ -381,7 +381,7 @@ public class QueueDynamicController : MonoBehaviour
             var newPowerUp = Instantiate(this.powerUpPrefab); // instanciamos una nueva Sphere
             newPowerUp.SetQueueController(this); //Le seteamos el controller
             newPowerUp.SetBallsToOrder(ballsToOrder);
-            newPowerUp.BallSQ.InitializePath(path, false);
+            //newPowerUp.BallSQ.InitializePath(path, false); // esto no estaba, lo agregue a ver si era el problema
             EnqueueMiddleAfter(newPowerUp, ball); //Lo encolamos
             checkColorCount = 0; //Reseteamos el contador
         }
