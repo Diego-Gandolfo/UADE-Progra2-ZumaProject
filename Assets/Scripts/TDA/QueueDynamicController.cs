@@ -149,29 +149,28 @@ public class QueueDynamicController : MonoBehaviour
         ball.BallSQ.Node = node;
     }
 
-    public void EnqueueMiddleAfter(IBall newBall, IBall afterBall, bool hasToCheckColors = true)
+    public void EnqueueMiddleAfter(IBall newBall, IBall afterBall, bool isPowerUp = false)
     {
         queueDynamic.EnqueueMiddleAfter(newBall, afterBall);
-        if (hasToCheckColors) newBall.BallSQ.GetTargetBallInfo(afterBall);
-        EnqueueMiddleMain(newBall, hasToCheckColors);
-        if (hasToCheckColors) newBall.BallSQ.MakeSpaceToRight();
+        if (!isPowerUp) newBall.BallSQ.GetTargetBallInfo(afterBall);
+        EnqueueMiddleMain(newBall, isPowerUp);
+        if (!isPowerUp) newBall.BallSQ.MakeSpaceToRight();
     }
 
-    public void EnqueueMiddleBefore(IBall newBall, IBall beforeBall, bool hasToCheckColors = true)
+    public void EnqueueMiddleBefore(IBall newBall, IBall beforeBall, bool isPowerUp = false)
     {
-        if (newBall is PowerUp) print($"{newBall.GetGameObject().name}");
         queueDynamic.EnqueueMiddleBefore(newBall, beforeBall);
-        if (hasToCheckColors) newBall.BallSQ.GetTargetBallInfo(beforeBall);
-        EnqueueMiddleMain(newBall, hasToCheckColors);
-        if (hasToCheckColors) beforeBall.BallSQ.MakeSpaceToRight();
+        if (!isPowerUp) newBall.BallSQ.GetTargetBallInfo(beforeBall);
+        EnqueueMiddleMain(newBall, isPowerUp);
+        if (!isPowerUp) beforeBall.BallSQ.MakeSpaceToRight();
     }
 
-    public void EnqueueMiddleMain(IBall newBall, bool hasToCheckColors = true) // son cosas que hacen ambos EnqueueMiddle, para no repetir codigo
+    public void EnqueueMiddleMain(IBall newBall, bool isPowerUp = false) // son cosas que hacen ambos EnqueueMiddle, para no repetir codigo
     {
-        if (hasToCheckColors) ShowQueue(GetNumberOfCurrentBalls());
+        if (!isPowerUp) ShowQueue(GetNumberOfCurrentBalls());
         var node = FindNode(newBall);
         newBall.BallSQ.Node = node;
-        if (hasToCheckColors) CheckColors(node);
+        if (!isPowerUp) CheckColors(node);
     }
 
     public void EnqueueBottom()
