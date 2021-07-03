@@ -141,6 +141,8 @@ MonoBehaviour:
   - {r: 0, g: 0, b: 1, a: 1}
   speed: 10
   lifeTime: 3
+  deathPrefab: {fileID: 4958139977584857316, guid: d737e29b0bfbf8945868958b76e50702,
+    type: 3}
 --- !u!114 &-3391122238052087951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,4 +167,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9353a630cbcd9a9409ce0fb208587acb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  multiplierSpeed: 2
