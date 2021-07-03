@@ -344,6 +344,8 @@ public class QueueDynamicController : MonoBehaviour
 
             if(IsEmpty()) //Chequea si la cola esta vacia.... Si esta avisale al resto
                 OnEmpty?.Invoke();
+
+            AudioManager.instance.PlaySound(SoundClips.Explosion);
         }
 
         Ball nextBall = nextNode != null ? nextNode.element as Ball : null;

@@ -42,21 +42,25 @@ public class EndScreenController : MonoBehaviour
 
     private void OnPlayAgainHandler()
     {
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
         SceneManager.LoadScene(GameManager.instance.CurrentLevel);
     }
 
     private void OnMenuHandler()
     {
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
         SceneManager.LoadScene("MainMenu");
     }
 
     private void OnNextLevelHandler()
     {
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
         SceneManager.LoadScene(GameManager.instance.NextLevel);
     }
 
     private void OnQuitHandler()
     {
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
         print("Se cierra el juego");
         Application.Quit();
     }
