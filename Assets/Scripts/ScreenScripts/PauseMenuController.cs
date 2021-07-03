@@ -9,10 +9,8 @@ public class PauseMenuController : MonoBehaviour
 {
     [Header("AllMenus Settings")]
     [SerializeField] private GameObject pauseMenu;
-    [SerializeField] private string currentLevel;
     
     /* SE VAN A DESCOMENTAR CUANDO ESTEN ARMADOS */
-    //[SerializeField] private GameManager gameManager;
     //[SerializeField] private AudioSource musicLevel = null;
     //[SerializeField] private float lowerVolume = 1f;
 
@@ -21,6 +19,9 @@ public class PauseMenuController : MonoBehaviour
     [SerializeField] private Button restartButton;
     [SerializeField] private Button mainMenuButton;
     [SerializeField] private Button quitButton;
+
+    //[Header("Hidables Settings")]
+    //[SerializeField] private GameObject timerObject;
 
     //Extras
     private bool isActive;
@@ -32,8 +33,6 @@ public class PauseMenuController : MonoBehaviour
         mainMenuButton.onClick.AddListener(OnMenuHandler);
         quitButton.onClick.AddListener(OnQuitHandler);
         ExitMenu();
-
-        //print("ESC para PauseMenu, F2 para GameOver");
     }
 
     void Update()
@@ -49,52 +48,50 @@ public class PauseMenuController : MonoBehaviour
                 ExitMenu();
             }
         }
-
-        //if (Input.GetKeyDown(KeyCode.F1))
-        //    SceneManager.LoadScene("Victory");
-
-        if (Input.GetKeyDown(KeyCode.F2))
-            SceneManager.LoadScene("GameOver");
-
     }
 
     private void Pause()
     {
         Time.timeScale = 0;
-        //gameManager.isFreeze = true;
+        GameManager.instance.IsGameFreeze = true;
         isActive = true;
         pauseMenu.SetActive(true);
         //musicLevel.volume -= lowerVolume;
+        //timerObject.SetActive(false);
     }
 
     private void ExitMenu()
     {
         Time.timeScale = 1;
-        //gameManager.isFreeze = false;
+        GameManager.instance.IsGameFreeze = false;
         isActive = false;
         pauseMenu.SetActive(false);
         //musicLevel.volume += lowerVolume;
+        //timerObject.SetActive(true);
     }
 
     private void OnResumeHandler()
     {
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
         ExitMenu();
     }
 
     private void OnRestartHandler()
     {
-        SceneManager.LoadScene(currentLevel);
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
+        SceneManager.LoadScene(GameManager.instance.CurrentLevel);
     }
 
     private void OnMenuHandler()
     {
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
         SceneManager.LoadScene("MainMenu");
     }
 
     private void OnQuitHandler()
     {
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
         Application.Quit();
         Debug.Log("Se cierra el juego");
     }
-
 }

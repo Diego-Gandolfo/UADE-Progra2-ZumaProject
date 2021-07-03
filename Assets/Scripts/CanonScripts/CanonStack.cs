@@ -19,21 +19,36 @@ public class CanonStack : MonoBehaviour
 
     public void Absorb(Ball selected)
     {
-        if (!IsStackFull()) //TODO: que no pueda absorber las ultimas pelotas (tamaño de la pila)
+        if (!IsStackFull()) 
         {
-            canonStack.Push(selected);
-            var node = selected.QueueController.FindNode(selected);
-            var nextNode = node.nextNode;
-            var previousNode = node.previousNode;
+            print(selected.QueueController.name);
+            if(selected.QueueController.GetNumberOfCurrentBalls() > maxStack)
+            {
+                canonStack.Push(selected);
+                var node = selected.BallSQ.Node;
+                var nextNode = node.nextNode;
+                var previousNode = node.previousNode;
 
-            selected.QueueController.DesqueueMiddle(selected);
-            selected.transform.position = new Vector3(0f, 0f, 0f);
-            selected.gameObject.SetActive(false);
-            //TODO: ANIMACION DE QUE LA PELOTA SE SALE DE LA PILA.
+                selected.QueueController.DesqueueMiddle(selected);
+                selected.transform.position = new Vector3(0f, 0f, 0f);
+                selected.gameObject.SetActive(false);
+                //TODO: animacion de la pelota, al salirse de la pila (?)
 
-            if (nextNode != null && previousNode != null)
-                if (previousNode.element.Color == nextNode.element.Color)
-                    selected.QueueController.CheckColors(nextNode);
+                Ball nextBall = nextNode != null ? nextNode.element as Ball : null;
+                Ball previousBall = previousNode != null ? previousNode.element as Ball : null;
+
+                if (nextNode != null) nextNode.element.BallSQ.Regroup(1);
+
+                if (nextNode != null && previousNode != null)
+                    if (previousBall.Color == nextBall.Color)
+                        selected.QueueController.CheckColors(nextNode);
+
+                AudioManager.instance.PlaySound(SoundClips.Absorb);
+            }
+            else
+            {
+                print("No se pueden absorber las ultimas 5 de la cola");
+            }
         }
         else
         {

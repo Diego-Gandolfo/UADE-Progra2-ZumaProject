@@ -1,25 +1,32 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Interface;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
-public class Ball : MonoBehaviour
+public class Ball : MonoBehaviour, IBall
 {
     [SerializeField] private Color[] colorBucket = new Color[3];
     [SerializeField] private float speed = 10;
     [SerializeField] private float lifeTime;
     private float lifeTimeTimer;
-
+    
     public QueueDynamicController QueueController { get; private set; }
+
+    public BallShowQueue BallSQ { get; private set; }
 
     public Color Color { get; private set; }
 
     public bool IsProjectile { get; set; }
+    public int IndexValue { get; private set; }
 
     private void Awake()
     {
-        Color = colorBucket[Random.Range(0, colorBucket.Length)];
+        IndexValue = (int) Random.Range(0, colorBucket.Length);
+        Color = colorBucket[IndexValue];
         gameObject.GetComponent<SpriteRenderer>().color = Color;
         lifeTimeTimer = lifeTime;
+        BallSQ = GetComponent<BallShowQueue>();
     }
 
     private void Update()
@@ -40,21 +47,26 @@ public class Ball : MonoBehaviour
     {
         if (IsProjectile)
         {
-            QueueController = collision.gameObject.GetComponent<Ball>().QueueController;
+            
+            var collisionBall = collision.gameObject.GetComponent<Ball>();
 
-            Vector2 contactOnCollision = collision.GetContact(0).point;//Encuentra el punto de colision (devuelve un vector)
-            contactOnCollision.x -= collision.transform.position.x;
-            if (contactOnCollision.x > 0)
+            if (collisionBall != null)
             {
-                var afterBall = collision.gameObject.GetComponent<Ball>();
-                QueueController.EnqueueMiddleAfter(this, afterBall);
-                ResetOnCollision();
-            }
-            else if (contactOnCollision.x <= 0)
-            {
-                var beforeBall = collision.gameObject.GetComponent<Ball>();
-                QueueController.EnqueueMiddleBefore(this, beforeBall);
-                ResetOnCollision();
+                QueueController = collisionBall.QueueController;
+
+                Vector2 contactOnCollision = collision.GetContact(0).point;//Encuentra el punto de colision (devuelve un vector)
+                contactOnCollision.x -= collision.transform.position.x;
+
+                if (contactOnCollision.x > 0)
+                {
+                    QueueController.EnqueueMiddleAfter(this, collisionBall);
+                    ResetOnCollision();
+                }
+                else if (contactOnCollision.x <= 0)
+                {
+                    QueueController.EnqueueMiddleBefore(this, collisionBall);
+                    ResetOnCollision();
+                }
             }
         }
     }
@@ -68,5 +80,10 @@ public class Ball : MonoBehaviour
     public void SetQueueController(QueueDynamicController queueController)
     {
         this.QueueController = queueController;
+    }
+
+    public GameObject GetGameObject()
+    {
+        return gameObject;
     }
 }

@@ -5,52 +5,63 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+enum ScreenType
+{
+    Victory, 
+    GameOver
+}
+
 public class EndScreenController : MonoBehaviour
 {
+    [SerializeField] private ScreenType screen;
+
     [Header("Buttons")]
     [SerializeField] private Button nextLevelButton;
     [SerializeField] private Button playAgainButton;
     [SerializeField] private Button menuButton;
     [SerializeField] private Button exitButton;
 
-    [Header("Others")]
-    [SerializeField] private bool isGameOver;
-
-    [Header("Scenes")]
-    [SerializeField] private string currentLevel = "Level01";
-    [SerializeField] private string nextLevel = "Level02";
-
     void Start()
     {
+        PlayerGlobal.Instance.Score = 0; //Sea lo que sea reseteemos el puntaje del player.
         playAgainButton.onClick.AddListener(OnPlayAgainHandler);
         menuButton.onClick.AddListener(OnMenuHandler);
         exitButton.onClick.AddListener(OnQuitHandler);
 
-        //if (!isGameOver)
-        if (GameManager.instance.NextLevel != string.Empty)
+        if (screen == ScreenType.Victory)
+        {
             nextLevelButton.onClick.AddListener(OnNextLevelHandler);
+
+            if (GameManager.instance.NextLevel == string.Empty)
+            {
+                nextLevelButton.interactable = false;
+            }
+        }
+
     }
 
     private void OnPlayAgainHandler()
     {
-        //SceneManager.LoadScene(currentLevel);
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
         SceneManager.LoadScene(GameManager.instance.CurrentLevel);
     }
 
     private void OnMenuHandler()
     {
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
         SceneManager.LoadScene("MainMenu");
     }
 
     private void OnNextLevelHandler()
     {
-        //SceneManager.LoadScene(nextLevel);
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
         SceneManager.LoadScene(GameManager.instance.NextLevel);
     }
 
     private void OnQuitHandler()
     {
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
+        print("Se cierra el juego");
         Application.Quit();
-        Debug.Log("Se cierra el juego");
     }
 }
