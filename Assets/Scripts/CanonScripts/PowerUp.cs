@@ -30,9 +30,11 @@ public class PowerUp : MonoBehaviour, IBall
                 this.BallSQ.Regroup(1);
                 //ReSortBalls(this); //Reordenamos las pelotas
                 queueDynamic.DesqueueMiddle(this); //Sacamos el powerup del queue
-                Destroy(collision.gameObject); //Destruimos el proyectil
+                //Destroy(collision.gameObject, 2f); //Destruimos el proyectil
+                collision.gameObject.SetActive(false);
                 queueDynamic.SetCanInstantiatePowerUp(true);
-                Destroy(gameObject); //Destruimos el powerup
+                //Destroy(gameObject, 2f); //Destruimos el powerup
+                gameObject.SetActive(false);
             }
         }
     }
