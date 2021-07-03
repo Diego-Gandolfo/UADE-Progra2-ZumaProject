@@ -17,12 +17,9 @@ public class QueueDynamicController : MonoBehaviour
     //QUANTITY
     private int maxQuantity;
     private int currentQuantity;
-    private int currentIndex = 1;
     private int numberOfRecursivity = 1;
 
     //MOVEMENT AND TIMERS
-    private bool canInitializeMoving = true;
-    private float ballSpawnTimer = 0f;
     private float movingTimer;
     private float movingCountdown = 0f;
 
@@ -40,33 +37,18 @@ public class QueueDynamicController : MonoBehaviour
         queueDynamic = gameObject.GetComponent<QueueDymamic>();
     }
 
-    private void Update() 
+    private void Start()
     {
-        if (currentQuantity < maxQuantity) //Esto se usa en el inicio para rapidamente crear la cola y luego nunca más.
-        {
-            ballSpawnTimer += Time.deltaTime;
-            CreateAllQueue();
-        }
+        CreateQueue();
+    }
 
+    private void Update()
+    {
         movingCountdown += Time.deltaTime;
-        if (movingCountdown >= (movingTimer/10) && canInitializeMoving) //Esto es para inicializar el movimiento de la cola
-        {
-            if(currentIndex != maxQuantity)
-            {
-                ShowQueue(currentIndex);
-                currentIndex++;
-                movingCountdown = 0f;
-            } else
-            {
-                canInitializeMoving = false;
-            }
-        }
 
-        var currentballs = GetNumberOfCurrentBalls();
-
-        if (movingCountdown >= movingTimer && !canInitializeMoving && currentballs > 0)
+        if (movingCountdown >= movingTimer && GetNumberOfCurrentBalls() > 0)
         {
-            ShowQueue(currentballs);
+            ShowQueue();
             movingCountdown = 0f;
         }
     }
@@ -99,54 +81,45 @@ public class QueueDynamicController : MonoBehaviour
         return ball; // devolvemos el clone creado
     }
 
-    public void CreateAllQueue()
+    public void CreateQueue()
     {
-        if (path.Length == 0)
-        {
-            path = grafosManager.GetDijkstra(0, pathNumber);
-        }
+        path = grafosManager.GetDijkstra(0, pathNumber);
 
-        if (ballSpawnTimer >= (0.01))
+        var ball = CreateBall();
+        queueDynamic.Initialize(ball);
+        var node = FindNode(ball);
+        ball.BallSQ.Node = node;
+        ball.BallSQ.CurrentPosition = maxQuantity - currentQuantity;
+        currentQuantity++;
+
+        for (int i = 0; i < maxQuantity - 1; i++)
         {
-            if (queueDynamic.IsEmpty())
-            { 
-                var ball = CreateBall();
-                queueDynamic.Initialize(ball);
-                var node = FindNode(ball);
-                ball.BallSQ.Node = node;
-            }
-            else
-            {
-                EnqueueTop();
-            }
-            ballSpawnTimer = 0;
+            EnqueueTop();
             currentQuantity++;
         }
     }
 
-    public void ShowQueue(int index)
+    private void ShowQueue()
     {
-        int auxIndex = index; 
-        
-        var auxNodeSupp = GetRootNode();
-        while (auxNodeSupp.nextNode != null) //esto es para obtener el primero de la cola dinamica. 
+        var auxNodeSupp = queueDynamic.rootNode;
+
+        if (auxNodeSupp != null)
+            auxNodeSupp.element.BallSQ.Move();
+
+        while (auxNodeSupp.nextNode != null)
         {
             auxNodeSupp = auxNodeSupp.nextNode;
-        }
-
-        for (int i = 0; i < auxIndex; i++)
-        {
             auxNodeSupp.element.BallSQ.Move();
-            auxNodeSupp = auxNodeSupp.previousNode; // guardamos el anterior en auxNode y repetimos
         }
     }
 
-    public void EnqueueTop()
+    private void EnqueueTop()
     {
         var ball = CreateBall();
         queueDynamic.EnqueueTop(ball);
         var node = FindNode(ball);
         ball.BallSQ.Node = node;
+        ball.BallSQ.CurrentPosition = maxQuantity - currentQuantity;
     }
 
     public void EnqueueMiddleAfter(IBall newBall, IBall afterBall, bool isPowerUp = false)
@@ -165,36 +138,18 @@ public class QueueDynamicController : MonoBehaviour
         if (!isPowerUp) beforeBall.BallSQ.MakeSpaceToRight();
     }
 
-    public void EnqueueMiddleMain(IBall newBall, bool isPowerUp = false) // son cosas que hacen ambos EnqueueMiddle, para no repetir codigo
+    private void EnqueueMiddleMain(IBall newBall, bool isPowerUp = false) // son cosas que hacen ambos EnqueueMiddle, para no repetir codigo
     {
-        if (!isPowerUp) ShowQueue(GetNumberOfCurrentBalls());
+        if (!isPowerUp) ShowQueue();
         var node = FindNode(newBall);
         newBall.BallSQ.Node = node;
         if (!isPowerUp) CheckColors(node);
     }
 
-    public void EnqueueBottom()
-    {
-        queueDynamic.EnqueueBottom(CreateBall());
-    }
-
-    public void DesqueueTop()
-    {
-        queueDynamic.DesqueueTop();
-    }
-
-    public void DesqueueBottom()
-    {
-        queueDynamic.DesqueueBottom();
-    }
-
     public IBall DesqueueMiddle(IBall targetBall)
     {
         NodeBall node = FindNode(targetBall);
-        
         var aux = queueDynamic.DesqueueMiddle(targetBall);
-        
-        targetBall = null;
         return aux;
     }
 
@@ -207,29 +162,27 @@ public class QueueDynamicController : MonoBehaviour
 
         if (auxNodeRight != null) // Recorrido Nodo Derecho, si el nodo derecho es null, no hago nada
         {
-            for (int i = 0; i < ballsToOrder; i++) 
+            for (int i = 0; i < ballsToOrder; i++)
             {
                 if (auxNodeRight != null)
                 {
                     IBall aux = queueDynamic.DesqueueMiddle(auxNodeRight.element);
                     auxNodeRight = auxNodeRight.nextNode;
                     ballsToDequeue.Add(aux);
-                    print($"Dequeue List[{ballsToDequeue.Count - 1}]: {aux.GetGameObject().name} - {aux.BallSQ.CurrentPosition} - {aux.IndexValue}");
                 }
                 else break;
             }
         }
 
-        if(auxNodeLeft != null) // Recorrido Nodo Izquierdo
+        if (auxNodeLeft != null) // Recorrido Nodo Izquierdo
         {
-            for (int i = 0; i < ballsToOrder; i++) 
+            for (int i = 0; i < ballsToOrder; i++)
             {
                 if (auxNodeLeft != null)
                 {
                     IBall aux = queueDynamic.DesqueueMiddle(auxNodeLeft.element);
                     auxNodeLeft = auxNodeLeft.previousNode;
                     ballsToDequeue.Add(aux);
-                    print($"Dequeue List[{ballsToDequeue.Count - 1}]: {aux.GetGameObject().name} - {aux.BallSQ.CurrentPosition} - {aux.IndexValue}");
                 }
                 else break;
             }
@@ -238,8 +191,7 @@ public class QueueDynamicController : MonoBehaviour
         return ballsToDequeue;
     }
 
-    // TODO: llevar a QueueDynamic
-    public NodeBall FindNode(IBall ball) //Recibe una pelota y le busca el nodo
+    private NodeBall FindNode(IBall ball) //Recibe una pelota y le busca el nodo
     {
         var auxNode = queueDynamic.rootNode;
 
@@ -267,8 +219,8 @@ public class QueueDynamicController : MonoBehaviour
 
             if (auxNode.element is Ball && auxNodeSupp.element is Ball)
             {
-                Ball auxBall = (Ball) auxNode.element;
-                Ball auxBallSupp = (Ball) auxNodeSupp.element;
+                Ball auxBall = (Ball)auxNode.element;
+                Ball auxBallSupp = (Ball)auxNodeSupp.element;
 
                 while (auxBall.Color == auxBallSupp.Color && auxNodeSupp.nextNode != null)
                 {
@@ -276,7 +228,7 @@ public class QueueDynamicController : MonoBehaviour
                     auxNodeSupp = auxNodeSupp.nextNode;
 
                     if (auxNodeSupp.element is Ball)
-                        auxBallSupp = (Ball) auxNodeSupp.element;
+                        auxBallSupp = (Ball)auxNodeSupp.element;
                     else
                         break;
                 }
@@ -303,7 +255,7 @@ public class QueueDynamicController : MonoBehaviour
                     auxNodeSupp = auxNodeSupp.previousNode;
 
                     if (auxNodeSupp.element is Ball)
-                        auxBallSupp = (Ball) auxNodeSupp.element;
+                        auxBallSupp = (Ball)auxNodeSupp.element;
                     else
                         break;
                 }
@@ -321,7 +273,7 @@ public class QueueDynamicController : MonoBehaviour
             {
                 checkColorCount++;
             }
-            
+
             numberOfRecursivity++;
 
             for (int i = 0; i < ballList.Count; i++)
@@ -329,7 +281,8 @@ public class QueueDynamicController : MonoBehaviour
                 if (ballList[i] is Ball)
                 {
                     var aux = DesqueueMiddle(ballList[i]);
-                    Destroy(aux.GetGameObject());
+                    //Destroy(aux.GetGameObject(), 2f);
+                    aux.GetGameObject().SetActive(false);
                 }
             }
 
@@ -339,7 +292,7 @@ public class QueueDynamicController : MonoBehaviour
             if (nextNode != null)
                 nextNode.element.BallSQ.Regroup(ballList.Count);
 
-            if(IsEmpty()) //Chequea si la cola esta vacia.... Si esta avisale al resto
+            if (queueDynamic.IsEmpty()) //Chequea si la cola esta vacia.... Si esta avisale al resto
                 OnEmpty?.Invoke();
 
             AudioManager.instance.PlaySound(SoundClips.Explosion);
@@ -382,24 +335,12 @@ public class QueueDynamicController : MonoBehaviour
             var newPowerUp = Instantiate(this.powerUpPrefab); // instanciamos una nueva Sphere
             newPowerUp.SetQueueController(this); //Le seteamos el controller
             newPowerUp.SetBallsToOrder(ballsToOrder);
-            //newPowerUp.BallSQ.InitializePath(path, false); // esto no estaba, lo agregue a ver si era el problema
             EnqueueMiddleAfter(newPowerUp, ball); //Lo encolamos
             checkColorCount = 0; //Reseteamos el contador
         }
     }
 
-    public NodeBall GetRootNode()
-    {
-        var auxNode = queueDynamic.rootNode;
-        return auxNode;
-    }
-
-    public bool IsEmpty()
-    {
-        return queueDynamic.IsEmpty();
-    }
-
-    public void CalculatePoints(int ballsQuantity, int checkColorsRecursivityRound = 1)
+    private void CalculatePoints(int ballsQuantity, int checkColorsRecursivityRound = 1)
     {
         GameManager.instance.CurrentScore += (ballPointValue * ballsQuantity * checkColorsRecursivityRound);
     }
@@ -407,21 +348,22 @@ public class QueueDynamicController : MonoBehaviour
     public void SetCanInstantiatePowerUp(bool value)
     {
         canInstantiatePowerUp = value;
-	}
+    }
 
     public int GetNumberOfCurrentBalls()
     {
-        if (!IsEmpty())
+        if (!queueDynamic.IsEmpty())
         {
             int result = 1;
-            var auxNodeSupp = GetRootNode();
+            var auxNodeSupp = queueDynamic.rootNode;
             while (auxNodeSupp.nextNode != null)
             {
                 auxNodeSupp = auxNodeSupp.nextNode;
                 result++;
             }
             return result;
-        } else
+        }
+        else
         {
             return 0;
         }
