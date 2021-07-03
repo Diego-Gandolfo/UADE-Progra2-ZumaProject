@@ -25,6 +25,7 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private GameObject nameBox = null;
     [SerializeField] private Text nameText = null;
 
+    private bool firstTime = true;
     private bool mainMenuCheck;
     [SerializeField] private int level01 = 1;
     private DBController database;
@@ -57,11 +58,13 @@ public class MainMenuController : MonoBehaviour
 
     private void OnPlayHandler()
     {
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
         SceneManager.LoadScene(level01);
     }
 
     private void OnCreditsHandler()
     {
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
         mainMenu.SetActive(false);
         //helpMenu.SetActive(false);
         creditsMenu.SetActive(true);
@@ -70,21 +73,25 @@ public class MainMenuController : MonoBehaviour
 
     private void OnGoBackHandler()
     {
+        if (!firstTime) AudioManager.instance.PlaySound(SoundClips.MouseClick);
         mainMenu.SetActive(true);
         //helpMenu.SetActive(false);
         creditsMenu.SetActive(false);
         mainMenuCheck = true;
+        firstTime = false;
     }
 
     private void OnQuitHandler()
     {
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
         Application.Quit();
         Debug.Log("Se cierra el juego");
     }
 
     private void OnConfirmHandler()
     {
-        if(inputField.text != null)
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
+        if (inputField.text != null)
         {
             dbManager.InsertPlayer(inputField.text);
             CheckPlayerName(); //Nos fijamos si tenemos que desaparecer la caja de nombres

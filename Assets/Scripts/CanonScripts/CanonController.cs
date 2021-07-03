@@ -109,5 +109,7 @@ public class CanonController : MonoBehaviour
 		projectile.transform.rotation = currentBall.transform.rotation;
 		projectile.IsProjectile = true;
 		projectile = null;
+
+		AudioManager.instance.PlaySound(SoundClips.Shoot);
 	}
 }
