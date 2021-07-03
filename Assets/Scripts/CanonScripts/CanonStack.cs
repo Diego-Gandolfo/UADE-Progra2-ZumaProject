@@ -42,6 +42,8 @@ public class CanonStack : MonoBehaviour
                 if (nextNode != null && previousNode != null)
                     if (previousBall.Color == nextBall.Color)
                         selected.QueueController.CheckColors(nextNode);
+
+                AudioManager.instance.PlaySound(SoundClips.Absorb);
             }
             else
             {
