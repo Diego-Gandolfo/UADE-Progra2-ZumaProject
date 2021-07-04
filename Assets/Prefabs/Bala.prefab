@@ -143,6 +143,8 @@ MonoBehaviour:
   lifeTime: 3
   deathPrefab: {fileID: 4958139977584857316, guid: d737e29b0bfbf8945868958b76e50702,
     type: 3}
+  absorbPrefab: {fileID: 4958139977584857316, guid: 6494be9349898b646ad39957bd4fbe7d,
+    type: 3}
 --- !u!114 &-3391122238052087951
 MonoBehaviour:
   m_ObjectHideFlags: 0
