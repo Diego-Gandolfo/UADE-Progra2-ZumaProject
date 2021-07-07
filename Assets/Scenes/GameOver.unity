@@ -891,7 +891,7 @@ PrefabInstance:
     - target: {fileID: 2371217409191224063, guid: 6bf528bd52ca8d945aed40ff68fb2625,
         type: 3}
       propertyPath: m_Text
-      value: Back To Menue
+      value: Back To Menu
       objectReference: {fileID: 0}
     - target: {fileID: 5946365471449746560, guid: 6bf528bd52ca8d945aed40ff68fb2625,
         type: 3}
