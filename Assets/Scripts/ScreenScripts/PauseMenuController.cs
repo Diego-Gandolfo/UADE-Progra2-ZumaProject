@@ -28,6 +28,7 @@ public class PauseMenuController : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1;
         resumeButton.onClick.AddListener(OnResumeHandler);
         restartButton.onClick.AddListener(OnRestartHandler);
         mainMenuButton.onClick.AddListener(OnMenuHandler);
@@ -77,11 +78,13 @@ public class PauseMenuController : MonoBehaviour
 
     private void OnRestartHandler()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(GameManager.instance.CurrentLevel);
     }
 
     private void OnMenuHandler()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu");
     }
 
