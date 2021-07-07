@@ -964,7 +964,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1100150729
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2684,6 +2684,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 2371217409191224063, guid: 6bf528bd52ca8d945aed40ff68fb2625,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2371217409191224063, guid: 6bf528bd52ca8d945aed40ff68fb2625,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2371217409191224063, guid: 6bf528bd52ca8d945aed40ff68fb2625,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5946365471449746560, guid: 6bf528bd52ca8d945aed40ff68fb2625,
         type: 3}
