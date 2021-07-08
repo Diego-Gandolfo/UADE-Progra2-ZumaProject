@@ -32,10 +32,12 @@ public class GameManager : MonoBehaviour
     public void Victory()
     {
         SceneManager.LoadScene("Victory"); //Cargamos la escena
+        AudioManager.instance.PlaySound(SoundClips.Win);
     }
 
     public void GameOver()
     {
         SceneManager.LoadScene("GameOver");
+        AudioManager.instance.PlaySound(SoundClips.Gameover);
     }
 }

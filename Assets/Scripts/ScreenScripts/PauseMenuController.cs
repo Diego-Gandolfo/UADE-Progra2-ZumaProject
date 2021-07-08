@@ -73,25 +73,28 @@ public class PauseMenuController : MonoBehaviour
 
     private void OnResumeHandler()
     {
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
         ExitMenu();
     }
 
     private void OnRestartHandler()
     {
         Time.timeScale = 1;
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
         SceneManager.LoadScene(GameManager.instance.CurrentLevel);
     }
 
     private void OnMenuHandler()
     {
         Time.timeScale = 1;
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
         SceneManager.LoadScene("MainMenu");
     }
 
     private void OnQuitHandler()
     {
+        AudioManager.instance.PlaySound(SoundClips.MouseClick);
         Application.Quit();
         Debug.Log("Se cierra el juego");
     }
-
 }
