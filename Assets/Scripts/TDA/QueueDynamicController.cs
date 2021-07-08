@@ -35,6 +35,9 @@ public class QueueDynamicController : MonoBehaviour
 
     public UnityEvent OnEmpty = new UnityEvent();
 
+    //EXPLOSIONS
+    private int currentExplosion;
+
     private void Awake()
     {
         queueDynamic = gameObject.GetComponent<QueueDymamic>();
@@ -94,7 +97,6 @@ public class QueueDynamicController : MonoBehaviour
         var ball = Instantiate(this.ballPrefab); // instanciamos una nueva Sphere
         ball.name = $"QueueController{pathNumber} - Ball ({currentQuantity})"; // le cambiamos el nombre para diferenciarlas
         ball.SetQueueController(this);
-
         ball.BallSQ.InitializePath(path, false);
         return ball; // devolvemos el clone creado
     }
@@ -316,7 +318,6 @@ public class QueueDynamicController : MonoBehaviour
                     previousNode = auxNodeSupp;
             }
         }
-
         if (ballList.Count >= 3)
         {
             if (canInstantiatePowerUp) checkColorCount++;//Por cada vuelta de checkcolors que explota, sumamos uno al contador
@@ -327,44 +328,43 @@ public class QueueDynamicController : MonoBehaviour
             {
                 if (ballList[i] is Ball)
                 {
-                    //var aux = DesqueueMiddle(ballList[i]);
                     if (ballList[i] is Ball)
-                        ballList[i].GetGameObject().GetComponent<Ball>().OnExplosion();
-                    if(i == ballList.Count - 1)
                     {
-                        CalculatePoints(ballList.Count, numberOfRecursivity);
-                        if (nextNode != null) //Si hay nodo siguiente
-                        {
-                            print("let's regroup");
-                            nextNode.element.BallSQ.Regroup(ballList.Count, previousNode, nextNode); //move todas las que siguen hacia atras
-                        }
+                        var ball = ballList[i].GetGameObject().GetComponent<Ball>();
+                        ball.OnDestroyed += OnAllExploded;
+                        ball.OnExplosion(ballList.Count, previousNode, nextNode);
                     }
                 }
             }
-
-            if(IsEmpty()) OnEmpty?.Invoke(); //Chequea si la cola esta vacia.... Si esta avisale al resto
-
-            AudioManager.instance.PlaySound(SoundClips.Explosion);
         }
     }
 
-    public void CanCheckColorsAgain(NodeBall previousNode, NodeBall nextNode) //A este lo llama el regroup cuando viene de parte de CheckColors, reemplaza a la recursividad.
+    public void OnAllExploded(int number, NodeBall previousNode, NodeBall nextNode)
+    {
+        currentExplosion++;
+        if(currentExplosion == number - 1) //Check if all exploded. 
+        {
+            if (nextNode != null)
+                nextNode.element.BallSQ.Regroup(number);
+
+            CalculatePoints(number, numberOfRecursivity); //Calculamos puntos
+
+            CanCheckColorsAgain(previousNode, nextNode); // Y ahora que terminamos con eso, volvemos a probar si hay más para explotar
+
+            currentExplosion = 0; //Reset
+        }
+
+        if (IsEmpty()) OnEmpty?.Invoke(); //Chequea si la cola esta vacia.... Si esta avisale al resto
+    }
+
+    public void CanCheckColorsAgain(NodeBall previousNode, NodeBall nextNode)
     {
         Ball nextBall = nextNode != null ? nextNode.element as Ball : null;
         Ball previousBall = previousNode != null ? previousNode.element as Ball : null;
 
-        if (previousNode != null && nextNode != null) //Si AMBOS nodos existen
+        if ((previousNode != null && nextNode != null) && (previousBall.Color == nextBall.Color)) //Si AMBOS nodos existen y cpinciden en color
         {
-            if (previousBall.Color == nextBall.Color) //Y si los colores coinciden
-            {
-                CheckColors(previousNode); //RECURSIVIDAD!!!
-            }
-            else //Si no coinciden el color -> no hay recursividad
-            {
-                numberOfRecursivity = 1;
-                if (checkColorCount >= checkColorCountToPowerUp) //chequeo si llega al powerup
-                    InstantiatePowerUp(previousNode.element);
-            }
+            CheckColors(previousNode); //Vemos si da para explotar
         }
         else //Si una de las dos (o las dos) es nula...
         {

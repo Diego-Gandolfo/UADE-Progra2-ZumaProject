@@ -49,19 +49,14 @@ public class BallShowQueue : MonoBehaviour
         }
     }
 
-    public void Regroup(int ballsDequeued, NodeBall previousNode = null, NodeBall nextNode = null)
+    public void Regroup(int ballsDequeued)
     {
         CurrentPosition -= ballsDequeued;
         transform.position = Path[CurrentPosition].position;
 
         if (Node != null && Node.nextNode != null)
         {
-            Node.nextNode.element.BallSQ.Regroup(ballsDequeued, previousNode, nextNode);
-        }
-        else
-        {
-            print("recheck colors");
-            QueueController.CanCheckColorsAgain(previousNode, nextNode);
+            Node.nextNode.element.BallSQ.Regroup(ballsDequeued);
         }
     }
 

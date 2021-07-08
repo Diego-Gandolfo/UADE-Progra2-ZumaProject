@@ -10,7 +10,9 @@ public class Ball : MonoBehaviour, IBall
     [SerializeField] private float speed = 10;
     [SerializeField] private float lifeTime;
     private float lifeTimeTimer;
-    
+    private Animator animator;
+    private Material material;
+
     public QueueDynamicController QueueController { get; private set; }
 
     public BallShowQueue BallSQ { get; private set; }
@@ -20,8 +22,11 @@ public class Ball : MonoBehaviour, IBall
     public bool IsProjectile { get; set; }
     public int IndexValue { get; private set; }
 
-    private Animator animator;
-    private Material material;
+    //ONLY FOR EXPLODE
+    private int explosionNumber;
+    private NodeBall nextNode;
+    private NodeBall previousNode;
+    public System.Action<int, NodeBall, NodeBall> OnDestroyed;
 
     private void Awake()
     {
@@ -46,9 +51,6 @@ public class Ball : MonoBehaviour, IBall
         {
             Destroy(gameObject);
         }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-            OnExplosion();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -96,20 +98,28 @@ public class Ball : MonoBehaviour, IBall
         return gameObject;
     }
 
-    public void OnExplosion()
+    public void OnExplosion(int number, NodeBall previous, NodeBall next)
     {
+        explosionNumber = number;
+        previousNode = previous;
+        nextNode = next;
         animator.SetBool("CanDestroy", true);
+        AudioManager.instance.PlaySound(SoundClips.Explosion);
     }
 
     public void OnExploionDestroy()
     {
         QueueController.DesqueueMiddle(this);
-        print("MANIP");
-        //TODO: Let queue controller know that can continue with regroup and re check
+        OnDestroyed?.Invoke(explosionNumber, previousNode, nextNode);
         Destroy(this);
     }
 
-    public void OnAbsorbDeque() //Esto es lo que ahora saca a la pelota y luegp 
+    public void OnAbsorb()
+    {
+        animator.SetBool("CanAbsorb", true);
+    }
+
+    public void OnAbsorbDeque() //Esto lo triggerea el final de la animacion de Absorb
     {
         QueueController.DesqueueMiddle(this); //Lo saca de la cola
 
@@ -120,10 +130,5 @@ public class Ball : MonoBehaviour, IBall
         transform.position = new Vector3(0f, 0f, 0f);
         animator.SetTrigger("Reset"); //Reseteamos la animacion
         gameObject.SetActive(false); 
-    }
-
-    public void OnAbsorb()
-    {
-        animator.SetBool("CanAbsorb", true);
     }
 }
