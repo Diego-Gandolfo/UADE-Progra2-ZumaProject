@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1549704102110792740}
   - component: {fileID: 1549704102110792741}
-  - component: {fileID: 2023757724441942649}
   - component: {fileID: 7323469058803079072}
   m_Layer: 0
   m_Name: LevelManager
@@ -26,7 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1549704102110792739}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.970944, y: -1.2692025, z: 5.2334146}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -45,7 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cc2436120c202a49bed753e141c0e17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  queueController: {fileID: 0}
+  queueControllers:
+  - {fileID: 0}
   ballPrefab: {fileID: 7535913483028634844, guid: 2601f13924c22624a892517a8c6a1de2,
     type: 3}
   quantityBallsLevel: 32
@@ -61,23 +61,6 @@ MonoBehaviour:
   numberLevel: 1
   currentLevel: Level01
   nextLevel: Level02
---- !u!114 &2023757724441942649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1549704102110792739}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6e1fec54c223864796195b16f8c9dcb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pauseMenu: {fileID: 0}
-  resumeButton: {fileID: 0}
-  restartButton: {fileID: 0}
-  mainMenuButton: {fileID: 0}
-  quitButton: {fileID: 0}
 --- !u!114 &7323469058803079072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,6 +73,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d64ee176d89cd1749bf35a65f0d4518f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointsArray: []
-  pointsTry: []
-  points: {fileID: 0}
+  path_1: {fileID: 0}
+  path_2: {fileID: 0}
