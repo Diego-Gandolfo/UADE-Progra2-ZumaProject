@@ -9,6 +9,8 @@ public class Ball : MonoBehaviour, IBall
     [SerializeField] private Color[] colorBucket = new Color[3];
     [SerializeField] private float speed = 10;
     [SerializeField] private float lifeTime;
+    [SerializeField] private GameObject deathPrefab;
+    [SerializeField] private GameObject absorbPrefab;
     private float lifeTimeTimer;
     
     public QueueDynamicController QueueController { get; private set; }
@@ -87,5 +89,19 @@ public class Ball : MonoBehaviour, IBall
     public GameObject GetGameObject()
     {
         return gameObject;
+    }
+
+    public void OnExplosion()
+    {
+        var death = Instantiate(deathPrefab, transform.position, transform.rotation);
+        death.GetComponent<DeathController>().SetColor(Color);
+    }
+
+    public void OnAbsorb()
+    {
+        print("entre");
+        Instantiate(absorbPrefab, transform.position, transform.rotation);
+        //var absorb = Instantiate(absorbPrefab, transform.position, transform.rotation);
+        //absorb.GetComponent<DeathController>().SetColor(Color);
     }
 }

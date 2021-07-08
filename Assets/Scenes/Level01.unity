@@ -2065,7 +2065,7 @@ Transform:
   m_LocalScale: {x: 25, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &338659170
 GameObject:
@@ -2338,7 +2338,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &362442452
 GameObject:
@@ -3489,7 +3489,7 @@ PrefabInstance:
     - target: {fileID: 8063896038529965800, guid: d5fb24a439f438e4f8f69f1253f6fb51,
         type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8063896038529965801, guid: d5fb24a439f438e4f8f69f1253f6fb51,
         type: 3}
@@ -3504,7 +3504,7 @@ PrefabInstance:
     - target: {fileID: 8063896038610845919, guid: d5fb24a439f438e4f8f69f1253f6fb51,
         type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8063896039895019272, guid: d5fb24a439f438e4f8f69f1253f6fb51,
         type: 3}
@@ -3544,7 +3544,7 @@ PrefabInstance:
     - target: {fileID: 8063896039895019272, guid: d5fb24a439f438e4f8f69f1253f6fb51,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8063896039895019272, guid: d5fb24a439f438e4f8f69f1253f6fb51,
         type: 3}
@@ -3579,7 +3579,7 @@ PrefabInstance:
     - target: {fileID: 8063896039895019273, guid: d5fb24a439f438e4f8f69f1253f6fb51,
         type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8063896039895019273, guid: d5fb24a439f438e4f8f69f1253f6fb51,
         type: 3}
@@ -5172,7 +5172,7 @@ Transform:
   - {fileID: 1257912100}
   - {fileID: 1797588693}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &877965062
 GameObject:
@@ -13792,6 +13792,7 @@ GameObject:
   - component: {fileID: 1968357001}
   - component: {fileID: 1968357003}
   - component: {fileID: 1968357002}
+  - component: {fileID: 1968357004}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -17344,6 +17345,25 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!95 &1968357004
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1968357000}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 361d97e8d0a630148b2ee97ad0a9bf8e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1972423939
 GameObject:
   m_ObjectHideFlags: 0
@@ -18362,7 +18382,7 @@ PrefabInstance:
     - target: {fileID: 546001656876115810, guid: 68ee4dc52b6f6e546965d2dd031e3270,
         type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 546001656876115810, guid: 68ee4dc52b6f6e546965d2dd031e3270,
         type: 3}

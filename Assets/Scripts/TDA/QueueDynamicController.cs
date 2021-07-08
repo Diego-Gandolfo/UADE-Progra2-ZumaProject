@@ -331,6 +331,8 @@ public class QueueDynamicController : MonoBehaviour
                 if (ballList[i] is Ball)
                 {
                     var aux = DesqueueMiddle(ballList[i]);
+                    if (aux is Ball)
+                        aux.GetGameObject().GetComponent<Ball>().OnExplosion();
                     Destroy(aux.GetGameObject());
                 }
             }
