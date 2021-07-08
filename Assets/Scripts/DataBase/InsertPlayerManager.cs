@@ -17,7 +17,6 @@ public class InsertPlayerManager : MonoBehaviour
         Player player = new Player();
         player.Name = name;
 
-        ////TODO: DESCOMENTAR EL AGREGADO A DATABASE (cuando se solucione el tema del score en general para no generar 20mil entradas de Players y nada en ranking)
         database.InsertPlayer(player); //lo insertamos en la base
         PlayerGlobal.Instance.Id = database.GetLastPlayerId(); //Obtenemos el id del ultimo player insertado 
         print(PlayerGlobal.Instance.Name + " " + PlayerGlobal.Instance.Id);

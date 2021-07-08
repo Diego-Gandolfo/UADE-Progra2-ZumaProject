@@ -319,11 +319,8 @@ public class QueueDynamicController : MonoBehaviour
 
         if (ballList.Count >= 3)
         {
-            if (canInstantiatePowerUp) //Por cada vuelta de checkcolors que explota, sumamos uno al contador
-            {
-                checkColorCount++;
-            }
-            
+            if (canInstantiatePowerUp) checkColorCount++;//Por cada vuelta de checkcolors que explota, sumamos uno al contador
+
             numberOfRecursivity++;
 
             for (int i = 0; i < ballList.Count; i++)
@@ -334,17 +331,19 @@ public class QueueDynamicController : MonoBehaviour
                     if (aux is Ball)
                         aux.GetGameObject().GetComponent<Ball>().OnExplosion();
                     Destroy(aux.GetGameObject());
+                    if(i == ballList.Count - 1)
+                    {
+                        CalculatePoints(ballList.Count, numberOfRecursivity);
+                        if (nextNode != null) //Si hay nodo siguiente
+                        {
+                            print("let's regroup");
+                            nextNode.element.BallSQ.Regroup(ballList.Count, previousNode, nextNode); //move todas las que siguen hacia atras
+                        }
+                    }
                 }
             }
 
-            CalculatePoints(ballList.Count, numberOfRecursivity);
-
-
-            if (nextNode != null) //Si hay nodo siguiente
-                nextNode.element.BallSQ.Regroup(ballList.Count, previousNode, nextNode); //move todas las que siguen hacia atras
-
-            if(IsEmpty()) //Chequea si la cola esta vacia.... Si esta avisale al resto
-                OnEmpty?.Invoke();
+            if(IsEmpty()) OnEmpty?.Invoke(); //Chequea si la cola esta vacia.... Si esta avisale al resto
 
             AudioManager.instance.PlaySound(SoundClips.Explosion);
         }

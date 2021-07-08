@@ -9,8 +9,6 @@ public class Ball : MonoBehaviour, IBall
     [SerializeField] private Color[] colorBucket = new Color[3];
     [SerializeField] private float speed = 10;
     [SerializeField] private float lifeTime;
-    [SerializeField] private GameObject deathPrefab;
-    [SerializeField] private GameObject absorbPrefab;
     private float lifeTimeTimer;
     
     public QueueDynamicController QueueController { get; private set; }
@@ -22,13 +20,18 @@ public class Ball : MonoBehaviour, IBall
     public bool IsProjectile { get; set; }
     public int IndexValue { get; private set; }
 
+    private Animator animator;
+    private Material material;
+
     private void Awake()
     {
-        IndexValue = (int) Random.Range(0, colorBucket.Length);
-        Color = colorBucket[IndexValue];
-        gameObject.GetComponent<SpriteRenderer>().color = Color;
-        lifeTimeTimer = lifeTime;
         BallSQ = GetComponent<BallShowQueue>();
+        IndexValue = (int) Random.Range(0, colorBucket.Length); //Color random de las opciones
+        Color = colorBucket[IndexValue]; //Seteamos el color
+        material = GetComponent<SpriteRenderer>().material; //Buscamos el material
+        material.SetColor("_Color", Color); //Lo pintamos
+        animator = GetComponent<Animator>();
+        lifeTimeTimer = lifeTime;
     }
 
     private void Update()
@@ -43,13 +46,15 @@ public class Ball : MonoBehaviour, IBall
         {
             Destroy(gameObject);
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            OnExplosion();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (IsProjectile)
         {
-            
             var collisionBall = collision.gameObject.GetComponent<Ball>();
 
             if (collisionBall != null)
@@ -93,15 +98,22 @@ public class Ball : MonoBehaviour, IBall
 
     public void OnExplosion()
     {
-        var death = Instantiate(deathPrefab, transform.position, transform.rotation);
-        death.GetComponent<DeathController>().SetColor(Color);
+        animator.SetBool("CanDestroy", true);
+    }
+
+    public void OnManipulation()
+    {
+        print("MANIP");
+        //Let queue controller know that can continue with regroup and re check
     }
 
     public void OnAbsorb()
     {
-        print("entre");
-        Instantiate(absorbPrefab, transform.position, transform.rotation);
-        //var absorb = Instantiate(absorbPrefab, transform.position, transform.rotation);
-        //absorb.GetComponent<DeathController>().SetColor(Color);
+        animator.SetBool("CanAbsorb", true);
+    }
+
+    public void OnReset()
+    {
+        animator.SetTrigger("Reset");
     }
 }

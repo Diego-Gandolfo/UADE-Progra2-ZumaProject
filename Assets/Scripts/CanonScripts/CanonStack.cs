@@ -32,7 +32,6 @@ public class CanonStack : MonoBehaviour
                 selected.OnAbsorb();
                 selected.transform.position = new Vector3(0f, 0f, 0f);
                 selected.gameObject.SetActive(false);
-                //TODO: animacion de la pelota, al salirse de la pila (?)
 
                 Ball nextBall = nextNode != null ? nextNode.element as Ball : null;
                 Ball previousBall = previousNode != null ? previousNode.element as Ball : null;

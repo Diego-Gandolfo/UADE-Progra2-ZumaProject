@@ -60,6 +60,7 @@ public class BallShowQueue : MonoBehaviour
         }
         else
         {
+            print("recheck colors");
             QueueController.CanCheckColorsAgain(previousNode, nextNode);
         }
     }
