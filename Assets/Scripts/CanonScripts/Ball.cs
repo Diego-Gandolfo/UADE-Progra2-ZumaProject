@@ -53,6 +53,7 @@ public class Ball : MonoBehaviour, IBall
             if (collisionBall != null)
             {
                 QueueController = collisionBall.QueueController;
+                BallSQ.SetQueueController(QueueController);
 
                 Vector2 contactOnCollision = collision.GetContact(0).point;//Encuentra el punto de colision (devuelve un vector)
                 contactOnCollision.x -= collision.transform.position.x;
@@ -80,6 +81,7 @@ public class Ball : MonoBehaviour, IBall
     public void SetQueueController(QueueDynamicController queueController)
     {
         this.QueueController = queueController;
+        BallSQ.SetQueueController(queueController);
     }
 
     public GameObject GetGameObject()

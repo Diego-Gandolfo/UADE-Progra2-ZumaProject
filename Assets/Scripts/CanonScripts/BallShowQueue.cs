@@ -9,11 +9,17 @@ public class BallShowQueue : MonoBehaviour
     public NodeBall Node { get; set; }
     public int CurrentPosition { get; set; }
     public bool CanMove { get; set; }
+    public QueueDynamicController QueueController { get; private set; }
 
     public void GetTargetBallInfo(IBall targetBall) //SI o si paso la que se va a correr a la derecha
     {
         Path = targetBall.BallSQ.Path;
         CurrentPosition = targetBall.BallSQ.CurrentPosition; 
+    }
+
+    public void SetQueueController(QueueDynamicController queueController)
+    {
+        QueueController = queueController;
     }
 
     public void InitializePath(Transform[] recorrido, bool value)
@@ -43,14 +49,18 @@ public class BallShowQueue : MonoBehaviour
         }
     }
 
-    public void Regroup(int ballsDequeued)
+    public void Regroup(int ballsDequeued, NodeBall previousNode = null, NodeBall nextNode = null)
     {
         CurrentPosition -= ballsDequeued;
         transform.position = Path[CurrentPosition].position;
 
         if (Node != null && Node.nextNode != null)
         {
-            Node.nextNode.element.BallSQ.Regroup(ballsDequeued);
+            Node.nextNode.element.BallSQ.Regroup(ballsDequeued, previousNode, nextNode);
+        }
+        else
+        {
+            QueueController.CanCheckColorsAgain(previousNode, nextNode);
         }
     }
 

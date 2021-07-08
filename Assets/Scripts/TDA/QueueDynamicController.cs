@@ -237,7 +237,6 @@ public class QueueDynamicController : MonoBehaviour
         return ballsToDequeue;
     }
 
-    // TODO: llevar a QueueDynamic
     public NodeBall FindNode(IBall ball) //Recibe una pelota y le busca el nodo
     {
         var auxNode = queueDynamic.rootNode;
@@ -339,15 +338,18 @@ public class QueueDynamicController : MonoBehaviour
             CalculatePoints(ballList.Count, numberOfRecursivity);
 
 
-            if (nextNode != null)
-                nextNode.element.BallSQ.Regroup(ballList.Count);
+            if (nextNode != null) //Si hay nodo siguiente
+                nextNode.element.BallSQ.Regroup(ballList.Count, previousNode, nextNode); //move todas las que siguen hacia atras
 
             if(IsEmpty()) //Chequea si la cola esta vacia.... Si esta avisale al resto
                 OnEmpty?.Invoke();
 
             AudioManager.instance.PlaySound(SoundClips.Explosion);
         }
+    }
 
+    public void CanCheckColorsAgain(NodeBall previousNode, NodeBall nextNode) //A este lo llama el regroup cuando viene de parte de CheckColors, reemplaza a la recursividad.
+    {
         Ball nextBall = nextNode != null ? nextNode.element as Ball : null;
         Ball previousBall = previousNode != null ? previousNode.element as Ball : null;
 
