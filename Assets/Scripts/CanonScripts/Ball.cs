@@ -101,19 +101,21 @@ public class Ball : MonoBehaviour, IBall
         animator.SetBool("CanDestroy", true);
     }
 
-    public void OnManipulation()
+    public void OnExploionDestroy()
     {
         print("MANIP");
-        //Let queue controller know that can continue with regroup and re check
+        //TODO: Let queue controller know that can continue with regroup and re check
+        Destroy(this);
+    }
+
+    public void OnAbsorbDeque()
+    {
+        transform.position = new Vector3(0f, 0f, 0f);
+        animator.SetTrigger("Reset");
     }
 
     public void OnAbsorb()
     {
         animator.SetBool("CanAbsorb", true);
-    }
-
-    public void OnReset()
-    {
-        animator.SetTrigger("Reset");
     }
 }

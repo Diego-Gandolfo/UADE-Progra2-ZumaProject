@@ -30,7 +30,6 @@ public class CanonStack : MonoBehaviour
 
                 selected.QueueController.DesqueueMiddle(selected);
                 selected.OnAbsorb();
-                selected.transform.position = new Vector3(0f, 0f, 0f);
                 selected.gameObject.SetActive(false);
 
                 Ball nextBall = nextNode != null ? nextNode.element as Ball : null;
