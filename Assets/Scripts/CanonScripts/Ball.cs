@@ -109,19 +109,17 @@ public class Ball : MonoBehaviour, IBall
         Destroy(this);
     }
 
-    public void OnAbsorbDeque()
+    public void OnAbsorbDeque() //Esto es lo que ahora saca a la pelota y luegp 
     {
-        var node = QueueController.DesqueueMiddle(this).BallSQ.Node;
-        var nextNode = node.nextNode;
-        var previousNode = node.previousNode;
+        QueueController.DesqueueMiddle(this); //Lo saca de la cola
 
-        if(nextNode != null) nextNode.element.BallSQ.Regroup(1);
+        if(BallSQ.Node.nextNode != null) BallSQ.Node.nextNode.element.BallSQ.Regroup(1); //Hace que se corran si hay algo a la derecha
 
-        QueueController.CanCheckColorsAgain(nextNode, previousNode); //Acá hacemos el check de colores
+        QueueController.CanCheckColorsAgain(BallSQ.Node.nextNode, BallSQ.Node.previousNode); //Acá hacemos el check de colores
 
         transform.position = new Vector3(0f, 0f, 0f);
-        animator.SetTrigger("Reset");
-        gameObject.SetActive(false);
+        animator.SetTrigger("Reset"); //Reseteamos la animacion
+        gameObject.SetActive(false); 
     }
 
     public void OnAbsorb()
