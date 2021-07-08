@@ -103,6 +103,7 @@ public class Ball : MonoBehaviour, IBall
 
     public void OnExploionDestroy()
     {
+        QueueController.DesqueueMiddle(this);
         print("MANIP");
         //TODO: Let queue controller know that can continue with regroup and re check
         Destroy(this);
@@ -110,8 +111,17 @@ public class Ball : MonoBehaviour, IBall
 
     public void OnAbsorbDeque()
     {
+        var node = QueueController.DesqueueMiddle(this).BallSQ.Node;
+        var nextNode = node.nextNode;
+        var previousNode = node.previousNode;
+
+        if(nextNode != null) nextNode.element.BallSQ.Regroup(1);
+
+        QueueController.CanCheckColorsAgain(nextNode, previousNode); //Acá hacemos el check de colores
+
         transform.position = new Vector3(0f, 0f, 0f);
         animator.SetTrigger("Reset");
+        gameObject.SetActive(false);
     }
 
     public void OnAbsorb()

@@ -24,23 +24,7 @@ public class CanonStack : MonoBehaviour
             if(selected.QueueController.GetNumberOfCurrentBalls() > maxStack)
             {
                 canonStack.Push(selected);
-                var node = selected.BallSQ.Node;
-                var nextNode = node.nextNode;
-                var previousNode = node.previousNode;
-
-                selected.QueueController.DesqueueMiddle(selected);
-                selected.OnAbsorb();
-                selected.gameObject.SetActive(false);
-
-                Ball nextBall = nextNode != null ? nextNode.element as Ball : null;
-                Ball previousBall = previousNode != null ? previousNode.element as Ball : null;
-
-                if (nextNode != null) nextNode.element.BallSQ.Regroup(1);
-
-                if (nextNode != null && previousNode != null)
-                    if (previousBall.Color == nextBall.Color)
-                        selected.QueueController.CheckColors(nextNode);
-
+                selected.OnAbsorb(); //Esto triggerea la animacion y luego se sacan solas y se desactivan.
                 AudioManager.instance.PlaySound(SoundClips.Absorb);
             }
             else

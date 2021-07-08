@@ -327,9 +327,9 @@ public class QueueDynamicController : MonoBehaviour
             {
                 if (ballList[i] is Ball)
                 {
-                    var aux = DesqueueMiddle(ballList[i]);
-                    if (aux is Ball)
-                        aux.GetGameObject().GetComponent<Ball>().OnExplosion();
+                    //var aux = DesqueueMiddle(ballList[i]);
+                    if (ballList[i] is Ball)
+                        ballList[i].GetGameObject().GetComponent<Ball>().OnExplosion();
                     if(i == ballList.Count - 1)
                     {
                         CalculatePoints(ballList.Count, numberOfRecursivity);
