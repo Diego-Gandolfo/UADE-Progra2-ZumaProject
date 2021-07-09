@@ -62,9 +62,7 @@ public class CanonController : MonoBehaviour
 				hit2D = Physics2D.Raycast(raycastPoint.position, direction, 20f,layermask);
 				if (hit2D)
                 {
-					print(hit2D.collider.name);
 					Ball ball = hit2D.collider.GetComponent<Ball>();
-					print(ball);
 					if (ball != null)
 					{
 						canonStack.Absorb(ball);
