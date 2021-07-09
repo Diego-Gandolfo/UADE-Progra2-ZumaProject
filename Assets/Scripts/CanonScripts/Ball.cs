@@ -26,7 +26,7 @@ public class Ball : MonoBehaviour, IBall
     private int explosionNumber;
     private NodeBall nextNode;
     private NodeBall previousNode;
-    public System.Action<int, NodeBall, NodeBall> OnDestroyed;
+    public System.Action<int, Ball, NodeBall, NodeBall> OnDestroyed; //numero de explotadas, this, previousNode, nextNode
 
     private void Awake()
     {
@@ -107,10 +107,10 @@ public class Ball : MonoBehaviour, IBall
         AudioManager.instance.PlaySound(SoundClips.Explosion);
     }
 
-    public void OnExploionDestroy()
+    public void OnExplosionDestroy()
     {
         QueueController.DesqueueMiddle(this);
-        OnDestroyed?.Invoke(explosionNumber, previousNode, nextNode);
+        OnDestroyed?.Invoke(explosionNumber, this, previousNode, nextNode);
         Destroy(this);
     }
 

@@ -175,22 +175,6 @@ public class QueueDynamicController : MonoBehaviour
         newBall.BallSQ.Node = node;
         if (hasToCheckColors) CheckColors(node);
     }
-
-    public void EnqueueBottom()
-    {
-        queueDynamic.EnqueueBottom(CreateBall());
-    }
-
-    public void DesqueueTop()
-    {
-        queueDynamic.DesqueueTop();
-    }
-
-    public void DesqueueBottom()
-    {
-        queueDynamic.DesqueueBottom();
-    }
-
     public IBall DesqueueMiddle(IBall targetBall)
     {
         NodeBall node = FindNode(targetBall);
@@ -328,33 +312,30 @@ public class QueueDynamicController : MonoBehaviour
             {
                 if (ballList[i] is Ball)
                 {
-                    if (ballList[i] is Ball)
-                    {
-                        var ball = ballList[i].GetGameObject().GetComponent<Ball>();
-                        ball.OnDestroyed += OnAllExploded;
-                        ball.OnExplosion(ballList.Count, previousNode, nextNode);
-                    }
+                    var ball = ballList[i].GetGameObject().GetComponent<Ball>();
+                    ball.OnDestroyed += OnAllExploded;
+                    ball.OnExplosion(ballList.Count, previousNode, nextNode);
                 }
             }
         }
     }
 
-    public void OnAllExploded(int number, NodeBall previousNode, NodeBall nextNode)
+    public void OnAllExploded(int number, Ball ball, NodeBall previousNode, NodeBall nextNode)
     {
         currentExplosion++;
+        ball.OnDestroyed -= OnAllExploded;
         if(currentExplosion == number - 1) //Check if all exploded. 
         {
-            if (nextNode != null)
-                nextNode.element.BallSQ.Regroup(number);
+            if (nextNode != null) nextNode.element.BallSQ.Regroup(number); //Hacemos el regroup.
 
             CalculatePoints(number, numberOfRecursivity); //Calculamos puntos
 
             CanCheckColorsAgain(previousNode, nextNode); // Y ahora que terminamos con eso, volvemos a probar si hay más para explotar
 
-            currentExplosion = 0; //Reset
+            currentExplosion = 0; //Si o si reseteamos esto.
         }
 
-        if (IsEmpty()) OnEmpty?.Invoke(); //Chequea si la cola esta vacia.... Si esta avisale al resto
+        if (IsEmpty()) OnEmpty?.Invoke(); //Chequea si la cola esta vacia.... Si esta avisale al resto //TODO: DEBERIA HACERLO SOLO AL FINAL DE LA ULTIMA EXPLOSION
     }
 
     public void CanCheckColorsAgain(NodeBall previousNode, NodeBall nextNode)
@@ -362,13 +343,13 @@ public class QueueDynamicController : MonoBehaviour
         Ball nextBall = nextNode != null ? nextNode.element as Ball : null;
         Ball previousBall = previousNode != null ? previousNode.element as Ball : null;
 
-        if ((previousNode != null && nextNode != null) && (previousBall.Color == nextBall.Color)) //Si AMBOS nodos existen y cpinciden en color
+        if ((previousNode != null && nextNode != null) && (previousBall.Color == nextBall.Color)) //Si AMBOS nodos existen y coinciden en color
         {
             CheckColors(previousNode); //Vemos si da para explotar
         }
-        else //Si una de las dos (o las dos) es nula...
+        else //Si una de las dos (o las dos) es nula o no coinciden en color....
         {
-            numberOfRecursivity = 1;
+            numberOfRecursivity = 1; //Reseteamos la recursividad
             if (checkColorCount >= checkColorCountToPowerUp) // Y si da para hacer un power up...
             {
                 if (previousNode != null) //Me fijo si esta es Nula.. si no lo es, Instancio desde acá
