@@ -114,7 +114,7 @@ public class QueueDynamicController : MonoBehaviour
             { 
                 var ball = CreateBall();
                 queueDynamic.Initialize(ball);
-                var node = FindNode(ball);
+                var node = queueDynamic.FindNode(ball);
                 ball.BallSQ.Node = node;
             }
             else
@@ -147,7 +147,7 @@ public class QueueDynamicController : MonoBehaviour
     {
         var ball = CreateBall();
         queueDynamic.EnqueueTop(ball);
-        var node = FindNode(ball);
+        var node = queueDynamic.FindNode(ball);
         ball.BallSQ.Node = node;
     }
 
@@ -171,13 +171,14 @@ public class QueueDynamicController : MonoBehaviour
     public void EnqueueMiddleMain(IBall newBall, bool hasToCheckColors = true) // son cosas que hacen ambos EnqueueMiddle, para no repetir codigo
     {
         if (hasToCheckColors) ShowQueue(GetNumberOfCurrentBalls());
-        var node = FindNode(newBall);
+        var node = queueDynamic.FindNode(newBall);
         newBall.BallSQ.Node = node;
         if (hasToCheckColors) CheckColors(node);
     }
+    
     public IBall DesqueueMiddle(IBall targetBall)
     {
-        NodeBall node = FindNode(targetBall);
+        NodeBall node = queueDynamic.FindNode(targetBall);
         
         var aux = queueDynamic.DesqueueMiddle(targetBall);
         
@@ -188,7 +189,7 @@ public class QueueDynamicController : MonoBehaviour
     public List<IBall> DequeueList(IBall ball, int ballsToOrder)
     {
         List<IBall> ballsToDequeue = new List<IBall>();
-        NodeBall node = FindNode(ball);
+        NodeBall node = queueDynamic.FindNode(ball);
         var auxNodeRight = node.nextNode != null ? node.nextNode : null;
         var auxNodeLeft = node.previousNode != null ? node.previousNode : null;
 
@@ -221,20 +222,6 @@ public class QueueDynamicController : MonoBehaviour
         }
 
         return ballsToDequeue;
-    }
-
-    public NodeBall FindNode(IBall ball) //Recibe una pelota y le busca el nodo
-    {
-        var auxNode = queueDynamic.rootNode;
-
-        while (auxNode.element != ball && auxNode.nextNode != null)
-        {
-            auxNode = auxNode.nextNode;
-        }
-        if (auxNode.element == ball)
-            return auxNode;
-        else
-            return null;
     }
 
     public void CheckColors(NodeBall auxNode)

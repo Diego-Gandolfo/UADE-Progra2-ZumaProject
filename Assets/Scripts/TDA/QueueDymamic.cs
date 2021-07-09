@@ -192,4 +192,18 @@ public class QueueDymamic : MonoBehaviour, IQueueDynamic<IBall> // Esta es la im
     {
         return (rootNode == null); // solo devuelve true cuando el rootNode es null, sino la cola tiene al menos un elemento
     }
+
+    public NodeBall FindNode(IBall ball) //Recibe una pelota y le busca el nodo
+    {
+        var auxNode = rootNode;
+
+        while (auxNode.element != ball && auxNode.nextNode != null)
+        {
+            auxNode = auxNode.nextNode;
+        }
+        if (auxNode.element == ball)
+            return auxNode;
+        else
+            return null;
+    }
 }
