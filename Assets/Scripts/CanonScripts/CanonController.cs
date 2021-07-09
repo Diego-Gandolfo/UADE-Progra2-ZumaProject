@@ -17,6 +17,7 @@ public class CanonController : MonoBehaviour
 	private RaycastHit2D hit2D;
 	private LineRenderer laser;
 	private Vector2 direction;
+	private bool canCheck;
 
 	//Scripts
 	private CanonQueue canonQueue;
@@ -30,6 +31,7 @@ public class CanonController : MonoBehaviour
 		laser = GetComponent<LineRenderer>();
         laser.useWorldSpace = true;
 		laser.enabled = true;
+		canCheck = true;
 		SetColors();
 	}
 
@@ -37,15 +39,16 @@ public class CanonController : MonoBehaviour
     {
         if (!GameManager.instance.IsGameFreeze)
         {
-			actualPositionMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			direction = actualPositionMouse - (Vector2)raycastPoint.position;
-			var distance = Vector3.Distance(transform.position, actualPositionMouse);
-			if (distance >= minDistanceToPoint)
-			{
+            if (canCheck)
+            {
+				actualPositionMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				direction = actualPositionMouse - (Vector2)raycastPoint.position.normalized;
+				var distance = Vector3.Distance(transform.position, actualPositionMouse);
 				transform.up = direction.normalized;
 			}
+			
 
-			CastLaser();
+            CastLaser();
 
 			if (Input.GetKeyDown(KeyCode.Mouse0)) //SHOOT
 			{
@@ -112,4 +115,14 @@ public class CanonController : MonoBehaviour
 
 		AudioManager.instance.PlaySound(SoundClips.Shoot);
 	}
+
+    private void OnMouseOver()
+    {
+		canCheck = false;
+    }
+
+    private void OnMouseExit()
+    {
+		canCheck = true;
+    }
 }
