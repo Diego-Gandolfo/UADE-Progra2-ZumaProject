@@ -3481,31 +3481,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8063896038529965800, guid: d5fb24a439f438e4f8f69f1253f6fb51,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8063896038529965800, guid: d5fb24a439f438e4f8f69f1253f6fb51,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8063896038529965801, guid: d5fb24a439f438e4f8f69f1253f6fb51,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8063896038529965801, guid: d5fb24a439f438e4f8f69f1253f6fb51,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8063896038610845919, guid: d5fb24a439f438e4f8f69f1253f6fb51,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 8063896039895019272, guid: d5fb24a439f438e4f8f69f1253f6fb51,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3561,75 +3536,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8063896039895019272, guid: d5fb24a439f438e4f8f69f1253f6fb51,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8063896039895019272, guid: d5fb24a439f438e4f8f69f1253f6fb51,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8063896039895019272, guid: d5fb24a439f438e4f8f69f1253f6fb51,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8063896039895019273, guid: d5fb24a439f438e4f8f69f1253f6fb51,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8063896039895019273, guid: d5fb24a439f438e4f8f69f1253f6fb51,
-        type: 3}
-      propertyPath: m_SortingLayerID
-      value: -1670996481
-      objectReference: {fileID: 0}
-    - target: {fileID: 8063896039895019273, guid: d5fb24a439f438e4f8f69f1253f6fb51,
-        type: 3}
-      propertyPath: m_SortingLayer
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8063896039895019273, guid: d5fb24a439f438e4f8f69f1253f6fb51,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 8063896039895019274, guid: d5fb24a439f438e4f8f69f1253f6fb51,
         type: 3}
       propertyPath: m_Name
       value: "Ca\xF1on"
-      objectReference: {fileID: 0}
-    - target: {fileID: 8063896039895019274, guid: d5fb24a439f438e4f8f69f1253f6fb51,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8063896039895019277, guid: d5fb24a439f438e4f8f69f1253f6fb51,
-        type: 3}
-      propertyPath: m_SortingLayerID
-      value: -1670996481
-      objectReference: {fileID: 0}
-    - target: {fileID: 8063896039895019277, guid: d5fb24a439f438e4f8f69f1253f6fb51,
-        type: 3}
-      propertyPath: m_SortingLayer
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8063896039895019277, guid: d5fb24a439f438e4f8f69f1253f6fb51,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8063896039895019277, guid: d5fb24a439f438e4f8f69f1253f6fb51,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 8063896039895019277, guid: d5fb24a439f438e4f8f69f1253f6fb51,
-        type: 3}
-      propertyPath: m_Parameters.numCornerVertices
-      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5fb24a439f438e4f8f69f1253f6fb51, type: 3}

@@ -12,6 +12,7 @@ public class CanonController : MonoBehaviour
 
 	[Header("Raycast Settings")]
 	[SerializeField] private float rayLenght = 5f;
+	[SerializeField] private LayerMask layermask;
 	private Transform raycastPoint;
 	private Vector2 actualPositionMouse;
 	private RaycastHit2D hit2D;
@@ -58,16 +59,17 @@ public class CanonController : MonoBehaviour
 
 			if (Input.GetKeyDown(KeyCode.Mouse1)) //ABSORB
 			{
-				hit2D = Physics2D.Raycast(raycastPoint.position, direction);
-				Ball ball = null;
-
+				hit2D = Physics2D.Raycast(raycastPoint.position, direction, 20f,layermask);
 				if (hit2D)
-					ball = hit2D.collider.GetComponent<Ball>();
-
-				if (ball != null)
-				{
-					canonStack.Absorb(ball);
-					SetColors();
+                {
+					print(hit2D.collider.name);
+					Ball ball = hit2D.collider.GetComponent<Ball>();
+					print(ball);
+					if (ball != null)
+					{
+						canonStack.Absorb(ball);
+						SetColors();
+					}
 				}
 			}
 		}
