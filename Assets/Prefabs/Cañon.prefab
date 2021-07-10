@@ -296,6 +296,7 @@ MonoBehaviour:
   currentBall: {fileID: 8063896038529965800}
   nextBall: {fileID: 8063896038610845919}
   minDistanceToPoint: 1
+  cooldown: 0.5
   rayLenght: 5
   layermask:
     serializedVersion: 2

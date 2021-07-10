@@ -9,6 +9,10 @@ public class CanonController : MonoBehaviour
 	[SerializeField] SpriteRenderer nextBall;
 	[SerializeField] private float minDistanceToPoint;
 
+	[Header("Cooldown Settings")]
+	[SerializeField] private float cooldown;
+	private float cooldownTimer;
+
 
 	[Header("Raycast Settings")]
 	[SerializeField] private float rayLenght = 5f;
@@ -34,6 +38,8 @@ public class CanonController : MonoBehaviour
 		laser.enabled = true;
 		canCheck = true;
 		SetColors();
+
+		cooldownTimer = cooldown;
 	}
 
     void Update()
@@ -56,13 +62,16 @@ public class CanonController : MonoBehaviour
 
             CastLaser();
 
-			if (Input.GetKeyDown(KeyCode.Mouse0)) //SHOOT
+			cooldownTimer += Time.deltaTime;
+
+			if (Input.GetKeyDown(KeyCode.Mouse0) && cooldownTimer >= cooldown) //SHOOT
 			{
 				Shoot();
 				SetColors();
+				cooldownTimer = 0f;
 			}
 
-			if (Input.GetKeyDown(KeyCode.Mouse1)) //ABSORB
+			if (Input.GetKeyDown(KeyCode.Mouse1) && cooldownTimer >= cooldown) //ABSORB
 			{
 				hit2D = Physics2D.Raycast(raycastPoint.position, direction, 20f,layermask);
 				if (hit2D)
@@ -74,6 +83,7 @@ public class CanonController : MonoBehaviour
 						SetColors();
 					}
 				}
+				cooldownTimer = 0f;
 			}
 		}
 	}
