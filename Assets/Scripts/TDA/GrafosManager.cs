@@ -24,7 +24,7 @@ public class GrafosManager : MonoBehaviour, IGrafosManager
             arrayPathOne = ConvertToArray(path_1, arrayPathOne);
         
         if (path_2 != null)
-            arrayPathTwo = ConvertToArray(path_2, arrayPathOne);
+            arrayPathTwo = ConvertToArray(path_2, arrayPathTwo);
     }
 
     void Start()
@@ -74,8 +74,8 @@ public class GrafosManager : MonoBehaviour, IGrafosManager
 
     private Transform[] ConvertToArray(GameObject path, Transform[] transformArray) //Convierte el GameObject que tiene los puntos en un array de Transforms
     {
-        transformArray = new Transform[path_1.transform.childCount];
-        for (int i = 0; i < path_1.transform.childCount; i++)
+        transformArray = new Transform[path.transform.childCount];
+        for (int i = 0; i < path.transform.childCount; i++)
         {
             transformArray[i] = path.transform.GetChild(i).GetComponent<Transform>();
         }
