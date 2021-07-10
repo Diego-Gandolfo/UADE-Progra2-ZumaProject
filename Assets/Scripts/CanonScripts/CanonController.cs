@@ -43,9 +43,14 @@ public class CanonController : MonoBehaviour
             if (canCheck)
             {
 				actualPositionMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-				direction = actualPositionMouse - (Vector2)raycastPoint.position.normalized;
+				direction = actualPositionMouse - (Vector2)raycastPoint.position;
 				var distance = Vector3.Distance(transform.position, actualPositionMouse);
-				transform.up = direction.normalized;
+				if (distance >= 1.5f)
+                {
+					//direction = direction.normalized;
+					transform.up = direction;
+				}
+
 			}
 			
 
@@ -118,11 +123,11 @@ public class CanonController : MonoBehaviour
 
     private void OnMouseOver()
     {
-		canCheck = false;
+        canCheck = false;
     }
 
     private void OnMouseExit()
     {
-		canCheck = true;
+        canCheck = true;
     }
 }
