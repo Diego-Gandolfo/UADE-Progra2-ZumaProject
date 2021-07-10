@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6808222489710163905}
   - component: {fileID: 7535913483028634844}
   - component: {fileID: -3391122238052087951}
-  - component: {fileID: 6898767037734879561}
+  - component: {fileID: 324553519681310529}
   m_Layer: 8
   m_Name: Bala
   m_TagString: Sphere
@@ -54,7 +54,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ad268970fe885e842a97b5ca29b0d2dd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -141,10 +141,6 @@ MonoBehaviour:
   - {r: 0, g: 0, b: 1, a: 1}
   speed: 10
   lifeTime: 3
-  deathPrefab: {fileID: 4958139977584857316, guid: d737e29b0bfbf8945868958b76e50702,
-    type: 3}
-  absorbPrefab: {fileID: 4958139977584857316, guid: 6494be9349898b646ad39957bd4fbe7d,
-    type: 3}
 --- !u!114 &-3391122238052087951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,15 +153,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b60397f7fe390b144a1a475c95c8fb1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6898767037734879561
-MonoBehaviour:
+--- !u!95 &324553519681310529
+Animator:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6808222489710163904}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9353a630cbcd9a9409ce0fb208587acb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ceb1fa74089b2ea4aa9d16bd7763a20d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

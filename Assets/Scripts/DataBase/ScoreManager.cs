@@ -137,7 +137,6 @@ public class ScoreManager : MonoBehaviour
 
     private void CheckCurrentPlayerInRanking(List<Player> players, int id)
     {
-        print(id);
         bool isPlayerThere = false;
         for (int i = 0; i < rankingLine.Length; i++) //El largo del ranking
         {

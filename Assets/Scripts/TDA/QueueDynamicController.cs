@@ -35,6 +35,9 @@ public class QueueDynamicController : MonoBehaviour
 
     public UnityEvent OnEmpty = new UnityEvent();
 
+    //EXPLOSIONS
+    private int currentExplosion;
+
     private void Awake()
     {
         queueDynamic = gameObject.GetComponent<QueueDymamic>();
@@ -94,7 +97,6 @@ public class QueueDynamicController : MonoBehaviour
         var ball = Instantiate(this.ballPrefab); // instanciamos una nueva Sphere
         ball.name = $"QueueController{pathNumber} - Ball ({currentQuantity})"; // le cambiamos el nombre para diferenciarlas
         ball.SetQueueController(this);
-
         ball.BallSQ.InitializePath(path, false);
         return ball; // devolvemos el clone creado
     }
@@ -112,7 +114,7 @@ public class QueueDynamicController : MonoBehaviour
             { 
                 var ball = CreateBall();
                 queueDynamic.Initialize(ball);
-                var node = FindNode(ball);
+                var node = queueDynamic.FindNode(ball);
                 ball.BallSQ.Node = node;
             }
             else
@@ -145,7 +147,7 @@ public class QueueDynamicController : MonoBehaviour
     {
         var ball = CreateBall();
         queueDynamic.EnqueueTop(ball);
-        var node = FindNode(ball);
+        var node = queueDynamic.FindNode(ball);
         ball.BallSQ.Node = node;
     }
 
@@ -169,29 +171,14 @@ public class QueueDynamicController : MonoBehaviour
     public void EnqueueMiddleMain(IBall newBall, bool hasToCheckColors = true) // son cosas que hacen ambos EnqueueMiddle, para no repetir codigo
     {
         if (hasToCheckColors) ShowQueue(GetNumberOfCurrentBalls());
-        var node = FindNode(newBall);
+        var node = queueDynamic.FindNode(newBall);
         newBall.BallSQ.Node = node;
         if (hasToCheckColors) CheckColors(node);
     }
-
-    public void EnqueueBottom()
-    {
-        queueDynamic.EnqueueBottom(CreateBall());
-    }
-
-    public void DesqueueTop()
-    {
-        queueDynamic.DesqueueTop();
-    }
-
-    public void DesqueueBottom()
-    {
-        queueDynamic.DesqueueBottom();
-    }
-
+    
     public IBall DesqueueMiddle(IBall targetBall)
     {
-        NodeBall node = FindNode(targetBall);
+        NodeBall node = queueDynamic.FindNode(targetBall);
         
         var aux = queueDynamic.DesqueueMiddle(targetBall);
         
@@ -202,7 +189,7 @@ public class QueueDynamicController : MonoBehaviour
     public List<IBall> DequeueList(IBall ball, int ballsToOrder)
     {
         List<IBall> ballsToDequeue = new List<IBall>();
-        NodeBall node = FindNode(ball);
+        NodeBall node = queueDynamic.FindNode(ball);
         var auxNodeRight = node.nextNode != null ? node.nextNode : null;
         var auxNodeLeft = node.previousNode != null ? node.previousNode : null;
 
@@ -235,21 +222,6 @@ public class QueueDynamicController : MonoBehaviour
         }
 
         return ballsToDequeue;
-    }
-
-    // TODO: llevar a QueueDynamic
-    public NodeBall FindNode(IBall ball) //Recibe una pelota y le busca el nodo
-    {
-        var auxNode = queueDynamic.rootNode;
-
-        while (auxNode.element != ball && auxNode.nextNode != null)
-        {
-            auxNode = auxNode.nextNode;
-        }
-        if (auxNode.element == ball)
-            return auxNode;
-        else
-            return null;
     }
 
     public void CheckColors(NodeBall auxNode)
@@ -317,58 +289,56 @@ public class QueueDynamicController : MonoBehaviour
                     previousNode = auxNodeSupp;
             }
         }
-
         if (ballList.Count >= 3)
         {
-            if (canInstantiatePowerUp) //Por cada vuelta de checkcolors que explota, sumamos uno al contador
-            {
-                checkColorCount++;
-            }
-            
+            if (canInstantiatePowerUp) checkColorCount++;//Por cada vuelta de checkcolors que explota, sumamos uno al contador
+
             numberOfRecursivity++;
 
             for (int i = 0; i < ballList.Count; i++)
             {
                 if (ballList[i] is Ball)
                 {
-                    var aux = DesqueueMiddle(ballList[i]);
-                    if (aux is Ball)
-                        aux.GetGameObject().GetComponent<Ball>().OnExplosion();
-                    Destroy(aux.GetGameObject());
+                    var ball = ballList[i].GetGameObject().GetComponent<Ball>();
+                    ball.OnDestroyed += OnAllExploded;
+                    ball.OnExplosion(ballList.Count, previousNode, nextNode);
                 }
             }
+        }
+    }
 
-            CalculatePoints(ballList.Count, numberOfRecursivity);
-
-
+    public void OnAllExploded(int number, Ball ball, NodeBall previousNode, NodeBall nextNode)
+    {
+        currentExplosion++;
+        ball.OnDestroyed -= OnAllExploded;
+        if(currentExplosion == number) //Check if all exploded. //era solo el -1 el problema
+        {
             if (nextNode != null)
-                nextNode.element.BallSQ.Regroup(ballList.Count);
+            {
+            nextNode.element.BallSQ.Regroup(number); //Hacemos el regroup.
+            }
+            CalculatePoints(number, numberOfRecursivity); //Calculamos puntos          
+            if(nextNode != null && previousNode !=null)
+            CanCheckColorsAgain(previousNode, nextNode); // Y ahora que terminamos con eso, volvemos a probar si hay más para explotar
 
-            if(IsEmpty()) //Chequea si la cola esta vacia.... Si esta avisale al resto
-                OnEmpty?.Invoke();
-
-            AudioManager.instance.PlaySound(SoundClips.Explosion);
+            currentExplosion = 0; //Si o si reseteamos esto.
         }
 
+        if (IsEmpty()) OnEmpty?.Invoke(); //Chequea si la cola esta vacia.... Si esta avisale al resto //TODO: DEBERIA HACERLO SOLO AL FINAL DE LA ULTIMA EXPLOSION
+    }
+
+    public void CanCheckColorsAgain(NodeBall previousNode, NodeBall nextNode)
+    {
         Ball nextBall = nextNode != null ? nextNode.element as Ball : null;
         Ball previousBall = previousNode != null ? previousNode.element as Ball : null;
 
-        if (previousNode != null && nextNode != null) //Si AMBOS nodos existen
+        if ((previousNode != null && nextNode != null) && (previousBall.Color == nextBall.Color)) //Si AMBOS nodos existen y coinciden en color
         {
-            if (previousBall.Color == nextBall.Color) //Y si los colores coinciden
-            {
-                CheckColors(previousNode); //RECURSIVIDAD!!!
-            }
-            else //Si no coinciden el color -> no hay recursividad
-            {
-                numberOfRecursivity = 1;
-                if (checkColorCount >= checkColorCountToPowerUp) //chequeo si llega al powerup
-                    InstantiatePowerUp(previousNode.element);
-            }
+            CheckColors(previousNode); //Vemos si da para explotar
         }
-        else //Si una de las dos (o las dos) es nula...
+        else //Si una de las dos (o las dos) es nula o no coinciden en color....
         {
-            numberOfRecursivity = 1;
+            numberOfRecursivity = 1; //Reseteamos la recursividad
             if (checkColorCount >= checkColorCountToPowerUp) // Y si da para hacer un power up...
             {
                 if (previousNode != null) //Me fijo si esta es Nula.. si no lo es, Instancio desde acá

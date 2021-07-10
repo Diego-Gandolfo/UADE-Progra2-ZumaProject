@@ -9,10 +9,10 @@ public class Ball : MonoBehaviour, IBall
     [SerializeField] private Color[] colorBucket = new Color[3];
     [SerializeField] private float speed = 10;
     [SerializeField] private float lifeTime;
-    [SerializeField] private GameObject deathPrefab;
-    [SerializeField] private GameObject absorbPrefab;
     private float lifeTimeTimer;
-    
+    private Animator animator;
+    private Material material;
+
     public QueueDynamicController QueueController { get; private set; }
 
     public BallShowQueue BallSQ { get; private set; }
@@ -22,13 +22,21 @@ public class Ball : MonoBehaviour, IBall
     public bool IsProjectile { get; set; }
     public int IndexValue { get; private set; }
 
+    //ONLY FOR EXPLODE
+    private int explosionNumber;
+    private NodeBall nextNode;
+    private NodeBall previousNode;
+    public System.Action<int, Ball, NodeBall, NodeBall> OnDestroyed; //numero de explotadas, this, previousNode, nextNode
+
     private void Awake()
     {
-        IndexValue = (int) Random.Range(0, colorBucket.Length);
-        Color = colorBucket[IndexValue];
-        gameObject.GetComponent<SpriteRenderer>().color = Color;
-        lifeTimeTimer = lifeTime;
         BallSQ = GetComponent<BallShowQueue>();
+        IndexValue = (int) Random.Range(0, colorBucket.Length); //Color random de las opciones
+        Color = colorBucket[IndexValue]; //Seteamos el color
+        material = GetComponent<SpriteRenderer>().material; //Buscamos el material
+        material.SetColor("_Color", Color); //Lo pintamos
+        animator = GetComponent<Animator>();
+        lifeTimeTimer = lifeTime;
     }
 
     private void Update()
@@ -49,12 +57,12 @@ public class Ball : MonoBehaviour, IBall
     {
         if (IsProjectile)
         {
-            
             var collisionBall = collision.gameObject.GetComponent<Ball>();
 
             if (collisionBall != null)
             {
                 QueueController = collisionBall.QueueController;
+                BallSQ.SetQueueController(QueueController);
 
                 Vector2 contactOnCollision = collision.GetContact(0).point;//Encuentra el punto de colision (devuelve un vector)
                 contactOnCollision.x -= collision.transform.position.x;
@@ -82,6 +90,7 @@ public class Ball : MonoBehaviour, IBall
     public void SetQueueController(QueueDynamicController queueController)
     {
         this.QueueController = queueController;
+        BallSQ.SetQueueController(queueController);
     }
 
     public GameObject GetGameObject()
@@ -89,17 +98,38 @@ public class Ball : MonoBehaviour, IBall
         return gameObject;
     }
 
-    public void OnExplosion()
+    public void OnExplosion(int number, NodeBall previous, NodeBall next)
     {
-        var death = Instantiate(deathPrefab, transform.position, transform.rotation);
-        death.GetComponent<DeathController>().SetColor(Color);
+        explosionNumber = number;
+        previousNode = previous;
+        nextNode = next;
+        animator.SetBool("CanDestroy", true);
+        AudioManager.instance.PlaySound(SoundClips.Explosion);
+    }
+
+    public void OnExplosionDestroy()
+    {
+        QueueController.DesqueueMiddle(this);
+        transform.position = new Vector3(0f, 0f, 0f);
+        OnDestroyed?.Invoke(explosionNumber, this, previousNode, nextNode);
+        Destroy(gameObject);
     }
 
     public void OnAbsorb()
     {
-        print("entre");
-        Instantiate(absorbPrefab, transform.position, transform.rotation);
-        //var absorb = Instantiate(absorbPrefab, transform.position, transform.rotation);
-        //absorb.GetComponent<DeathController>().SetColor(Color);
+        animator.SetBool("CanAbsorb", true);
+    }
+
+    public void OnAbsorbDeque() //Esto lo triggerea el final de la animacion de Absorb
+    {
+        QueueController.DesqueueMiddle(this); //Lo saca de la cola
+
+        if(BallSQ.Node.nextNode != null) BallSQ.Node.nextNode.element.BallSQ.Regroup(1); //Hace que se corran si hay algo a la derecha
+
+        QueueController.CanCheckColorsAgain(BallSQ.Node.nextNode, BallSQ.Node.previousNode); //Acá hacemos el check de colores
+
+        transform.position = new Vector3(0f, 0f, 0f);
+        animator.SetTrigger("Reset"); //Reseteamos la animacion
+        gameObject.SetActive(false); 
     }
 }

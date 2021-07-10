@@ -94,11 +94,8 @@ public class LevelManager : MonoBehaviour
         player.Time = PlayerGlobal.Instance.Time;
         player.Id = PlayerGlobal.Instance.Id;
 
-        //print($"ID: {player.Id}, {player.Name}, time {player.Time}, score {player.Score}, level {player.Level} ");
-
         database.InsertRanking(player);
         PlayerGlobal.Instance.RankingId = database.GetLatestRanking().RankingId; //Nos guardamos el ID de esa tabla para buscar más facil
-        print("Ranking Id: " + PlayerGlobal.Instance.RankingId);
     }
 
     private void OnEmptyCheckVictory()

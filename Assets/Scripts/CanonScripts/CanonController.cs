@@ -12,11 +12,13 @@ public class CanonController : MonoBehaviour
 
 	[Header("Raycast Settings")]
 	[SerializeField] private float rayLenght = 5f;
+	[SerializeField] private LayerMask layermask;
 	private Transform raycastPoint;
 	private Vector2 actualPositionMouse;
 	private RaycastHit2D hit2D;
 	private LineRenderer laser;
 	private Vector2 direction;
+	private bool canCheck;
 
 	//Scripts
 	private CanonQueue canonQueue;
@@ -30,6 +32,7 @@ public class CanonController : MonoBehaviour
 		laser = GetComponent<LineRenderer>();
         laser.useWorldSpace = true;
 		laser.enabled = true;
+		canCheck = true;
 		SetColors();
 	}
 
@@ -37,15 +40,21 @@ public class CanonController : MonoBehaviour
     {
         if (!GameManager.instance.IsGameFreeze)
         {
-			actualPositionMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			direction = actualPositionMouse - (Vector2)raycastPoint.position;
-			var distance = Vector3.Distance(transform.position, actualPositionMouse);
-			if (distance >= minDistanceToPoint)
-			{
-				transform.up = direction.normalized;
-			}
+            if (canCheck)
+            {
+				actualPositionMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				direction = actualPositionMouse - (Vector2)raycastPoint.position;
+				var distance = Vector3.Distance(transform.position, actualPositionMouse);
+				if (distance >= 1.5f)
+                {
+					//direction = direction.normalized;
+					transform.up = direction;
+				}
 
-			CastLaser();
+			}
+			
+
+            CastLaser();
 
 			if (Input.GetKeyDown(KeyCode.Mouse0)) //SHOOT
 			{
@@ -55,16 +64,15 @@ public class CanonController : MonoBehaviour
 
 			if (Input.GetKeyDown(KeyCode.Mouse1)) //ABSORB
 			{
-				hit2D = Physics2D.Raycast(raycastPoint.position, direction);
-				Ball ball = null;
-
+				hit2D = Physics2D.Raycast(raycastPoint.position, direction, 20f,layermask);
 				if (hit2D)
-					ball = hit2D.collider.GetComponent<Ball>();
-
-				if (ball != null)
-				{
-					canonStack.Absorb(ball);
-					SetColors();
+                {
+					Ball ball = hit2D.collider.GetComponent<Ball>();
+					if (ball != null)
+					{
+						canonStack.Absorb(ball);
+						SetColors();
+					}
 				}
 			}
 		}
@@ -112,4 +120,14 @@ public class CanonController : MonoBehaviour
 
 		AudioManager.instance.PlaySound(SoundClips.Shoot);
 	}
+
+    private void OnMouseOver()
+    {
+        canCheck = false;
+    }
+
+    private void OnMouseExit()
+    {
+        canCheck = true;
+    }
 }

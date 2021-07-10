@@ -9,11 +9,17 @@ public class BallShowQueue : MonoBehaviour
     public NodeBall Node { get; set; }
     public int CurrentPosition { get; set; }
     public bool CanMove { get; set; }
+    public QueueDynamicController QueueController { get; private set; }
 
     public void GetTargetBallInfo(IBall targetBall) //SI o si paso la que se va a correr a la derecha
     {
         Path = targetBall.BallSQ.Path;
         CurrentPosition = targetBall.BallSQ.CurrentPosition; 
+    }
+
+    public void SetQueueController(QueueDynamicController queueController)
+    {
+        QueueController = queueController;
     }
 
     public void InitializePath(Transform[] recorrido, bool value)
