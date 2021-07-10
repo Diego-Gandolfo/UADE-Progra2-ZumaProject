@@ -106,7 +106,6 @@ public class QueueDynamicController : MonoBehaviour
         if (path.Length == 0)
         {
             path = grafosManager.GetDijkstra(0, pathNumber);
-            print($"Cola {this.pathNumber}: {path.Length}");
         }
 
         if (ballSpawnTimer >= (0.01))
