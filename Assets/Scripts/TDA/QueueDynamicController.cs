@@ -311,12 +311,14 @@ public class QueueDynamicController : MonoBehaviour
     {
         currentExplosion++;
         ball.OnDestroyed -= OnAllExploded;
-        if(currentExplosion == number - 1) //Check if all exploded. 
+        if(currentExplosion == number) //Check if all exploded. //era solo el -1 el problema
         {
-            if (nextNode != null) nextNode.element.BallSQ.Regroup(number); //Hacemos el regroup.
-
-            CalculatePoints(number, numberOfRecursivity); //Calculamos puntos
-
+            if (nextNode != null)
+            {
+            nextNode.element.BallSQ.Regroup(number); //Hacemos el regroup.
+            }
+            CalculatePoints(number, numberOfRecursivity); //Calculamos puntos          
+            if(nextNode != null && previousNode !=null)
             CanCheckColorsAgain(previousNode, nextNode); // Y ahora que terminamos con eso, volvemos a probar si hay más para explotar
 
             currentExplosion = 0; //Si o si reseteamos esto.
