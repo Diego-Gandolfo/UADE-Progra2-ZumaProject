@@ -110,8 +110,9 @@ public class Ball : MonoBehaviour, IBall
     public void OnExplosionDestroy()
     {
         QueueController.DesqueueMiddle(this);
+        transform.position = new Vector3(0f, 0f, 0f);
         OnDestroyed?.Invoke(explosionNumber, this, previousNode, nextNode);
-        Destroy(this);
+        Destroy(gameObject);
     }
 
     public void OnAbsorb()
